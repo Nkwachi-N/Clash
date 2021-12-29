@@ -70,10 +70,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
 
                 child: Text(
                   'Continue',
-                  style: textTheme.button?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18.0,
-                  ),
+                  style: textTheme.button,
                 ),
               ),
               const SizedBox(
