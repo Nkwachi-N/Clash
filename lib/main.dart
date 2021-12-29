@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         ),
 
       ),
-      home: const JoinClashRoom()
+      home: const CreateClashRoom()
     );
   }
 }
