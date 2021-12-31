@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constants.dart';
+import '../colors.dart';
 
 class JoinClashRoom extends StatefulWidget {
   const JoinClashRoom({Key? key}) : super(key: key);
@@ -87,7 +87,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                               text,
                               style: textTheme.headline4?.copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: black200,
+                                color: green200,
                               ),
                             ),
                           ),

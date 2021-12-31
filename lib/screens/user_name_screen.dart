@@ -1,4 +1,4 @@
-import 'package:clash_flutter/constants.dart';
+import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 
 class UserNameScreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../colors.dart';
 
 class ModeTile extends StatelessWidget {
   final String title;

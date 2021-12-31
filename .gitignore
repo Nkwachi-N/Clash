@@ -30,6 +30,8 @@
 .pub-cache/
 .pub/
 /build/
+/lib/core/secret_keys.dart
+
 
 # Web related
 lib/generated_plugin_registrant.dart

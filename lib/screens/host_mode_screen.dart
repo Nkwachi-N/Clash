@@ -1,4 +1,4 @@
-import 'package:clash_flutter/constants.dart';
+import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/widgets/mode_tile.dart';
 import 'package:flutter/material.dart';
 

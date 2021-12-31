@@ -1,7 +1,7 @@
 import 'package:clash_flutter/widgets/mode_tile.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../colors.dart';
 
 class ClashModeScreen extends StatefulWidget {
   const ClashModeScreen({Key? key}) : super(key: key);

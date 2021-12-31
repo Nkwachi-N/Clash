@@ -1,7 +1,5 @@
-import 'package:clash_flutter/constants.dart';
-import 'package:clash_flutter/screens/create_clash_room.dart';
-import 'package:clash_flutter/screens/host_mode_screen.dart';
-import 'package:clash_flutter/screens/join_clash_room.dart';
+import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/screens/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,6 +20,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: black200,
         textTheme: textTheme.copyWith(
+          headline5: textTheme.headline5?.copyWith(
+            color: Colors.white,
+          ),
           button: const TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 18.0,
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
         ),
 
       ),
-      home: const CreateClashRoom()
+      home: const AuthScreen()
     );
   }
 }
