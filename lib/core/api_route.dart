@@ -2,6 +2,11 @@ class ApiRoute{
 
   ApiRoute._();
 
-  static const authUrl = 'https://accounts.spotify.com/authorize';
+  static const authBaseUrl = 'https://accounts.spotify.com';
+
+  static const autGetTokenUrl = '$authBaseUrl/api/token';
+
+
+
 
 }

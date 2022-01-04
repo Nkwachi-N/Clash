@@ -1,3 +1,2 @@
-const kRedirectUri = 'https://clash_flutter.com';
+const kRedirectUri = 'clash://clash.flutter.com';
 
-const Cli
