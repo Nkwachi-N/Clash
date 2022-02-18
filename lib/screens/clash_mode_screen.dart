@@ -32,7 +32,7 @@ class _ClashModeScreenState extends State<ClashModeScreen> {
                 height: 16.0,
               ),
               Text(
-                'What would you like to be called?',
+                'How do you want to Clash?',
                 style: textTheme.headline6,
               ),
               const SizedBox(

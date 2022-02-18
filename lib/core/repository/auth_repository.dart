@@ -6,77 +6,120 @@ import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:pkce/pkce.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthRepository{
-   static const state = 'HappyBaby257';
+import '../models/user.dart';
 
-   final _dio = Dio();
+class AuthRepository {
+  static const state = 'HappyBaby257';
 
-   Future<String?> authorize() async {
+  final _dio = Dio();
 
-     final pkcePair = PkcePair.generate();
+  Future<bool> authorize() async {
+    final pkcePair = PkcePair.generate();
 
-     final codeChallenge = pkcePair.codeChallenge.replaceAll('=', '');
-     final codeVerifier = pkcePair.codeVerifier;
+    final codeChallenge = pkcePair.codeChallenge.replaceAll('=', '');
+    final codeVerifier = pkcePair.codeVerifier;
 
-     final url = Uri.https('accounts.spotify.com', '/authorize', {
-       'response_type': 'code',
-       'client_id': kClientId,
-       'redirect_uri': kRedirectUri,
-       'state':state,
-       'code_challenge_method' : 'S256',
-       'code_challenge': codeChallenge,
-     });
+    final url = Uri.https('accounts.spotify.com', '/authorize', {
+      'response_type': 'code',
+      'client_id': kClientId,
+      'redirect_uri': kRedirectUri,
+      'state': state,
+      'code_challenge_method': 'S256',
+      'code_challenge': codeChallenge,
+    });
 
-      final result = await FlutterWebAuth.authenticate(
-        url: url.toString(),
-        callbackUrlScheme: 'clash',
-      );
+    final result = await FlutterWebAuth.authenticate(
+      url: url.toString(),
+      callbackUrlScheme: 'clash',
+    );
 
-      print('Result is $result');
+    print('Result is $result');
 
-     final returnedState  = Uri.parse(result).queryParameters['state'];
+    final returnedState = Uri.parse(result).queryParameters['state'];
+
+    if (state == returnedState) {
+      final code = Uri.parse(result).queryParameters['code'];
+
+      if (code != null) {
+        return await _getToken(code, codeVerifier);
+      }
+    }
+
+    return false;
+  }
+
+  Future<bool> _getToken(String code, String codeVerifier) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final _data = {
+      'grant_type': 'authorization_code',
+      'code': code,
+      'redirect_uri': kRedirectUri,
+      'client_id': kClientId,
+      'code_verifier': codeVerifier
+    };
+
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+
+    final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
+    final _header = {
+      'Authorization': 'Basic $encodedString',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    try {
+      final response = await _dio.post(ApiRoute.autGetTokenUrl,
+          data: _data, options: Options(headers: _header));
+      final accessToken = response.data['access_token'];
+      final refreshToken = response.data['refresh_token'];
+      prefs.setString(kAccessToken, accessToken);
+      prefs.setString(kRefreshToken, refreshToken);
+
+      return true;
+    } on DioError catch (e) {
+      return false;
+    }
+  }
 
 
-     if(state == returnedState){
-       final code = Uri.parse(result).queryParameters['code'];
+  Future<void> getUser()
 
-       if(code != null) {
-         _getToken(code, codeVerifier);
-       }
-     }
-   }
+  Future<void> refreshToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final refreshToken = prefs.getString(kRefreshToken);
 
-   Future<void> _getToken(String code, String codeVerifier) async{
+    final _data = {
+      'grant_type': 'refresh_token',
+      'code': refreshToken,
+      'client_id': kClientId,
+    };
 
-     final _data = {
-     'grant_type':'authorization_code',
-     'code':code,
-     'redirect_uri':kRedirectUri,
-     'client_id': kClientId,
-     'code_verifier':codeVerifier
-     };
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
-     Codec<String, String> stringToBase64 = utf8.fuse(base64);
+    final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
+    final _header = {
+      'Authorization': 'Basic $encodedString',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
 
-     final encodedString  = stringToBase64.encode('$kClientId:$kSecretKey');
-     final _header = {
-       'Authorization' : 'Basic $encodedString',
-       'Content-Type': 'application/x-www-form-urlencoded',
-     };
+    try {
+      final response = await _dio.post(ApiRoute.autGetTokenUrl,
+          data: _data, options: Options(headers: _header));
 
-   try{
-     final response = await _dio.post(ApiRoute.autGetTokenUrl,data:_data,options: Options(
-         headers: _header
-     ) );
-     print(response.data);
+      final accessToken = response.data['access_token'];
+      prefs.setString(kAccessToken, accessToken);
+    } on DioError catch (e) {
+      //TODO: Error handling.
+      print(e.response?.data);
+    }
+  }
 
-   }on DioError catch(e){
-     print(e.response?.data);
-     }
-
-
-   }
-
-
+  Future<User?> getUserInfo() async {
+    try {} on Exception {
+      return null;
+    }
+    return null;
+  }
 }

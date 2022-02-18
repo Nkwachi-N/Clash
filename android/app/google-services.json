@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "680180612535",
+    "project_id": "clash-e92ea",
+    "storage_bucket": "clash-e92ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680180612535:android:8c489bb0f522dfeadafc32",
+        "android_client_info": {
+          "package_name": "com.example.clash_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680180612535-n44qm5ljgbkfpt8gq3sd37d7lqd3pk95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoF82VRRVkRqHBlxja4Ubmk_BMJ3O72cY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680180612535-n44qm5ljgbkfpt8gq3sd37d7lqd3pk95.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
