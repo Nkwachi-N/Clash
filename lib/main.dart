@@ -3,7 +3,11 @@ import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'core/constants.dart';
+import 'core/models/user.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -11,11 +15,20 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserAdapter());
+  await Hive.openBox(kHiveBox);
+  final prefs = await SharedPreferences.getInstance();
+  final accessToken = prefs.getString(kAccessToken);
+
+  final String initialRoute = accessToken == null ? RouteGenerator.authScreen : RouteGenerator.userNameScreen;
+
+  runApp(MyApp(initialRoute: initialRoute,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String initialRoute;
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -23,7 +36,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
       providers: [
-        Provider(create:(context) => AuthProvider())
+        ChangeNotifierProvider(create:(context) => AuthProvider())
       ],
       child: MaterialApp(
         title: 'Clash',
@@ -70,7 +83,7 @@ class MyApp extends StatelessWidget {
           ),
 
         ),
-        initialRoute: RouteGenerator.authScreen,
+        initialRoute: initialRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

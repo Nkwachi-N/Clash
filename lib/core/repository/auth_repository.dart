@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:clash_flutter/core/api_route.dart';
 import 'package:clash_flutter/core/constants.dart';
+import 'package:clash_flutter/core/dio_util.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:hive/hive.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,9 +17,15 @@ class AuthRepository {
   static const state = 'HappyBaby257';
 
   final _dio = Dio();
+  final _dioUtil = DioUtil();
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   Future<bool> authorize() async {
     final pkcePair = PkcePair.generate();
+
+    const scope =
+        'user-read-private user-read-email user-modify-playback-state streaming';
 
     final codeChallenge = pkcePair.codeChallenge.replaceAll('=', '');
     final codeVerifier = pkcePair.codeVerifier;
@@ -28,14 +37,13 @@ class AuthRepository {
       'state': state,
       'code_challenge_method': 'S256',
       'code_challenge': codeChallenge,
+      'scope': scope
     });
 
     final result = await FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: 'clash',
     );
-
-    print('Result is $result');
 
     final returnedState = Uri.parse(result).queryParameters['state'];
 
@@ -84,42 +92,54 @@ class AuthRepository {
   }
 
 
-  Future<void> getUser()
 
-  Future<void> refreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString(kRefreshToken);
-
-    final _data = {
-      'grant_type': 'refresh_token',
-      'code': refreshToken,
-      'client_id': kClientId,
-    };
-
-    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-
-    final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
-    final _header = {
-      'Authorization': 'Basic $encodedString',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-
+  Future<bool> storeUserName(String userName) async {
+    bool status = false;
     try {
-      final response = await _dio.post(ApiRoute.autGetTokenUrl,
-          data: _data, options: Options(headers: _header));
 
-      final accessToken = response.data['access_token'];
-      prefs.setString(kAccessToken, accessToken);
-    } on DioError catch (e) {
-      //TODO: Error handling.
-      print(e.response?.data);
+      String? userId = await _getUserId();
+
+      if (userId != null) {
+        status = await saveUser(userName, userId);
+        print(status);
+      }
+    } catch (e) {
+      print(e);
+      return status;
     }
+    return status;
   }
 
-  Future<User?> getUserInfo() async {
-    try {} on Exception {
-      return null;
+  Future<bool> saveUser(String userName, String userId)  async{
+    bool status = false;
+    final user = User(
+      name: userName,
+      id: userId,
+    );
+
+    try{
+      await users.doc(userId).set(user.toMap());
+      print('user added succesfully');
+      final box = Hive.box(kHiveBox);
+      box.add(user);
+      status = true;
+    }catch(e){
+      print('user added failed');
+      status = false;
+    }
+
+    return status;
+  }
+
+  Future<String?> _getUserId() async {
+    final response = await _dioUtil.get(
+      ApiRoute.getUserInfo,
+    );
+    if(response != null) {
+      return response['id'];
     }
     return null;
   }
+
+
 }

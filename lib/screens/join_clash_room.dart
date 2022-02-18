@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -107,7 +106,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                   controller: _controller,
                   focusNode: _focusNode,
                   maxLength: otpLength,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     counterText: '',
                     enabledBorder: InputBorder.none,

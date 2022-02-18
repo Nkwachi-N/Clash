@@ -1,5 +1,8 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class UserNameScreen extends StatefulWidget {
   const UserNameScreen({Key? key}) : super(key: key);
@@ -35,6 +38,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
             horizontal: 16.0,
           ),
           child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -69,25 +73,29 @@ class _UserNameScreenState extends State<UserNameScreen> {
                         ),
                       ),
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
                           controller: _controller,
-                          onSubmitted: (value) {
-                            setState(() {
-
-                            });
+                          validator: (value){
+                            if(value != null && value.isEmpty) {
+                              return 'please enter your username';
+                            }else if(value != null && value.length < 3) {
+                              return 'username must be at least 3 characters';
+                            }
+                            return null;
                           },
-                          style: const TextStyle(color: green200, fontSize: 18.0),
+                          style:
+                              const TextStyle(color: green200, fontSize: 18.0),
                           decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(4.0),
+                              contentPadding: EdgeInsets.all(8.0),
                               filled: true,
                               fillColor: grey500,
-                              hintText: 'username',
+                              hintText: 'username (at least 3 characters)',
                               isDense: true,
                               hintStyle: TextStyle(
                                 color: grey900,
                               ),
-                              border:
-                                  OutlineInputBorder(borderSide: BorderSide.none),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide.none)),
                         ),
@@ -115,17 +123,42 @@ class _UserNameScreenState extends State<UserNameScreen> {
                   ),
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: () {
-                    if(_formKey.currentState!.validate()) {
-
-                    }
-                  },
-                  child: Text(
-                    'Continue',
-                    style: textTheme.button,
-                  ),
-                ),
+                Consumer<AuthProvider>(builder: (_, model, child) {
+                  return TextButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        bool status =
+                            await model.storeUserName(_controller.text);
+                        if (status) {
+                          const snackBar = SnackBar(content: Text('Success'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          const snackBar = SnackBar(content: Text('Failed'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Continue',
+                          style: textTheme.button,
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        Visibility(
+                          visible: model.storingUserName,
+                          child: const SpinKitThreeBounce(
+                            size: 10.0,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }),
                 const SizedBox(
                   height: 16.0,
                 )

@@ -5,3 +5,7 @@ const kAccessToken = 'access_token';
 
 const kRefreshToken = 'refresh_token';
 
+const kUserId = 'user_id';
+
+const kHiveBox = 'clashBox';
+
