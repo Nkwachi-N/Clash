@@ -23,7 +23,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: green200,
+          color: ClashColors.green200,
         ),
       ),
       body: Column(
@@ -86,7 +86,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                               text,
                               style: textTheme.headline4?.copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: green200,
+                                color: ClashColors.green200,
                               ),
                             ),
                           ),

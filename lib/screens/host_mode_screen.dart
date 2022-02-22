@@ -1,4 +1,5 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/mode_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class HostModeScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: green200,
+          color: ClashColors.green200,
         ),
       ),
       body: Padding(
@@ -33,16 +34,18 @@ class HostModeScreen extends StatelessWidget {
             const SizedBox(
               height: 40.0,
             ),
-            const ModeTile(
+             ModeTile(
+              onTap: () => Navigator.of(context).pushNamed(RouteGenerator.categoryScreen),
               title: 'Host',
               subtitle:
                   'Invite friends by their username or share your battle room code',
             ),
             const SizedBox(
-              height: 16.0,
+              height: 20.0,
             ),
-            const ModeTile(
+             ModeTile(
               title: 'Join',
+              onTap: () => Navigator.of(context).pushNamed(RouteGenerator.joinClashRoomScreen),
               subtitle:
                   'Accept invites from friends through your username or join by their battle room code',
             ),

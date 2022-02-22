@@ -28,7 +28,7 @@ class AuthScreen extends StatelessWidget {
             Text(
               'CLASH',
               style: textTheme.headline2?.copyWith(
-                color: green200,
+                color: ClashColors.green200,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -67,7 +67,7 @@ class AuthScreen extends StatelessWidget {
   Future<void> authorize(BuildContext context) async{
     final result = await context.read<AuthProvider>().authorize();
     if(result) {
-      Navigator.of(context).pushNamed(RouteGenerator.userNameScreen);
+      Navigator.of(context).pushReplacementNamed(RouteGenerator.userNameScreen);
     }else{
       //TODO:Show unable to login with flushbar.
     }

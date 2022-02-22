@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'api_route.dart';
 
 class DioUtil {

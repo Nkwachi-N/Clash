@@ -20,7 +20,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: green200,
+          color: ClashColors.green200,
         ),
       ),
       body: Padding(

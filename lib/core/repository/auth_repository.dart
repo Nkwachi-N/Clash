@@ -91,43 +91,51 @@ class AuthRepository {
     }
   }
 
-
-
   Future<bool> storeUserName(String userName) async {
     bool status = false;
     try {
-
       String? userId = await _getUserId();
 
       if (userId != null) {
-        status = await saveUser(userName, userId);
-        print(status);
+        status = await _saveUser(User(
+          id: userId,
+          name: userName,
+        ));
       }
     } catch (e) {
-      print(e);
       return status;
     }
     return status;
   }
 
-  Future<bool> saveUser(String userName, String userId)  async{
+  Future<bool> _saveUser(User user) async {
     bool status = false;
-    final user = User(
-      name: userName,
-      id: userId,
-    );
 
-    try{
-      await users.doc(userId).set(user.toMap());
-      print('user added succesfully');
+    try {
+      await users.doc(user.id).set(user.toMap());
       final box = Hive.box(kHiveBox);
-      box.add(user);
+      box.put('user',user);
       status = true;
-    }catch(e){
-      print('user added failed');
+    } catch (e) {
       status = false;
     }
 
+    return status;
+  }
+
+  Future<bool> saveAvatar(int avatar) async {
+    bool status = false;
+    try {
+
+
+      final box = Hive.box(kHiveBox);
+      final User user = box.get('user');
+      user.avatar = avatar.toString();
+      status = await _saveUser(user);
+
+    } catch (e) {
+      return status;
+    }
     return status;
   }
 
@@ -135,11 +143,9 @@ class AuthRepository {
     final response = await _dioUtil.get(
       ApiRoute.getUserInfo,
     );
-    if(response != null) {
+    if (response != null) {
       return response['id'];
     }
     return null;
   }
-
-
 }

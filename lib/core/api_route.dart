@@ -2,13 +2,15 @@ class ApiRoute{
 
   ApiRoute._();
 
-  static const authBaseUrl = 'https://accounts.spotify.com';
+  static const _authBaseUrl = 'https://accounts.spotify.com';
 
-  static const baseUrl = 'https://api.spotify.com/v1';
+  static const _baseUrl = 'https://api.spotify.com/v1';
 
-  static const autGetTokenUrl = '$authBaseUrl/api/token';
+  static const autGetTokenUrl = '$_authBaseUrl/api/token';
 
-  static const getUserInfo = '$baseUrl/me';
+  static const getUserInfo = '$_baseUrl/me';
+
+  static const getGenre = '$_baseUrl/recommendations/available-genre-seeds';
 
 
 }

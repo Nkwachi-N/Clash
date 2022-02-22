@@ -2,7 +2,6 @@ import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
-import 'dart:math';
 
 const greenYellow = [Color(0xFFF1EF47), Color(0xFF14D850)];
 const redOrange = [Color(0xFFFF5857), Color(0xFFF0961B)];
@@ -28,7 +27,7 @@ class _GenreScreenState extends State<GenreScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: green200,
+          color: ClashColors.green200,
         ),
       ),
       body: Padding(

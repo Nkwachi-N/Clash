@@ -21,13 +21,27 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final accessToken = prefs.getString(kAccessToken);
 
-  final String initialRoute = accessToken == null ? RouteGenerator.authScreen : RouteGenerator.userNameScreen;
+  String initialRoute = RouteGenerator.authScreen;
 
-  runApp(MyApp(initialRoute: initialRoute,));
+  if (accessToken != null) {
+    final box = Hive.box(kHiveBox);
+    final User? user = box.get('user');
+    if (user != null) {
+      initialRoute = RouteGenerator.homeScreen;
+    } else {
+      initialRoute = RouteGenerator.userNameScreen;
+    }
+  }
+  runApp(
+    MyApp(
+      initialRoute: initialRoute,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   final String initialRoute;
+
   const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
   // This widget is the root of your application.
@@ -35,33 +49,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create:(context) => AuthProvider())
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
       child: MaterialApp(
         title: 'Clash',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.dark,
-          scaffoldBackgroundColor: black200,
+          scaffoldBackgroundColor: ClashColors.black200,
           textTheme: textTheme.copyWith(
-            headline5: textTheme.headline5?.copyWith(
-              color: Colors.white,
-            ),
-            button: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 18.0,
-              color: Colors.white,
-            ),
-            headline6: textTheme.headline6?.copyWith(
-              fontSize: 20.0,
-              fontWeight: FontWeight.normal,
-              color: Colors.white,
-            )
-          ),
+              headline5: textTheme.headline5?.copyWith(
+                color: Colors.white,
+              ),
+              button: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+              headline6: textTheme.headline6?.copyWith(
+                fontSize: 20.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              )),
           textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: green200,
-            selectionColor: green200,
+            cursorColor: ClashColors.green200,
+            selectionColor: ClashColors.green200,
           ),
           textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
@@ -72,16 +83,15 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30.0),
               )),
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
-                    return grey700;
+                    return ClashColors.grey700;
                   }
-                  return green200; // Use the component's default.
+                  return ClashColors.green200; // Use the component's default.
                 },
               ),
             ),
           ),
-
         ),
         initialRoute: initialRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
@@ -89,4 +99,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -1,5 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: const BackButton(
-            color: green200,
+            color: ClashColors.green200,
           ),
         ),
         body: Padding(
@@ -58,7 +59,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30.0),
-                    color: grey500,
+                    color: ClashColors.grey500,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +70,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                       Text(
                         '@',
                         style: textTheme.headline5?.copyWith(
-                          color: grey900,
+                          color: ClashColors.grey900,
                         ),
                       ),
                       Expanded(
@@ -84,15 +85,15 @@ class _UserNameScreenState extends State<UserNameScreen> {
                             return null;
                           },
                           style:
-                              const TextStyle(color: green200, fontSize: 18.0),
+                              const TextStyle(color: ClashColors.green200, fontSize: 18.0),
                           decoration: const InputDecoration(
                               contentPadding: EdgeInsets.all(8.0),
                               filled: true,
-                              fillColor: grey500,
+                              fillColor: ClashColors.grey500,
                               hintText: 'username (at least 3 characters)',
                               isDense: true,
                               hintStyle: TextStyle(
-                                color: grey900,
+                                color: ClashColors.grey900,
                               ),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide.none),
@@ -110,7 +111,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                             2.0,
                           ),
                           decoration: const BoxDecoration(
-                            color: green200,
+                            color: ClashColors.green200,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -130,10 +131,9 @@ class _UserNameScreenState extends State<UserNameScreen> {
                         bool status =
                             await model.storeUserName(_controller.text);
                         if (status) {
-                          const snackBar = SnackBar(content: Text('Success'));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Navigator.of(context).pushReplacementNamed(RouteGenerator.avatarScreen);
                         } else {
-                          const snackBar = SnackBar(content: Text('Failed'));
+                          const snackBar = SnackBar(content: Text('Something went wrong, please try again'));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       }

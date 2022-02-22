@@ -35,7 +35,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: green200,
+            color: ClashColors.green200,
           ),
         ),
         body: Padding(
@@ -69,11 +69,11 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                 controller: _controller,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: grey500,
+                  fillColor: ClashColors.grey500,
                   contentPadding: const EdgeInsets.all( 20.0,),
                   hintText: '@ friend\'s username',
                   hintStyle: const TextStyle(
-                    color: grey900,
+                    color: ClashColors.grey900,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
@@ -102,7 +102,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
               ),
               Center(
                 child: Text('513 809',style: textTheme.headline3?.copyWith(
-                  color: green200,
+                  color: ClashColors.green200,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 12.0,
                 ),),
