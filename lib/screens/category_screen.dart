@@ -1,16 +1,16 @@
+import 'package:clash_flutter/core/models/game.dart';
+import 'package:clash_flutter/core/provider/game_provider.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../colors.dart';
 
-class CategoryScreen extends StatefulWidget {
+class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
 
-  @override
-  _CategoryScreenState createState() => _CategoryScreenState();
-}
 
-class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -60,41 +60,47 @@ class _CategoryScreenState extends State<CategoryScreen> {
             Expanded(
               flex: 2,
               child: Row(
-                children: const [
-                  Expanded(
-                    child: GradientCard(
-                      colors: [
-                        Color(0xFFADE5D2),
-                        Color(0xFF9A9AE1),
-                      ],
-                      text: 'Artist',
+                children:  [
+                   Expanded(
+                    child: InkWell(
+                      onTap: () => navigateToSubCategoryScreen(context,Category.artist),
+                      child: const GradientCard(
+                        colors: [
+                           Color(0xFFADE5D2),
+                           Color(0xFF9A9AE1),
+                        ],
+                        text: 'Artist',
+                      ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16.0,
                   ),
                   Expanded(
-                    child: GradientCard(
-                      colors: [
-                        Color(0xFFF7CB6A),
-                        Color(0xFFFAAE7C),
-                      ],
-                      text: 'Genre',
+                    child: InkWell(
+                      onTap: () => navigateToSubCategoryScreen(context,Category.genre),
+                      child: const GradientCard(
+                        colors: [
+                          Color(0xFFF7CB6A),
+                          Color(0xFFFAAE7C),
+                        ],
+                        text: 'Genre',
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             const Spacer(
-              flex: 4,
+              flex: 3,
             ),
-            TextButton(
+            /*TextButton(
               onPressed: null,
               child: Text(
                 'Continue',
                 style: textTheme.button,
               ),
-            ),
+            ),*/
             const SizedBox(
               height: 16.0,
             )
@@ -102,5 +108,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
       ),
     ));
+  }
+
+  void navigateToSubCategoryScreen(BuildContext context, Category category){
+    final model = context.read<GameProvider>();
+    model.selectCategory(category);
+    Navigator.of(context).pushNamed(RouteGenerator.subCategoryScreen);
   }
 }

@@ -50,19 +50,24 @@ class DioUtil {
   }
 
   Future<dynamic> get(String url, {bool requiresToken = true}) async {
-
     try {
-      final response = await _dio.get(url,
-          options: Options(headers: {
+      final response = await _dio.get(
+        url,
+        options: Options(
+          headers: {
             'requiresToken': requiresToken,
-          }));
+          },
+        ),
+      );
 
       return response.data;
     } on DioError catch (e) {
-      if(e.response?.statusCode == 401) {
+      print(e.response?.data);
+      if (e.response?.statusCode == 401) {
         await _refreshToken();
-        get(url);
+        // get(url);
       }
+
       return null;
     }
   }
@@ -85,18 +90,20 @@ class DioUtil {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
-
-
     try {
+      final response = await Dio().post(
+        ApiRoute.autGetTokenUrl,
+        data: _data,
+        options: Options(headers: _header),
+      );
 
-      final response = await Dio().post(ApiRoute.autGetTokenUrl,
-          data: _data, options: Options(headers: _header));
+      print(response.data);
 
       final accessToken = response.data['access_token'];
       prefs.setString(kAccessToken, accessToken);
-    } on DioError catch(e){
+
+    } on DioError catch (e) {
+     
     }
   }
 }
-
-

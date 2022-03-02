@@ -20,6 +20,7 @@ class AuthScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/X42.png'),
+            fit: BoxFit.fill
           ),
         ),
         child: Column(

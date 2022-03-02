@@ -25,7 +25,7 @@ class AuthRepository {
     final pkcePair = PkcePair.generate();
 
     const scope =
-        'user-read-private user-read-email user-modify-playback-state streaming';
+        'user-read-private user-read-email user-modify-playback-state streaming user-top-read';
 
     final codeChallenge = pkcePair.codeChallenge.replaceAll('=', '');
     final codeVerifier = pkcePair.codeVerifier;
@@ -40,19 +40,24 @@ class AuthRepository {
       'scope': scope
     });
 
-    final result = await FlutterWebAuth.authenticate(
-      url: url.toString(),
-      callbackUrlScheme: 'clash',
-    );
+    try{
+      final result = await FlutterWebAuth.authenticate(
+        url: url.toString(),
+        callbackUrlScheme: 'clash',
+      );
 
-    final returnedState = Uri.parse(result).queryParameters['state'];
+      final returnedState = Uri.parse(result).queryParameters['state'];
 
-    if (state == returnedState) {
-      final code = Uri.parse(result).queryParameters['code'];
+      if (state == returnedState) {
+        final code = Uri.parse(result).queryParameters['code'];
 
-      if (code != null) {
-        return await _getToken(code, codeVerifier);
+        if (code != null) {
+          return await _getToken(code, codeVerifier);
+        }
       }
+
+    } on Exception{
+      return false;
     }
 
     return false;

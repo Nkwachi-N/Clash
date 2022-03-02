@@ -1,26 +1,18 @@
-import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../colors.dart';
+import '../core/provider/game_provider.dart';
+import '../widgets/gradient_card.dart';
 
-const greenYellow = [Color(0xFFF1EF47), Color(0xFF14D850)];
-const redOrange = [Color(0xFFFF5857), Color(0xFFF0961B)];
-const blue = [Color(0xFF6D88D7), Color(0xFF49C4EE)];
-const purple = [Color(0xFFBF67D2), Color(0xFFEE609C)];
+class RoundsScreen extends StatelessWidget {
+  const RoundsScreen({Key? key}) : super(key: key);
 
-const colors = [greenYellow, redOrange, blue, purple];
-
-class GenreScreen extends StatefulWidget {
-  const GenreScreen({Key? key}) : super(key: key);
-
-  @override
-  _GenreScreenState createState() => _GenreScreenState();
-}
-
-class _GenreScreenState extends State<GenreScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final model = context.watch<GameProvider>();
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -54,11 +46,9 @@ class _GenreScreenState extends State<GenreScreen> {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(
-              height: 64.0,
-            ),
+            const Spacer(),
             Text(
-              'Choose a genre',
+              'Choose number of rounds',
               style: textTheme.headline5?.copyWith(
                 fontWeight: FontWeight.normal,
               ),
@@ -68,28 +58,47 @@ class _GenreScreenState extends State<GenreScreen> {
             ),
             Expanded(
               flex: 2,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                itemBuilder: (_, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GradientCard(
-                      colors: colors[index % 4],
-                      text: 'Artist',
+              child:Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap:() => model.selectRounds(5),
+                      child: GradientCard(
+                        colors: const [
+                          Color(0xFF38F4BD),
+                          Color(0xFF41EC8B),
+                        ],
+                        text: '5 rounds',
+                        selected: model.rounds == 5,
+                      ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                  const SizedBox(
+                    width: 16.0,
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => model.selectRounds(10),
+                      child: GradientCard(
+                        colors: const [
+                          Color(0xFFF3A469),
+                          Color(0xFF6659AD),
+                        ],
+                        text: '10 rounds',
+                        selected: model.rounds == 10,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ),
-            const SizedBox(
-              height: 16.0,
+            const Spacer(
+              flex: 3,
             ),
             TextButton(
-              onPressed: null,
+              onPressed: () => model.rounds != null ? clash() : null,
               child: Text(
-                'Continue',
+                'Clash',
                 style: textTheme.button,
               ),
             ),
@@ -101,4 +110,8 @@ class _GenreScreenState extends State<GenreScreen> {
       ),
     ));
   }
+
+  void clash () {}
+
+
 }

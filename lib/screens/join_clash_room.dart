@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../colors.dart';
 
 class JoinClashRoom extends StatefulWidget {
@@ -77,9 +76,13 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                           margin: const EdgeInsets.symmetric(
                             horizontal: 8.0,
                           ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4.0),
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              )
+                            )
                           ),
                           child: Center(
                             child: Text(

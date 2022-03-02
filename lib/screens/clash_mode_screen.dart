@@ -1,5 +1,4 @@
 import 'package:clash_flutter/routes/route_generator.dart';
-import 'package:clash_flutter/widgets/mode_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';

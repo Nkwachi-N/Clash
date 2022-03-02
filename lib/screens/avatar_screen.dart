@@ -3,9 +3,7 @@ import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-
 import '../routes/route_generator.dart';
-import 'clash_mode_screen.dart';
 
 class AvatarScreen extends StatefulWidget {
   const AvatarScreen({Key? key}) : super(key: key);

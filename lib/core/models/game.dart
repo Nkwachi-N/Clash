@@ -1,8 +1,13 @@
-import 'package:clash_flutter/core/models/user.dart';
 
 class Game{
-  User host;
+  Category? category;
+  List<String>? subCategory;
+  int? rounds;
 
-  Game({required this.host});
+  Game({this.category, this.rounds, this.subCategory});
 
+}
+
+enum Category{
+  genre,artist
 }

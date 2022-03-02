@@ -1,5 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => GameProvider()),
+
+      ],
       child: MaterialApp(
         title: 'Clash',
         debugShowCheckedModeBanner: false,

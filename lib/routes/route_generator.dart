@@ -2,7 +2,8 @@ import 'package:clash_flutter/screens/auth_screen.dart';
 import 'package:clash_flutter/screens/avatar_screen.dart';
 import 'package:clash_flutter/screens/category_screen.dart';
 import 'package:clash_flutter/screens/clash_mode_screen.dart';
-import 'package:clash_flutter/screens/genre_screen.dart';
+import 'package:clash_flutter/screens/rounds_screen.dart';
+import 'package:clash_flutter/screens/sub_category_screen.dart';
 import 'package:clash_flutter/screens/home_screen.dart';
 import 'package:clash_flutter/screens/host_mode_screen.dart';
 import 'package:clash_flutter/screens/join_clash_room.dart';
@@ -15,13 +16,13 @@ class RouteGenerator {
   static const authScreen = '/';
   static const categoryScreen = '/categoryScreen';
   static const clashModeScreen = '/clashModeScreen';
-  static const genreScreen = '/genreScreen';
+  static const subCategoryScreen = '/genreScreen';
   static const userNameScreen = '/userName';
   static const joinClashRoomScreen = '/joinClashRoomScreen';
   static const avatarScreen = '/avatarScreen';
   static const homeScreen = '/homeScreen';
   static const hostModeScreen = '/hostModeScreen';
-
+  static const roundsScreen = '/roundsScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -37,9 +38,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => const ClashModeScreen(),
         );
-      case genreScreen:
+      case subCategoryScreen:
         return MaterialPageRoute(
-          builder: (context) => const GenreScreen(),
+          builder: (context) => const SubCategoryScreen(),
         );
       case userNameScreen:
         return MaterialPageRoute(
@@ -60,6 +61,10 @@ class RouteGenerator {
       case hostModeScreen:
         return MaterialPageRoute(
           builder: (context) => const HostModeScreen(),
+        );
+      case roundsScreen:
+        return MaterialPageRoute(
+          builder: (context) => const RoundsScreen(),
         );
       default:
         throw const FormatException('Route not Found');

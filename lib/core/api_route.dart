@@ -10,7 +10,14 @@ class ApiRoute{
 
   static const getUserInfo = '$_baseUrl/me';
 
+
+  ///Valid values: artists or tracks
+  static const _getUserTopItems = 'https://api.spotify.com/v1/me/top';
+
   static const getGenre = '$_baseUrl/recommendations/available-genre-seeds';
+
+
+  static const getUserTopArtists = '$_getUserTopItems/artists';
 
 
 }
