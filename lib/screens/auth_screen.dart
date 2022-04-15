@@ -1,4 +1,5 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class AuthScreen extends StatelessWidget {
 
   Future<void> authorize(BuildContext context) async{
     final result = await context.read<AuthProvider>().authorize();
-    if(result) {
+    if(result.responseStatus == ResponseStatus.success) {
       Navigator.of(context).pushReplacementNamed(RouteGenerator.userNameScreen);
     }else{
       //TODO:Show unable to login with flushbar.

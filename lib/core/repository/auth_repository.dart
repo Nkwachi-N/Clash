@@ -33,14 +33,14 @@ class AuthRepository {
     final url = Uri.https('accounts.spotify.com', '/authorize', {
       'response_type': 'code',
       'client_id': kClientId,
-      'redirect_uri': kRedirectUri,
+      'redirect_uri': Constants.kRedirectUri,
       'state': state,
       'code_challenge_method': 'S256',
       'code_challenge': codeChallenge,
       'scope': scope
     });
 
-    try{
+    try {
       final result = await FlutterWebAuth.authenticate(
         url: url.toString(),
         callbackUrlScheme: 'clash',
@@ -55,8 +55,7 @@ class AuthRepository {
           return await _getToken(code, codeVerifier);
         }
       }
-
-    } on Exception{
+    } on Exception {
       return false;
     }
 
@@ -69,7 +68,7 @@ class AuthRepository {
     final _data = {
       'grant_type': 'authorization_code',
       'code': code,
-      'redirect_uri': kRedirectUri,
+      'redirect_uri': Constants.kRedirectUri,
       'client_id': kClientId,
       'code_verifier': codeVerifier
     };
@@ -87,8 +86,8 @@ class AuthRepository {
           data: _data, options: Options(headers: _header));
       final accessToken = response.data['access_token'];
       final refreshToken = response.data['refresh_token'];
-      prefs.setString(kAccessToken, accessToken);
-      prefs.setString(kRefreshToken, refreshToken);
+      prefs.setString(Constants.kAccessToken, accessToken);
+      prefs.setString(Constants.kRefreshToken, refreshToken);
 
       return true;
     } on DioError catch (e) {
@@ -118,8 +117,8 @@ class AuthRepository {
 
     try {
       await users.doc(user.id).set(user.toMap());
-      final box = Hive.box(kHiveBox);
-      box.put('user',user);
+      final box = Hive.box(Constants.kHiveBox);
+      box.put('user', user);
       status = true;
     } catch (e) {
       status = false;
@@ -131,13 +130,10 @@ class AuthRepository {
   Future<bool> saveAvatar(int avatar) async {
     bool status = false;
     try {
-
-
-      final box = Hive.box(kHiveBox);
+      final box = Hive.box(Constants.kHiveBox);
       final User user = box.get('user');
       user.avatar = avatar.toString();
       status = await _saveUser(user);
-
     } catch (e) {
       return status;
     }
@@ -148,9 +144,7 @@ class AuthRepository {
     final response = await _dioUtil.get(
       ApiRoute.getUserInfo,
     );
-    if (response != null) {
-      return response['id'];
-    }
-    return null;
+
+    return response.data?.data['id'];
   }
 }

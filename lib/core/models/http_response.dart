@@ -1,11 +1,34 @@
+enum ResponseStatus{
+  success,
+  noInternet,
+  reAuthenticate,
+  unknown,
+  failed,
+}
+
+extension ParseToString on ResponseStatus {
+  String message(){
+    switch(this){
+      case ResponseStatus.success:
+        return 'Success';
+      case ResponseStatus.noInternet:
+        return 'no internet';
+      case ResponseStatus.reAuthenticate:
+        return 'you need to re-login';
+      case ResponseStatus.unknown:
+        return 'unknown';
+      case ResponseStatus.failed:
+       return 'failed';
+    }
+  }
+}
+
 class HttpResponse<T> {
-  bool status;
-  String message;
-  T data;
+  ResponseStatus responseStatus;
+  T? data;
 
   HttpResponse({
-    required this.data,
-    required this.message,
-    required this.status,
+    required this.responseStatus,
+    this.data,
   });
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:clash_flutter/core/constants.dart';
+import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +20,7 @@ class DioUtil {
             options.headers.remove("requiresToken");
             final prefs = await SharedPreferences.getInstance();
 
-            final token = prefs.getString(kAccessToken);
+            final token = prefs.getString(Constants.kAccessToken);
             if (token != null) {
               options.headers.addAll({"Authorization": "Bearer $token"});
             }
@@ -49,7 +50,7 @@ class DioUtil {
     }
   }
 
-  Future<dynamic> get(String url, {bool requiresToken = true}) async {
+  Future<HttpResponse<Response>> get(String url, {bool requiresToken = true}) async {
     try {
       final response = await _dio.get(
         url,
@@ -60,21 +61,38 @@ class DioUtil {
         ),
       );
 
-      return response.data;
+      return HttpResponse(responseStatus: ResponseStatus.success,data: response);
     } on DioError catch (e) {
-      print(e.response?.data);
       if (e.response?.statusCode == 401) {
-        await _refreshToken();
-        // get(url);
+
+       final response = await _refreshToken();
+       if(response == ResponseStatus.success) {
+         try{
+           final response = await _dio.get(
+             url,
+             options: Options(
+               headers: {
+                 'requiresToken': requiresToken,
+               },
+             ),
+           );
+
+           return HttpResponse(responseStatus: ResponseStatus.success,data: response);
+
+         }catch(e){
+           return HttpResponse(responseStatus: ResponseStatus.unknown);
+         }
+       }
+       return HttpResponse(responseStatus: response);
       }
 
-      return null;
+      return HttpResponse(responseStatus: ResponseStatus.unknown);
     }
   }
 
-  Future<void> _refreshToken() async {
+  Future<ResponseStatus> _refreshToken() async {
     final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString(kRefreshToken);
+    final refreshToken = prefs.getString(Constants.kRefreshToken);
 
     final _data = {
       'grant_type': 'refresh_token',
@@ -97,12 +115,17 @@ class DioUtil {
         options: Options(headers: _header),
       );
 
-      print(response.data);
-
       final accessToken = response.data['access_token'];
-      prefs.setString(kAccessToken, accessToken);
+      prefs.setString(Constants.kAccessToken, accessToken);
+      return ResponseStatus.success;
 
     } on DioError catch (e) {
+
+      if(e.response?.statusCode == 400) {
+        return ResponseStatus.reAuthenticate;
+      }
+
+      return ResponseStatus.unknown;
      
     }
   }

@@ -18,14 +18,14 @@ void main() async {
   );
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
-  await Hive.openBox(kHiveBox);
+  await Hive.openBox(Constants.kHiveBox);
   final prefs = await SharedPreferences.getInstance();
-  final accessToken = prefs.getString(kAccessToken);
+  final accessToken = prefs.getString(Constants.kAccessToken);
 
   String initialRoute = RouteGenerator.authScreen;
 
   if (accessToken != null) {
-    final box = Hive.box(kHiveBox);
+    final box = Hive.box(Constants.kHiveBox);
     final User? user = box.get('user');
     if (user != null) {
       initialRoute = RouteGenerator.homeScreen;

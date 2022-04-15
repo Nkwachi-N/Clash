@@ -1,4 +1,5 @@
 
+import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
 
 import '../repository/auth_repository.dart';
@@ -11,8 +12,12 @@ class AuthProvider  extends ChangeNotifier{
   int? selectedAvatar;
 
 
-  Future<bool> authorize() async {
-    return await _repository.authorize();
+  Future<HttpResponse<String>> authorize() async {
+    bool response = await _repository.authorize();
+    if(response){
+
+    }
+    return HttpResponse(responseStatus: ResponseStatus.failed);
   }
 
   Future<bool> storeUserName(String userName) async {

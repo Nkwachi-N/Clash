@@ -1,10 +1,12 @@
 import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/game.dart';
+import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
 import '../core/provider/game_provider.dart';
@@ -139,6 +141,19 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<GameProvider>().getSubCategory();
+    init();
+  }
+
+  Future<void> init() async {
+    final status = await context.read<GameProvider>().getSubCategory();
+    if(status == ResponseStatus.reAuthenticate) {
+      final snackBar = SnackBar(content: Text(status.message()),backgroundColor: Colors.red,);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      Navigator.of(context).pushNamedAndRemoveUntil(RouteGenerator.authScreen, (route) => false);
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+
+    }
   }
 }
