@@ -1,23 +1,43 @@
-
 import 'package:clash_flutter/core/models/http_response.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
 
 import '../repository/auth_repository.dart';
 
-class AuthProvider  extends ChangeNotifier{
+class AuthProvider extends ChangeNotifier {
   final _repository = AuthRepository();
 
   bool storingUserName = false;
   bool storingAvatar = false;
+  bool authorizing = false;
   int? selectedAvatar;
 
 
   Future<HttpResponse<String>> authorize() async {
-    bool response = await _repository.authorize();
-    if(response){
-
+    authorizing = true;
+    notifyListeners();
+    late HttpResponse<String> httpResponse;
+    try {
+      bool response = await _repository.authorize();
+      if (response) {
+        final userExists = await _repository.checkUserExists();
+        if (userExists) {
+          httpResponse = HttpResponse(responseStatus: ResponseStatus.success,
+              data: RouteGenerator.homeScreen);
+        } else {
+          httpResponse = HttpResponse(responseStatus: ResponseStatus.success,
+              data: RouteGenerator.userNameScreen);
+        }
+      }
+    } catch (_){
+      httpResponse = HttpResponse(responseStatus: ResponseStatus.failed,
+          data: 'Sorry, something went wrong');
+    } finally {
+      authorizing = false;
+      notifyListeners();
     }
-    return HttpResponse(responseStatus: ResponseStatus.failed);
+
+    return httpResponse;
   }
 
   Future<bool> storeUserName(String userName) async {
@@ -37,7 +57,7 @@ class AuthProvider  extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<bool> storeAvatar() async{
+  Future<bool> storeAvatar() async {
     storingAvatar = true;
     notifyListeners();
 

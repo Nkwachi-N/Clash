@@ -3,6 +3,7 @@ import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -53,12 +54,27 @@ class AuthScreen extends StatelessWidget {
                     'Continue with Spotify',
                     style: textTheme.button,
                   ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Consumer<AuthProvider>(
+
+                    builder: (context, model,child) {
+                      return Visibility(
+                        visible: model.authorizing,
+                        child: const SpinKitThreeBounce(
+                          color: Colors.white,
+                          size: 10.0,
+                        ),
+                      );
+                    }
+                  )
 
                 ],
               ),
             ),
             const SizedBox(
-              height: 16.0,
+              height: 32.0,
             )
           ],
         ),
@@ -69,7 +85,7 @@ class AuthScreen extends StatelessWidget {
   Future<void> authorize(BuildContext context) async{
     final result = await context.read<AuthProvider>().authorize();
     if(result.responseStatus == ResponseStatus.success) {
-      Navigator.of(context).pushReplacementNamed(RouteGenerator.userNameScreen);
+      Navigator.of(context).pushReplacementNamed(result.data!);
     }else{
       //TODO:Show unable to login with flushbar.
     }

@@ -5,22 +5,23 @@ import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_route.dart';
+import 'package:http/http.dart' as http;
 
 class DioUtil {
   DioUtil._();
 
   static final _dioUtil = DioUtil._();
+   static String? token;
 
   factory DioUtil() {
+    _initToken();
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           if (options.headers.containsKey("requiresToken") &&
               options.headers["requiresToken"]) {
             options.headers.remove("requiresToken");
-            final prefs = await SharedPreferences.getInstance();
 
-            final token = prefs.getString(Constants.kAccessToken);
             if (token != null) {
               options.headers.addAll({"Authorization": "Bearer $token"});
             }
@@ -50,19 +51,21 @@ class DioUtil {
     }
   }
 
-  Future<HttpResponse<Response>> get(String url, {bool requiresToken = true}) async {
+  Future<HttpResponse<http.Response>> get(String url, {bool requiresToken = true}) async {
+
     try {
-      final response = await _dio.get(
-        url,
-        options: Options(
-          headers: {
-            'requiresToken': requiresToken,
-          },
-        ),
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $token"
+        },
+
       );
 
       return HttpResponse(responseStatus: ResponseStatus.success,data: response);
-    } on DioError catch (e) {
+    } /*on DioError catch (e) {
+     *//* print('error');
+      print(e.response?.data);
       if (e.response?.statusCode == 401) {
 
        final response = await _refreshToken();
@@ -80,12 +83,16 @@ class DioUtil {
            return HttpResponse(responseStatus: ResponseStatus.success,data: response);
 
          }catch(e){
+           //TOdo: parse dio errors.
            return HttpResponse(responseStatus: ResponseStatus.unknown);
          }
        }
        return HttpResponse(responseStatus: response);
       }
 
+      return HttpResponse(responseStatus: ResponseStatus.unknown);*//*
+    } */catch (e){
+      print(e);
       return HttpResponse(responseStatus: ResponseStatus.unknown);
     }
   }
@@ -128,5 +135,11 @@ class DioUtil {
       return ResponseStatus.unknown;
      
     }
+  }
+
+  static Future<void> _initToken() async{
+    final prefs = await SharedPreferences.getInstance();
+
+    token = prefs.getString(Constants.kAccessToken) ?? '';
   }
 }

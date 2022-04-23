@@ -32,7 +32,8 @@ class GameProvider extends ChangeNotifier {
   }
 
   Future<ResponseStatus> getSubCategory() async {
-    gettingSubCategory = false;
+    gettingSubCategory = true;
+
     switch (category) {
       case Category.genre:
         return _getGenre();
@@ -49,7 +50,7 @@ class GameProvider extends ChangeNotifier {
     if (status == ResponseStatus.success) {
       genreList = response.data ?? [];
     }
-    gettingSubCategory = true;
+    gettingSubCategory = false;
     notifyListeners();
 
     return status;
@@ -63,7 +64,7 @@ class GameProvider extends ChangeNotifier {
       artistList = response.data ?? [];
     }
 
-    gettingSubCategory = true;
+    gettingSubCategory = false;
     notifyListeners();
     return status;
   }

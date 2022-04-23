@@ -145,6 +145,16 @@ class AuthRepository {
       ApiRoute.getUserInfo,
     );
 
-    return response.data?.data['id'];
+    return jsonDecode(response.data!.body)['id'];
+  }
+
+  Future<bool> checkUserExists() async {
+    final userId = await _getUserId();
+    final userSnapShot =  await users.doc(userId).get();
+    if(userSnapShot.exists) {
+      final user = User.fromJson(userSnapShot.data()  as Map<String, dynamic>);
+      return await _saveUser(user);
+    }
+    return false;
   }
 }

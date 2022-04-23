@@ -78,11 +78,11 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
             ),
             Expanded(
               child: Visibility(
-                visible: model.gettingSubCategory,
+                visible: !model.gettingSubCategory,
                 replacement: const Center(
-                  child: SpinKitThreeBounce(
-                    color: Colors.white,
-                    size: 30.0,
+                  child: SpinKitFadingFour(
+                    color: ClashColors.green200,
+
                   ),
                 ),
                 child: GridView.builder(
@@ -147,13 +147,16 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   Future<void> init() async {
     final status = await context.read<GameProvider>().getSubCategory();
     if(status == ResponseStatus.reAuthenticate) {
-      final snackBar = SnackBar(content: Text(status.message()),backgroundColor: Colors.red,);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
+      _showSnackBar(status.message());
       Navigator.of(context).pushNamedAndRemoveUntil(RouteGenerator.authScreen, (route) => false);
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
 
     }
+  }
+  void _showSnackBar(String message) {
+    final snackBar = SnackBar(content: Text(message),backgroundColor: Colors.red,);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
