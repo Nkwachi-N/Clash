@@ -57,6 +57,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   Future<ResponseStatus> _getArtist() async {
+
     final response = await _gameRepository.getArtists();
     ResponseStatus status = response.responseStatus;
 

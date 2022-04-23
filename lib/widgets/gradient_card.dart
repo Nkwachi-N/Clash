@@ -1,5 +1,4 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/core/models/artists.dart';
 import 'package:flutter/material.dart';
 
 class GradientCard extends StatelessWidget {
@@ -65,38 +64,6 @@ class GradientCard extends StatelessWidget {
 }
 
 
-class ArtistCard extends StatelessWidget {
-  final Artist artist;
-
-  const ArtistCard({
-    Key? key,
-
-    required this.artist,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4.0),
-        image: DecorationImage(
-          image: NetworkImage(artist.image),
-          fit: BoxFit.fill,
-        )
-      ),
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Text(
-          artist.name,
-          style: Theme.of(context).textTheme.headline5?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 
 

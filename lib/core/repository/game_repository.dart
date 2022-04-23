@@ -15,9 +15,8 @@ class GameRepository{
       final response =  await _dioUtil.get(ApiRoute.getGenre);
 
       if(response.responseStatus == ResponseStatus.success) {
-        final data = jsonDecode(response.data!.body)['genres'];
         try{
-          final list = data.map<String>((json) => json as String).toList();
+          final list = response.data!['genres'].map<String>((json) => json as String).toList();
           return HttpResponse(responseStatus: ResponseStatus.success,data: list);
         }catch(e){
           return HttpResponse(responseStatus: response.responseStatus,data: <String>[]);
@@ -33,17 +32,22 @@ class GameRepository{
   }
 
   Future<HttpResponse<List<Artist>>> getArtists() async{
-    final response = await _dioUtil.get(ApiRoute.getUserTopArtists);
+    try{
+      final response = await _dioUtil.get(ApiRoute.getUserTopArtists);
 
-    if(response.responseStatus == ResponseStatus.success) {
-      final data = jsonDecode(response.data!.body)['items'];
+      if(response.responseStatus == ResponseStatus.success) {
 
+        final list = response.data!['items'].map<Artist>((json) => Artist.fromJson(json)).toList();
+        return HttpResponse(responseStatus: ResponseStatus.success,data: list);
+      }
 
-      final list = data.map<Artist>((json) => Artist.fromJson(json)).toList();
-      return HttpResponse(responseStatus: ResponseStatus.success,data: list);
+      return HttpResponse(responseStatus: response.responseStatus,data: <Artist>[]);
+
+    }catch(_){
+      return HttpResponse(responseStatus: ResponseStatus.failed,data: <Artist>[]);
     }
 
-   return HttpResponse(responseStatus: response.responseStatus,data: <Artist>[]);
+
   }
 
 }

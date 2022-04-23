@@ -2,6 +2,7 @@ import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/game.dart';
 import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/widgets/artist_card.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -153,10 +154,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
 
+    }else if(status == ResponseStatus.failed) {
+      _showSnackBar(status.message());
     }
   }
   void _showSnackBar(String message) {
-    final snackBar = SnackBar(content: Text(message),backgroundColor: Colors.red,);
+    final snackBar = SnackBar(content: Text(message,style: TextStyle(color: Colors.white)),backgroundColor: Colors.red,);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

@@ -2,6 +2,7 @@ import 'package:clash_flutter/screens/auth_screen.dart';
 import 'package:clash_flutter/screens/avatar_screen.dart';
 import 'package:clash_flutter/screens/category_screen.dart';
 import 'package:clash_flutter/screens/clash_mode_screen.dart';
+import 'package:clash_flutter/screens/clash_room.dart';
 import 'package:clash_flutter/screens/rounds_screen.dart';
 import 'package:clash_flutter/screens/sub_category_screen.dart';
 import 'package:clash_flutter/screens/home_screen.dart';
@@ -16,6 +17,7 @@ class RouteGenerator {
   static const authScreen = '/';
   static const categoryScreen = '/categoryScreen';
   static const clashModeScreen = '/clashModeScreen';
+  static const clashRoomScreen = '/clashRoomScreen';
   static const subCategoryScreen = '/genreScreen';
   static const userNameScreen = '/userName';
   static const joinClashRoomScreen = '/joinClashRoomScreen';
@@ -29,6 +31,9 @@ class RouteGenerator {
       case authScreen:
         return MaterialPageRoute(
           builder: (context) => const AuthScreen(),
+        );case clashRoomScreen:
+        return MaterialPageRoute(
+          builder: (context) => const ClashRoomScreen(),
         );
       case categoryScreen:
         return MaterialPageRoute(

@@ -51,48 +51,24 @@ class DioUtil {
     }
   }
 
-  Future<HttpResponse<http.Response>> get(String url, {bool requiresToken = true}) async {
+  Future<HttpResponse<Map<String,dynamic>>> get(String url, {bool requiresToken = true}) async {
+    final Map<String,String> header = {};
+    if(requiresToken) {
+      header['Authorization'] = 'Bearer $token';
+    }
 
     try {
       final response = await http.get(
         Uri.parse(url),
-        headers: {
-          "Authorization": "Bearer $token"
-        },
-
+        headers: header,
       );
 
-      return HttpResponse(responseStatus: ResponseStatus.success,data: response);
-    } /*on DioError catch (e) {
-     *//* print('error');
-      print(e.response?.data);
-      if (e.response?.statusCode == 401) {
-
-       final response = await _refreshToken();
-       if(response == ResponseStatus.success) {
-         try{
-           final response = await _dio.get(
-             url,
-             options: Options(
-               headers: {
-                 'requiresToken': requiresToken,
-               },
-             ),
-           );
-
-           return HttpResponse(responseStatus: ResponseStatus.success,data: response);
-
-         }catch(e){
-           //TOdo: parse dio errors.
-           return HttpResponse(responseStatus: ResponseStatus.unknown);
-         }
-       }
-       return HttpResponse(responseStatus: response);
+      if(response.statusCode == 401) {
+        return await _retryGetResponse(url,requiresToken);
       }
 
-      return HttpResponse(responseStatus: ResponseStatus.unknown);*//*
-    } */catch (e){
-      print(e);
+      return HttpResponse(responseStatus: ResponseStatus.success,data: jsonDecode(response.body));
+    } catch (e){
       return HttpResponse(responseStatus: ResponseStatus.unknown);
     }
   }
@@ -116,13 +92,13 @@ class DioUtil {
     };
 
     try {
-      final response = await Dio().post(
-        ApiRoute.autGetTokenUrl,
-        data: _data,
-        options: Options(headers: _header),
+      final response = await http.post(
+        Uri.parse(ApiRoute.autGetTokenUrl),
+        body: _data,
+        headers: _header,
       );
 
-      final accessToken = response.data['access_token'];
+      final accessToken = jsonDecode(response.body)['access_token'];
       prefs.setString(Constants.kAccessToken, accessToken);
       return ResponseStatus.success;
 
@@ -141,5 +117,24 @@ class DioUtil {
     final prefs = await SharedPreferences.getInstance();
 
     token = prefs.getString(Constants.kAccessToken) ?? '';
+  }
+
+ Future<HttpResponse<Map<String,dynamic>>> _retryGetResponse(String url, bool requiresToken) async {
+    final refreshResponse = await _refreshToken();
+    if(refreshResponse == ResponseStatus.success) {
+      final Map<String,String> header = {};
+      if(requiresToken) {
+        final prefs = await SharedPreferences.getInstance();
+        token = prefs.getString(Constants.kAccessToken);
+        header['Authorization'] = 'Bearer $token';
+      }
+      final response = await http.get(Uri.parse(url),headers: header);
+      if(response.statusCode == 200 ) {
+        return HttpResponse(responseStatus: ResponseStatus.success,data: jsonDecode(response.body));
+      }
+      return HttpResponse(responseStatus: ResponseStatus.failed);
+    }
+    return HttpResponse(responseStatus: ResponseStatus.reAuthenticate);
+
   }
 }

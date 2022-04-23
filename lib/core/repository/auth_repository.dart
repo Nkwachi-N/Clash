@@ -145,7 +145,7 @@ class AuthRepository {
       ApiRoute.getUserInfo,
     );
 
-    return jsonDecode(response.data!.body)['id'];
+    return response.data!['id'];
   }
 
   Future<bool> checkUserExists() async {

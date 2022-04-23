@@ -47,6 +47,8 @@ dependencies:
   hive: ^2.0.5
   hive_flutter: ^1.1.0
   http: ^0.13.4
+  transparent_image: ^2.0.0
+  floating_bottom_navigation_bar: ^1.5.2
 
 dev_dependencies:
   flutter_test:
