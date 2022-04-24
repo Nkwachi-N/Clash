@@ -3,6 +3,7 @@ import 'package:clash_flutter/screens/avatar_screen.dart';
 import 'package:clash_flutter/screens/category_screen.dart';
 import 'package:clash_flutter/screens/clash_mode_screen.dart';
 import 'package:clash_flutter/screens/clash_room.dart';
+import 'package:clash_flutter/screens/create_clash_room.dart';
 import 'package:clash_flutter/screens/invite_sent_screen.dart';
 import 'package:clash_flutter/screens/rounds_screen.dart';
 import 'package:clash_flutter/screens/sub_category_screen.dart';
@@ -29,12 +30,17 @@ class RouteGenerator {
   static const hostModeScreen = '/hostModeScreen';
   static const roundsScreen = '/roundsScreen';
   static const inviteSentScreen = '/inviteSentScreen';
+  static const createClashRoomScreen = '/createClashRoomScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case authScreen:
         return MaterialPageRoute(
           builder: (context) => const AuthScreen(),
+        );
+      case createClashRoomScreen:
+        return MaterialPageRoute(
+          builder: (context) => const CreateClashRoom(),
         );
       case clashRoomScreen:
         return MaterialPageRoute(
@@ -47,7 +53,8 @@ class RouteGenerator {
       case clashModeScreen:
         return MaterialPageRoute(
           builder: (context) => const ClashModeScreen(),
-        ); case waitingRoomScreen:
+        );
+      case waitingRoomScreen:
         return MaterialPageRoute(
           builder: (context) => const WaitingRoomScreen(),
         );

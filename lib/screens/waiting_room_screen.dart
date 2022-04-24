@@ -2,6 +2,8 @@ import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/models/game.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:dashed_circle/dashed_circle.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,11 +67,11 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                   height: 16.0,
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Text(
-                        'IMANUELJNR',
+                        user.name.toUpperCase(),
                         textAlign: TextAlign.center,
                         style: textTheme.headline6?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -86,13 +88,14 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                       ),
                     ),
                     Expanded(
-                      child: Text(
-                        'DONKWAZ',
-                        textAlign: TextAlign.center,
-                        style: textTheme.headline6?.copyWith(
-                          fontWeight: FontWeight.bold,
+                      child: Container(
+                        height: 10,
+                        margin: const EdgeInsets.symmetric(horizontal: 38.0,),
+                        decoration: BoxDecoration(
+                          color:  const Color(0xFF686868),
+                          borderRadius: BorderRadius.circular(2.0),
                         ),
-                      ),
+                      )
                     ),
                   ],
                 )
@@ -161,18 +164,24 @@ class AvatarImage extends StatelessWidget {
           ),
         ],
       ),
-      replacement: Container(
-        height: 120.0,
-        width: 100.0,
-        decoration: DottedDecoration(
-          shape: Shape.circle,
-          color: const Color(0xFF686868).withOpacity(0.9),
+      replacement: Center(
+        child: InkResponse(
+
+          onTap: (){
+            Navigator.of(context).pushNamed(RouteGenerator.createClashRoomScreen);
+
+          },
+          child: Container(
+            height: 140.0,
+            width: 140.0,
+            decoration: DottedDecoration(
+              shape: Shape.circle,
+              color: const Color(0xFF686868).withOpacity(0.8),
+            ),
+            child: const Icon(Icons.add,color: Color(0xFF686868),)
+          ),
         ),
-        child: Icon(
-          Icons.add,
-          color: const Color(0xFF686868).withOpacity(0.3),
-        ),
-      ),
+      )
     );
   }
 }

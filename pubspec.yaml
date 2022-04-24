@@ -50,6 +50,7 @@ dependencies:
   transparent_image: ^2.0.0
   floating_bottom_navigation_bar: ^1.5.2
   dashed_circle: ^0.0.2
+  dotted_decoration: ^2.0.0
 
 dev_dependencies:
   flutter_test:
