@@ -35,7 +35,7 @@ void main() async {
   }
   runApp(
     MyApp(
-      initialRoute: RouteGenerator.clashRoomScreen,
+      initialRoute: initialRoute,
     ),
   );
 }
