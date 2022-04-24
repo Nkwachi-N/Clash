@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           scaffoldBackgroundColor: ClashColors.black200,
           textTheme: textTheme.copyWith(
+
               headline5: textTheme.headline5?.copyWith(
                 color: Colors.white,
               ),
