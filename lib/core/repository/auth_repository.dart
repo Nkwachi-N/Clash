@@ -90,7 +90,7 @@ class AuthRepository {
       prefs.setString(Constants.kRefreshToken, refreshToken);
 
       return true;
-    } on DioError catch (e) {
+    } catch (_) {
       return false;
     }
   }

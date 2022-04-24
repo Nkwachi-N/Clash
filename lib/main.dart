@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()..initUser()),
         ChangeNotifierProvider(create: (context) => GameProvider()),
 
       ],

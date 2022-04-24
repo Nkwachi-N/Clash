@@ -1,6 +1,10 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:clash_flutter/core/models/game.dart';
+import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/game_provider.dart';
+import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WaitingRoomScreen extends StatefulWidget {
   const WaitingRoomScreen({Key? key}) : super(key: key);
@@ -12,6 +16,9 @@ class WaitingRoomScreen extends StatefulWidget {
 class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
   @override
   Widget build(BuildContext context) {
+    final gameModel = context.watch<GameProvider>();
+    final user = context.read<AuthProvider>().user;
+
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
@@ -35,7 +42,10 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Expanded(child: AvatarImage()),
+                    Expanded(
+                        child: AvatarImage(
+                      avatar: 'assets/images/avatar_${user.avatar}.png',
+                    )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
@@ -45,7 +55,10 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                         ),
                       ),
                     ),
-                    const Expanded(child: AvatarImage()),
+                    const Expanded(
+                        child: AvatarImage(
+                      avatar: '',
+                    )),
                   ],
                 ),
                 const SizedBox(
@@ -88,9 +101,15 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
             const Spacer(
               flex: 2,
             ),
-            const RoomCard(title: 'Clash category', subtitle: 'genre'),
-            const RoomCard(title: 'Genre category', subtitle: 'Hip hop'),
-            const RoomCard(title: 'Number of Rounds', subtitle: '5 rounds'),
+            RoomCard(
+                title: 'Clash category', subtitle: gameModel.category.name),
+            ...[
+              if (gameModel.category == Category.genre)
+                RoomCard(title: 'Genre category', subtitle: gameModel.genre),
+            ],
+            RoomCard(
+                title: 'Number of Rounds',
+                subtitle: '${gameModel.rounds} rounds'),
             const Spacer(
               flex: 2,
             ),
@@ -102,41 +121,58 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
 }
 
 class AvatarImage extends StatelessWidget {
-  const AvatarImage({Key? key}) : super(key: key);
+  final String avatar;
+
+  const AvatarImage({Key? key, required this.avatar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          height: 140.0,
-          width: 140.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFF434343).withOpacity(0.58),
-          ),
-        ),
-        Container(
-          height: 130.0,
-          width: 130.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFF686868).withOpacity(0.3),
-          ),
-        ),
-        Container(
-          height: 120.0,
-          width: 120.0,
-          decoration: const BoxDecoration(
+    return Visibility(
+      visible: avatar.isNotEmpty,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: 140.0,
+            width: 140.0,
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
-                  fit: BoxFit.fitWidth,
-                  image: AssetImage(
-                    'assets/images/avatar_1.png',
-                  ))),
+              color: const Color(0xFF434343).withOpacity(0.58),
+            ),
+          ),
+          Container(
+            height: 130.0,
+            width: 130.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF686868).withOpacity(0.3),
+            ),
+          ),
+          Container(
+            height: 120.0,
+            width: 120.0,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    image: AssetImage(
+                      avatar,
+                    ))),
+          ),
+        ],
+      ),
+      replacement: Container(
+        height: 120.0,
+        width: 100.0,
+        decoration: DottedDecoration(
+          shape: Shape.circle,
+          color: const Color(0xFF686868).withOpacity(0.9),
         ),
-      ],
+        child: Icon(
+          Icons.add,
+          color: const Color(0xFF686868).withOpacity(0.3),
+        ),
+      ),
     );
   }
 }

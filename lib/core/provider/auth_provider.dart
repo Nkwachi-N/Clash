@@ -1,7 +1,10 @@
 import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
+import 'package:hive/hive.dart';
 
+import '../constants.dart';
+import '../models/user.dart';
 import '../repository/auth_repository.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -11,6 +14,13 @@ class AuthProvider extends ChangeNotifier {
   bool storingAvatar = false;
   bool authorizing = false;
   int? selectedAvatar;
+
+  late User user;
+
+  initUser(){
+    final box = Hive.box(Constants.kHiveBox);
+     user = box.get('user');
+  }
 
 
   Future<HttpResponse<String>> authorize() async {

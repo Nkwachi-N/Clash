@@ -1,7 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';

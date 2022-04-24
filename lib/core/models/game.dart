@@ -11,3 +11,4 @@ class Game{
 enum Category{
   genre,artist
 }
+

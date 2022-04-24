@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:clash_flutter/core/api_route.dart';
 import 'package:clash_flutter/core/dio_util.dart';
 import 'package:clash_flutter/core/models/artists.dart';
