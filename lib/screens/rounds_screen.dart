@@ -1,3 +1,4 @@
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -96,9 +97,9 @@ class RoundsScreen extends StatelessWidget {
               flex: 3,
             ),
             TextButton(
-              onPressed: () => model.rounds != null ? clash() : null,
+              onPressed: () => model.rounds != null ? clash(context) : null,
               child: Text(
-                'Clash',
+                'Continue',
                 style: textTheme.button,
               ),
             ),
@@ -111,7 +112,9 @@ class RoundsScreen extends StatelessWidget {
     ));
   }
 
-  void clash () {}
+  void clash (BuildContext context) {
+    Navigator.of(context).pushNamed(RouteGenerator.waitingRoomScreen);
+  }
 
 
 }

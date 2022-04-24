@@ -98,15 +98,15 @@ class DioUtil {
         headers: _header,
       );
 
+      if(response.statusCode == 400) {
+        return ResponseStatus.reAuthenticate;
+      }
+
       final accessToken = jsonDecode(response.body)['access_token'];
       prefs.setString(Constants.kAccessToken, accessToken);
       return ResponseStatus.success;
 
-    } on DioError catch (e) {
-
-      if(e.response?.statusCode == 400) {
-        return ResponseStatus.reAuthenticate;
-      }
+    }  catch (e) {
 
       return ResponseStatus.unknown;
      
