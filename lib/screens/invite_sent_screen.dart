@@ -1,4 +1,5 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -20,7 +21,7 @@ class _InviteSentScreenState extends State<InviteSentScreen>
   void initState() {
     super.initState();
     controller = AnimationController(
-        duration: Duration(
+        duration: const Duration(
           milliseconds: 1500,
         ),
         vsync: this);
@@ -40,6 +41,9 @@ class _InviteSentScreenState extends State<InviteSentScreen>
         controller.forward();
       }
     });
+    Future.delayed(const Duration(seconds: 2)).then((value){
+      Navigator.of(context).pushNamed(RouteGenerator.inviteStateScreen);
+    });
   }
 
   @override
@@ -50,11 +54,11 @@ class _InviteSentScreenState extends State<InviteSentScreen>
         alignment: Alignment.center,
         children: [
           CustomPaint(
-            size: Size(double.infinity, double.infinity),
+            size: const Size(double.infinity, double.infinity),
             painter: CircleWavePainter(waveRadius),
           ),
           Align(
-            alignment: Alignment(0.9, -0.85),
+            alignment: const Alignment(0.9, -0.85),
             child: Container(
               padding: const EdgeInsets.all(12.5),
               decoration: BoxDecoration(
@@ -63,7 +67,7 @@ class _InviteSentScreenState extends State<InviteSentScreen>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.close,
                     color: Colors.white,
                     size: 20.0,
@@ -85,7 +89,7 @@ class _InviteSentScreenState extends State<InviteSentScreen>
           ),
           Image.asset('assets/images/invite_sent.png'),
           Align(
-            alignment: Alignment(0.0, 0.75),
+            alignment: const Alignment(0.0, 0.75),
             child: RichText(
               text: TextSpan(
                   text: 'Inviting ',

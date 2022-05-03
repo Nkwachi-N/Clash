@@ -1,5 +1,7 @@
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../routes/route_generator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,21 +15,50 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.end,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        padding: const EdgeInsets.all(22.0),
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.07),
+            borderRadius: BorderRadius.circular(40.0),
+            border: Border.all(
+              color: const Color(0xFF323232),
+              width: 1.0,
+            )),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(RouteGenerator.clashModeScreen);
-              },
-              child: Text('Play',style: textTheme.button),
-
+            SvgPicture.asset(
+              'assets/images/home.svg',
+              color: IconTheme.of(context).color,
+            ),
+            const SizedBox(
+              width: 46.0,
+            ),
+            SvgPicture.asset(
+              'assets/images/stat.svg',
+              color: IconTheme.of(context).color,
+            ),
+            const SizedBox(
+              width: 46.0,
+            ),
+            SvgPicture.asset(
+              'assets/images/home.svg',
+              color: IconTheme.of(context).color,
             ),
           ],
         ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Center(
+            child: TextButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(RouteGenerator.clashModeScreen);
+          },
+          child: Text('Play', style: textTheme.button),
+        )),
       ),
     );
   }
