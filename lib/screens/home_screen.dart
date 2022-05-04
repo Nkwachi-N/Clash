@@ -32,6 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
             SvgPicture.asset(
               'assets/images/home.svg',
               color: IconTheme.of(context).color,
+              height: 25.0,
+              width: 25.0,
             ),
             const SizedBox(
               width: 46.0,
@@ -39,13 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
             SvgPicture.asset(
               'assets/images/stat.svg',
               color: IconTheme.of(context).color,
+              height: 25.0,
+              width: 25.0,
             ),
             const SizedBox(
               width: 46.0,
             ),
             SvgPicture.asset(
-              'assets/images/home.svg',
+              'assets/images/profile.svg',
               color: IconTheme.of(context).color,
+              height: 30.0,
+              width: 30.0,
             ),
           ],
         ),

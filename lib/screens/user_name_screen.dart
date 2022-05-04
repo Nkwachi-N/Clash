@@ -25,8 +25,11 @@ class _UserNameScreenState extends State<UserNameScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final model = context.watch<AuthProvider>();
+
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -53,112 +56,128 @@ class _UserNameScreenState extends State<UserNameScreen> {
                 const SizedBox(
                   height: 16.0,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(
-                    8.0,
+                TextFormField(
+                  controller: _controller,
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return 'please enter your username';
+                    } else if (value != null && value.length < 3) {
+                      return 'username must be at least 3 characters';
+                    }
+                    if (model.userNameProgress == LoadingProgress.failed) {
+                      return 'Username is not available';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) async {
+                    if (value.length >= 3) {
+                      await model.userNameCheck(value);
+                      _formKey.currentState!.validate();
+                    }
+                  },
+                  style: const TextStyle(
+                    color: ClashColors.green200,
+                    fontSize: 18.0,
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: ClashColors.grey500,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      Text(
-                        '@',
-                        style: textTheme.headline5?.copyWith(
-                          color: ClashColors.grey900,
+                  onFieldSubmitted: (value) async {
+                    final res = await model.userNameCheck(value);
+                  },
+
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                    filled: true,
+                    fillColor: ClashColors.grey500,
+                    hintText: 'username (at least 3 characters)',
+                    suffixIcon: Visibility(
+                      visible:
+                          model.userNameProgress == LoadingProgress.success,
+                      child: Container(
+                        margin: const EdgeInsets.all(
+                          9.0,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: ClashColors.green200,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          color: Colors.white,
                         ),
                       ),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _controller,
-                          validator: (value){
-                            if(value != null && value.isEmpty) {
-                              return 'please enter your username';
-                            }else if(value != null && value.length < 3) {
-                              return 'username must be at least 3 characters';
-                            }
-                            return null;
-                          },
-                          style:
-                              const TextStyle(color: ClashColors.green200, fontSize: 18.0),
-                          decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(8.0),
-                              filled: true,
-                              fillColor: ClashColors.grey500,
-                              hintText: 'username (at least 3 characters)',
-                              isDense: true,
-                              hintStyle: TextStyle(
-                                color: ClashColors.grey900,
-                              ),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide.none)),
-                        ),
-                      ),
-                      Visibility(
-                        visible: _controller.text.isNotEmpty,
-                        child: Container(
-                          margin: const EdgeInsets.all(
-                            8.0,
-                          ),
-                          padding: const EdgeInsets.all(
-                            2.0,
-                          ),
-                          decoration: const BoxDecoration(
+                      replacement: Visibility(
+                        visible:
+                            model.userNameProgress == LoadingProgress.loading,
+                        child: SizedBox(
+                          width: 10.0,
+                          child: const SpinKitThreeBounce(
                             color: ClashColors.green200,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.check,
-                            color: Colors.white,
+                            size: 10.0,
                           ),
                         ),
                       ),
-                    ],
+                    ),
+                    prefixIcon: SizedBox(
+                      width: 20.0,
+                      child: Center(
+                        child: Text(
+                          '@',
+                          style: textTheme.headline5?.copyWith(
+                            color: ClashColors.grey900,
+                          ),
+                        ),
+                      ),
+                    ),
+                    isDense: true,
+                    hintStyle: TextStyle(
+                      color: ClashColors.grey900,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
                   ),
                 ),
                 const Spacer(),
-                Consumer<AuthProvider>(builder: (_, model, child) {
-                  return TextButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        bool status =
-                            await model.storeUserName(_controller.text);
-                        if (status) {
-                          Navigator.of(context).pushReplacementNamed(RouteGenerator.avatarScreen);
-                        } else {
-                          const snackBar = SnackBar(content: Text('Something went wrong, please try again'));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
+                TextButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      bool status = await model.storeUserName(_controller.text);
+                      if (status) {
+                        Navigator.of(context)
+                            .pushReplacementNamed(RouteGenerator.avatarScreen);
+                      } else {
+                        const snackBar = SnackBar(
+                            content:
+                                Text('Something went wrong, please try again'));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Continue',
-                          style: textTheme.button,
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Continue',
+                        style: textTheme.button,
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Visibility(
+                        visible: model.storingUserName,
+                        child: const SpinKitThreeBounce(
+                          size: 10.0,
+                          color: Colors.white,
                         ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Visibility(
-                          visible: model.storingUserName,
-                          child: const SpinKitThreeBounce(
-                            size: 10.0,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
+                      )
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 16.0,
                 )

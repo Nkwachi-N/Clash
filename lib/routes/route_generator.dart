@@ -18,13 +18,13 @@ import 'package:flutter/material.dart';
 class RouteGenerator {
   RouteGenerator._();
 
-  static const authScreen = '/';
+  static const authScreen = '/authScreen';
   static const categoryScreen = '/categoryScreen';
   static const waitingRoomScreen = '/waitingRoomScreen';
   static const clashModeScreen = '/clashModeScreen';
   static const clashRoomScreen = '/clashRoomScreen';
   static const subCategoryScreen = '/genreScreen';
-  static const userNameScreen = '/userName';
+  static const userNameScreen = '/';
   static const joinClashRoomScreen = '/joinClashRoomScreen';
   static const avatarScreen = '/avatarScreen';
   static const homeScreen = '/homeScreen';

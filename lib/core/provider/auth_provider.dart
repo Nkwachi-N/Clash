@@ -7,6 +7,13 @@ import '../constants.dart';
 import '../models/user.dart';
 import '../repository/auth_repository.dart';
 
+enum LoadingProgress{
+  idle,
+  loading,
+  success,
+  failed,
+}
+
 class AuthProvider extends ChangeNotifier {
   final _repository = AuthRepository();
 
@@ -14,6 +21,8 @@ class AuthProvider extends ChangeNotifier {
   bool storingAvatar = false;
   bool authorizing = false;
   int? selectedAvatar;
+
+  LoadingProgress userNameProgress = LoadingProgress.idle;
 
   late User user;
 
@@ -78,5 +87,30 @@ class AuthProvider extends ChangeNotifier {
 
     return status;
   }
+
+
+  Future<bool> userNameCheck(String userName) async {
+    userNameProgress = LoadingProgress.loading;
+    notifyListeners();
+
+    bool result =  await _repository.usernameCheck(userName);
+
+    if(result) {
+
+      userNameProgress = LoadingProgress.success;
+
+    }else {
+
+      userNameProgress = LoadingProgress.failed;
+    }
+
+    notifyListeners();
+
+    return result;
+
+  }
+
+
+
 
 }

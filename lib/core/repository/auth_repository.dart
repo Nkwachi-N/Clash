@@ -127,6 +127,14 @@ class AuthRepository {
     return status;
   }
 
+  Future<bool> usernameCheck(String username) async {
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .where('name', isEqualTo: username).get();
+
+    return result.docs.isEmpty;
+  }
+
   Future<bool> saveAvatar(int avatar) async {
     bool status = false;
     try {

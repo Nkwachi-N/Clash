@@ -47,7 +47,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                 height: 32.0,
               ),
               Text(
-                'Create a clash room',
+                'Invite a friend',
                 style: textTheme.headline6?.copyWith(
                   fontWeight: FontWeight.normal,
                 ),
@@ -156,7 +156,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                   style: textTheme.headline3?.copyWith(
                     color: ClashColors.green200,
                     fontWeight: FontWeight.w400,
-                    letterSpacing: 10.0,
+                    letterSpacing: 8.0,
                   ),
                 ),
               ),
@@ -186,11 +186,9 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                 flex: 2,
               ),
               TextButton(
-                onPressed: _controller.text.isNotEmpty ? () {
-                  Navigator.of(context).pushNamed(RouteGenerator.inviteSentScreen);
-                } : null,
+                onPressed: () =>Navigator.of(context).pushNamed(RouteGenerator.inviteSentScreen),
                 child: Text(
-                  'Invite friend',
+                  'Continue',
                   style: textTheme.button,
                 ),
               ),
