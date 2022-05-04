@@ -7,11 +7,11 @@ import '../constants.dart';
 import '../models/user.dart';
 import '../repository/auth_repository.dart';
 
-enum LoadingProgress{
+enum UserNameState{
   idle,
   loading,
-  success,
-  failed,
+  exists,
+  notFound,
 }
 
 class AuthProvider extends ChangeNotifier {
@@ -22,13 +22,14 @@ class AuthProvider extends ChangeNotifier {
   bool authorizing = false;
   int? selectedAvatar;
 
-  LoadingProgress userNameProgress = LoadingProgress.idle;
+  UserNameState userNameProgress = UserNameState.idle;
 
   late User user;
 
   initUser(){
     final box = Hive.box(Constants.kHiveBox);
      user = box.get('user');
+     _repository.updateFcmToken();
   }
 
 
@@ -89,24 +90,27 @@ class AuthProvider extends ChangeNotifier {
   }
 
 
-  Future<bool> userNameCheck(String userName) async {
-    userNameProgress = LoadingProgress.loading;
+
+
+  Future<void> userNameCheck(String userName) async {
+    userNameProgress = UserNameState.loading;
     notifyListeners();
 
     bool result =  await _repository.usernameCheck(userName);
 
     if(result) {
+      //user name exists.
 
-      userNameProgress = LoadingProgress.success;
+      userNameProgress = UserNameState.notFound;
 
     }else {
+      //user name does not exist.
 
-      userNameProgress = LoadingProgress.failed;
+      userNameProgress = UserNameState.exists;
     }
 
     notifyListeners();
 
-    return result;
 
   }
 

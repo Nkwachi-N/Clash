@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        // initialRoute: initialRoute,
+        initialRoute: initialRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

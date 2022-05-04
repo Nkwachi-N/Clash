@@ -6,6 +6,7 @@ import 'package:clash_flutter/core/dio_util.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hive/hive.dart';
 import 'package:pkce/pkce.dart';
@@ -114,7 +115,10 @@ class AuthRepository {
 
   Future<bool> _saveUser(User user) async {
     bool status = false;
-
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    if(fcmToken != null) {
+      user.fcmToken = fcmToken;
+    }
     try {
       await users.doc(user.id).set(user.toMap());
       final box = Hive.box(Constants.kHiveBox);
@@ -125,6 +129,15 @@ class AuthRepository {
     }
 
     return status;
+  }
+
+  Future<void> updateFcmToken()async{
+
+    final box = Hive.box(Constants.kHiveBox);
+    final User user = box.get('user');
+    FirebaseMessaging.instance.onTokenRefresh.listen((token) {
+      users.doc(user.id).update({'fcm_token' : token});
+    });
   }
 
   Future<bool> usernameCheck(String username) async {

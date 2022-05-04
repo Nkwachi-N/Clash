@@ -1,7 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class InviteSentScreen extends StatefulWidget {
   const InviteSentScreen({Key? key}) : super(key: key);
