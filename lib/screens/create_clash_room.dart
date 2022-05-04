@@ -1,6 +1,5 @@
 import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
-import 'package:clash_flutter/widgets/user_name_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -100,7 +99,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                   fontSize: 18.0,
                 ),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
                   filled: true,
                   fillColor: ClashColors.grey500,
                   hintText: 'username (at least 3 characters)',
@@ -123,9 +122,9 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                     replacement: Visibility(
                       visible:
                       model.userNameProgress == UserNameState.loading,
-                      child: SizedBox(
+                      child: const SizedBox(
                         width: 10.0,
-                        child: const SpinKitThreeBounce(
+                        child: SpinKitThreeBounce(
                           color: ClashColors.green200,
                           size: 10.0,
                         ),
@@ -144,7 +143,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                     ),
                   ),
                   isDense: true,
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     color: ClashColors.grey900,
                   ),
                   border: OutlineInputBorder(

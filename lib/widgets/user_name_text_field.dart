@@ -23,7 +23,7 @@ class UserNameTextField extends StatelessWidget {
         } else if (value != null && value.length < 3) {
           return 'username must be at least 3 characters';
         }
-        if (model.userNameProgress == UserNameState.notFound) {
+        if (model.userNameProgress == UserNameState.exists) {
           return 'Username is not available';
         }
         return null;
@@ -32,6 +32,8 @@ class UserNameTextField extends StatelessWidget {
         if (value.length >= 3) {
           await model.userNameCheck(value);
           onChanged;
+        }else {
+          model.resetUserNameState();
         }
       },
       style: const TextStyle(
@@ -39,7 +41,7 @@ class UserNameTextField extends StatelessWidget {
         fontSize: 18.0,
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
         filled: true,
         fillColor: ClashColors.grey500,
         hintText: 'username (at least 3 characters)',
@@ -62,9 +64,9 @@ class UserNameTextField extends StatelessWidget {
           replacement: Visibility(
             visible:
             model.userNameProgress == UserNameState.loading,
-            child: SizedBox(
+            child: const SizedBox(
               width: 10.0,
-              child: const SpinKitThreeBounce(
+              child: SpinKitThreeBounce(
                 color: ClashColors.green200,
                 size: 10.0,
               ),
@@ -83,7 +85,7 @@ class UserNameTextField extends StatelessWidget {
           ),
         ),
         isDense: true,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: ClashColors.grey900,
         ),
         border: OutlineInputBorder(

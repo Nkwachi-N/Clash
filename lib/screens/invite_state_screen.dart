@@ -1,5 +1,4 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InviteStateScreen extends StatefulWidget {

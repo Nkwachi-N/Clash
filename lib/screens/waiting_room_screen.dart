@@ -3,7 +3,6 @@ import 'package:clash_flutter/core/models/game.dart';
 import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
-import 'package:dashed_circle/dashed_circle.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

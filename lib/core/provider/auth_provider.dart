@@ -28,8 +28,13 @@ class AuthProvider extends ChangeNotifier {
 
   initUser(){
     final box = Hive.box(Constants.kHiveBox);
-     user = box.get('user');
-     _repository.updateFcmToken();
+     final savedUser = box.get('user',defaultValue: null);
+
+     if(savedUser != null) {
+       user = savedUser;
+       _repository.updateFcmToken();
+     }
+
   }
 
 
@@ -112,6 +117,11 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
 
+  }
+
+  void resetUserNameState() {
+    userNameProgress = UserNameState.idle;
+    notifyListeners();
   }
 
 

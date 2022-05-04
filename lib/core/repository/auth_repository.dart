@@ -101,6 +101,7 @@ class AuthRepository {
     try {
       String? userId = await _getUserId();
 
+      print(userId);
       if (userId != null) {
         status = await _saveUser(User(
           id: userId,
@@ -165,6 +166,7 @@ class AuthRepository {
     final response = await _dioUtil.get(
       ApiRoute.getUserInfo,
     );
+
 
     return response.data!['id'];
   }

@@ -54,6 +54,9 @@ class DioUtil {
   Future<HttpResponse<Map<String,dynamic>>> get(String url, {bool requiresToken = true}) async {
     final Map<String,String> header = {};
     if(requiresToken) {
+      if(token == null || (token?.isEmpty ?? true)) {
+        await _initToken();
+      }
       header['Authorization'] = 'Bearer $token';
     }
 
