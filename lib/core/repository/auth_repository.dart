@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:hive/hive.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -101,7 +102,6 @@ class AuthRepository {
     try {
       String? userId = await _getUserId();
 
-      print(userId);
       if (userId != null) {
         status = await _saveUser(User(
           id: userId,
@@ -136,6 +136,7 @@ class AuthRepository {
 
     final box = Hive.box(Constants.kHiveBox);
     final User user = box.get('user');
+    OneSignal.shared.setExternalUserId(user.id);
     FirebaseMessaging.instance.onTokenRefresh.listen((token) {
       users.doc(user.id).update({'fcm_token' : token});
     });

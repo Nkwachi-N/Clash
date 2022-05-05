@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants.dart';
@@ -25,6 +26,8 @@ void main() async {
   final accessToken = prefs.getString(Constants.kAccessToken);
 
   String initialRoute = RouteGenerator.authScreen;
+
+  OneSignal.shared.setAppId(Constants.oneSignalAppId);
 
   if (accessToken != null) {
     final box = Hive.box(Constants.kHiveBox);
@@ -52,37 +55,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<void> setupInteractedMessage() async {
-    // Get any messages which caused the application to open from
-    // a terminated state.
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
 
-    // If the message also contains a data property with a "type" of "chat",
-    // navigate to a chat screen
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-    }
-
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
 
   void _handleMessage(RemoteMessage message) {
     if (message.data['type'] == 'invite') {
       //TODO:Navigate to invite screen.
+      final userName = message.data['user_name'];
+      Navigator.of(context).pushNamed(RouteGenerator.receivedInviteScreen,arguments:userName );
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
 
-    // Run code required to handle interacted messages in an async function
-    // as initState() must not be async
-    setupInteractedMessage();
-  }
 
   @override
   Widget build(BuildContext context) {
