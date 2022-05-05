@@ -17,4 +17,6 @@ class ClashColors{
   
   static const Color grey400 = Color(0xFF323232);
 
+  static const Color red = Color(0xFFEB5757);
+
 }

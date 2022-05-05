@@ -3,6 +3,7 @@ import 'package:clash_flutter/core/provider/auth_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Hive.initFlutter();
+
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox(Constants.kHiveBox);
   final prefs = await SharedPreferences.getInstance();
@@ -40,20 +42,54 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final String initialRoute;
 
   const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    if (message.data['type'] == 'invite') {
+      //TODO:Navigate to invite screen.
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Run code required to handle interacted messages in an async function
+    // as initState() must not be async
+    setupInteractedMessage();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()..initUser()),
         ChangeNotifierProvider(create: (context) => GameProvider()),
-
       ],
       child: MaterialApp(
         title: 'Clash',
@@ -61,21 +97,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           brightness: Brightness.dark,
           scaffoldBackgroundColor: ClashColors.black200,
-          textTheme: textTheme.copyWith(
-
-              headline5: textTheme.headline5?.copyWith(
-                color: Colors.white,
+          textTheme: Typography.material2018().white.copyWith(
+                button: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18.0,
+                ),
+                headline6: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
-              button: const TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 18.0,
-                color: Colors.white,
-              ),
-              headline6: textTheme.headline6?.copyWith(
-                fontSize: 20.0,
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
-              )),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ClashColors.green200,
             selectionColor: ClashColors.green200,
@@ -83,11 +114,13 @@ class MyApp extends StatelessWidget {
           textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
               padding: MaterialStateProperty.all(
-                const EdgeInsets.all(16.0),
+                const EdgeInsets.all(17.0),
               ),
+
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
               )),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
@@ -99,7 +132,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: initialRoute,
+        initialRoute: widget.initialRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

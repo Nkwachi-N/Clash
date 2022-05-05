@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -61,11 +62,16 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
             child: TextButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(RouteGenerator.clashModeScreen);
+            Navigator.of(context).pushNamed(RouteGenerator.receivedInviteScreen,arguments: 'Don Kwaz');
           },
-          child: Text('Play', style: textTheme.button),
+          child: Text('Play', ),
         )),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 }

@@ -35,6 +35,7 @@ class AuthProvider extends ChangeNotifier {
        _repository.updateFcmToken();
      }
 
+
   }
 
 
