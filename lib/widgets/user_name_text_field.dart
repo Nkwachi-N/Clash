@@ -1,5 +1,5 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ class UserNameTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<AuthProvider>();
+    final model = context.watch<UserProvider>();
     final textTheme = Theme.of(context).textTheme;
 
     return TextFormField(

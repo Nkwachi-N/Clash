@@ -44,8 +44,8 @@ class GameRepository{
     }catch(_){
       return HttpResponse(responseStatus: ResponseStatus.failed,data: <Artist>[]);
     }
-
-
   }
+
+
 
 }

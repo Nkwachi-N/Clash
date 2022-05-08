@@ -12,16 +12,12 @@ class User {
   String name;
 
   @HiveField(2)
-  String? fcmToken;
-
-  @HiveField(3)
   String? avatar;
 
   User({
     required this.id,
     required this.name,
     this.avatar,
-    this.fcmToken,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -29,7 +25,6 @@ class User {
       id: json['id'],
       name: json['name'],
       avatar: json['avatar'],
-      fcmToken: json['fcm_token'],
     );
   }
 
@@ -38,7 +33,6 @@ class User {
       'id' : id,
       'name': name,
       'avatar':avatar,
-      'fcm_token':fcmToken,
     };
   }
 }

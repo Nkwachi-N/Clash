@@ -24,7 +24,7 @@ class ReceivedInviteScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('$userName is inviting you to join his clash room',
+                child: Text('$userName is inviting you to join their clash room',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 24.0,

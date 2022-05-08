@@ -1,6 +1,7 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/models/http_response.dart';
-import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -56,14 +57,14 @@ class AuthScreen extends StatelessWidget {
                   const SizedBox(
                     width: 8.0,
                   ),
-                  Consumer<AuthProvider>(
+                  Consumer<UserProvider>(
 
                     builder: (context, model,child) {
                       return Visibility(
                         visible: model.authorizing,
                         child: const SpinKitThreeBounce(
                           color: Colors.white,
-                          size: 10.0,
+                          size: Constants.kButtonLoaderSize,
                         ),
                       );
                     }
@@ -82,7 +83,7 @@ class AuthScreen extends StatelessWidget {
   }
 
   Future<void> authorize(BuildContext context) async{
-    final result = await context.read<AuthProvider>().authorize();
+    final result = await context.read<UserProvider>().authorize();
     if(result.responseStatus == ResponseStatus.success) {
       Navigator.of(context).pushReplacementNamed(result.data!);
     }else{

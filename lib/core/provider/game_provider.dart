@@ -1,11 +1,14 @@
 import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/repository/game_repository.dart';
+import 'package:clash_flutter/core/repository/notification_util.dart';
+import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 import '../models/game.dart';
 
 class GameProvider extends ChangeNotifier {
   final _gameRepository = GameRepository();
+  final _userRepository = UserRepository();
   List<String> genreList = [];
   bool gettingSubCategory = false;
   late Category category;
@@ -68,5 +71,16 @@ class GameProvider extends ChangeNotifier {
     gettingSubCategory = false;
     notifyListeners();
     return status;
+  }
+
+  Future<bool> inviteUser(String userName) async {
+
+    final user = await _userRepository.getUserByUserName(userName);
+    if(user != null) {
+
+      return await NotificationUtil.sendNotification(user.id, userName);
+    }
+    return false;
+
   }
 }

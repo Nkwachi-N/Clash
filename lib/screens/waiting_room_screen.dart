@@ -1,6 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/models/game.dart';
-import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
@@ -18,7 +18,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
   @override
   Widget build(BuildContext context) {
     final gameModel = context.watch<GameProvider>();
-    final user = context.read<AuthProvider>().user;
+    final user = context.read<UserProvider>().user;
 
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(

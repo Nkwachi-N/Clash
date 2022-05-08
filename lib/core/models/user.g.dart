@@ -19,22 +19,19 @@ class UserAdapter extends TypeAdapter<User> {
     return User(
       id: fields[0] as String,
       name: fields[1] as String,
-      avatar: fields[3] as String?,
-      fcmToken: fields[2] as String?,
+      avatar: fields[2] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.fcmToken)
-      ..writeByte(3)
       ..write(obj.avatar);
   }
 

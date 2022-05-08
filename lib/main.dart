@@ -1,9 +1,8 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -56,22 +55,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-
-  void _handleMessage(RemoteMessage message) {
-    if (message.data['type'] == 'invite') {
-      //TODO:Navigate to invite screen.
-      final userName = message.data['user_name'];
-      Navigator.of(context).pushNamed(RouteGenerator.receivedInviteScreen,arguments:userName );
-    }
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()..initUser()),
+        ChangeNotifierProvider(create: (context) => UserProvider()..initUser()),
         ChangeNotifierProvider(create: (context) => GameProvider()),
       ],
       child: MaterialApp(
@@ -99,10 +87,11 @@ class _MyAppState extends State<MyApp> {
               padding: MaterialStateProperty.all(
                 const EdgeInsets.all(17.0),
               ),
-
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              )),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
               foregroundColor: MaterialStateProperty.all(Colors.white),
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {

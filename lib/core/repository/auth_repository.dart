@@ -1,27 +1,19 @@
 import 'dart:convert';
-
 import 'package:clash_flutter/core/api_route.dart';
 import 'package:clash_flutter/core/constants.dart';
-import 'package:clash_flutter/core/dio_util.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:hive/hive.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/user.dart';
 
 class AuthRepository {
   static const state = 'HappyBaby257';
 
   final _dio = Dio();
-  final _dioUtil = DioUtil();
 
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   Future<bool> authorize() async {
     final pkcePair = PkcePair.generate();
@@ -97,88 +89,5 @@ class AuthRepository {
     }
   }
 
-  Future<bool> storeUserName(String userName) async {
-    bool status = false;
-    try {
-      String? userId = await _getUserId();
 
-      if (userId != null) {
-        status = await _saveUser(User(
-          id: userId,
-          name: userName,
-        ));
-      }
-    } catch (e) {
-      return status;
-    }
-    return status;
-  }
-
-  Future<bool> _saveUser(User user) async {
-    bool status = false;
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    if(fcmToken != null) {
-      user.fcmToken = fcmToken;
-    }
-    try {
-      await users.doc(user.id).set(user.toMap());
-      final box = Hive.box(Constants.kHiveBox);
-      box.put('user', user);
-      status = true;
-    } catch (e) {
-      status = false;
-    }
-
-    return status;
-  }
-
-  Future<void> updateFcmToken()async{
-
-    final box = Hive.box(Constants.kHiveBox);
-    final User user = box.get('user');
-    OneSignal.shared.setExternalUserId(user.id);
-    FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-      users.doc(user.id).update({'fcm_token' : token});
-    });
-  }
-
-  Future<bool> usernameCheck(String username) async {
-    final result = await FirebaseFirestore.instance
-        .collection('users')
-        .where('name', isEqualTo: username).get();
-
-    return result.docs.isEmpty;
-  }
-
-  Future<bool> saveAvatar(int avatar) async {
-    bool status = false;
-    try {
-      final box = Hive.box(Constants.kHiveBox);
-      final User user = box.get('user');
-      user.avatar = avatar.toString();
-      status = await _saveUser(user);
-    } catch (e) {
-      return status;
-    }
-    return status;
-  }
-
-  Future<String?> _getUserId() async {
-    final response = await _dioUtil.get(
-      ApiRoute.getUserInfo,
-    );
-
-
-    return response.data!['id'];
-  }
-
-  Future<bool> checkUserExists() async {
-    final userId = await _getUserId();
-    final userSnapShot =  await users.doc(userId).get();
-    if(userSnapShot.exists) {
-      final user = User.fromJson(userSnapShot.data()  as Map<String, dynamic>);
-      return await _saveUser(user);
-    }
-    return false;
-  }
 }

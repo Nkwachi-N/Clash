@@ -1,8 +1,9 @@
 import 'package:clash_flutter/core/models/http_response.dart';
+import 'package:clash_flutter/core/repository/notification_util.dart';
+import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
 import 'package:hive/hive.dart';
-
 import '../constants.dart';
 import '../models/user.dart';
 import '../repository/auth_repository.dart';
@@ -14,8 +15,9 @@ enum UserNameState{
   notFound,
 }
 
-class AuthProvider extends ChangeNotifier {
-  final _repository = AuthRepository();
+class UserProvider extends ChangeNotifier {
+  final _authRepository = AuthRepository();
+  final _userRepository = UserRepository();
 
   bool storingUserName = false;
   bool storingAvatar = false;
@@ -32,8 +34,9 @@ class AuthProvider extends ChangeNotifier {
 
      if(savedUser != null) {
        user = savedUser;
-       _repository.updateFcmToken();
+       NotificationUtil.setUserId(user.id);
      }
+
 
 
   }
@@ -44,16 +47,20 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     late HttpResponse<String> httpResponse;
     try {
-      bool response = await _repository.authorize();
+      bool response = await _authRepository.authorize();
       if (response) {
-        final userExists = await _repository.checkUserExists();
-        if (userExists) {
+        final existingUser = await _userRepository.checkUserExists();
+        if (existingUser != null) {
+          user = existingUser;
           httpResponse = HttpResponse(responseStatus: ResponseStatus.success,
               data: RouteGenerator.homeScreen);
         } else {
           httpResponse = HttpResponse(responseStatus: ResponseStatus.success,
               data: RouteGenerator.userNameScreen);
         }
+      }else{
+        httpResponse = HttpResponse(responseStatus: ResponseStatus.failed,
+            data: 'Sorry, something went wrong');
       }
     } catch (_){
       httpResponse = HttpResponse(responseStatus: ResponseStatus.failed,
@@ -70,7 +77,7 @@ class AuthProvider extends ChangeNotifier {
     storingUserName = true;
     notifyListeners();
 
-    bool status = await _repository.storeUserName(userName);
+    bool status = await _userRepository.storeUserName(userName);
 
     storingUserName = false;
     notifyListeners();
@@ -87,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
     storingAvatar = true;
     notifyListeners();
 
-    bool status = await _repository.saveAvatar(selectedAvatar!);
+    bool status = await _userRepository.saveAvatar(selectedAvatar!);
 
     storingAvatar = false;
     notifyListeners();
@@ -102,7 +109,7 @@ class AuthProvider extends ChangeNotifier {
     userNameProgress = UserNameState.loading;
     notifyListeners();
 
-    bool result =  await _repository.usernameCheck(userName);
+    bool result =  await _userRepository.usernameCheck(userName);
 
     if(result) {
       //user name exists.

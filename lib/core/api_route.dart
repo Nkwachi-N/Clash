@@ -19,5 +19,7 @@ class ApiRoute{
 
   static const getUserTopArtists = '$_getUserTopItems/artists';
 
+  static const createNotification = 'https://onesignal.com/api/v1/notifications';
+
 
 }

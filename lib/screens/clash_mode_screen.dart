@@ -82,6 +82,7 @@ class _ClashModeScreenState extends State<ClashModeScreen> {
                         'Play against an automated system.',
                         style: textTheme.subtitle1?.copyWith(
                           fontSize: 16.0,
+                          color: Colors.black87,
                         ),
                       ),
                     ],
@@ -147,6 +148,7 @@ class _ClashModeScreenState extends State<ClashModeScreen> {
                           'Mash heads with your gees and pals by inviting them to your clash room.',
                           style: textTheme.subtitle1?.copyWith(
                             fontSize: 16.0,
+                            color: Colors.black87,
                           ),
                         ),
                       ],

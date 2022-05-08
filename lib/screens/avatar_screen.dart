@@ -1,5 +1,5 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/core/provider/auth_provider.dart';
+import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ class _AvatarScreenState extends State<AvatarScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final model = context.watch<AuthProvider>();
+    final model = context.watch<UserProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -124,7 +124,7 @@ class AvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<AuthProvider>();
+    final model = context.read<UserProvider>();
     return InkWell(
       onTap: () {
         model.changeAvatar(imageIndex);

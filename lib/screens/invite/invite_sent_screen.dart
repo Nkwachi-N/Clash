@@ -40,9 +40,14 @@ class _InviteSentScreenState extends State<InviteSentScreen>
         controller.forward();
       }
     });
-    Future.delayed(const Duration(seconds: 2)).then((value){
-      Navigator.of(context).pushNamed(RouteGenerator.inviteStateScreen);
-    });
+
+  }
+
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
