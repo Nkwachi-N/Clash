@@ -1,9 +1,10 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 
 class InviteSentScreen extends StatefulWidget {
-  const InviteSentScreen({Key? key}) : super(key: key);
+  final String username;
+
+  const InviteSentScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   _InviteSentScreenState createState() => _InviteSentScreenState();
@@ -104,7 +105,7 @@ class _InviteSentScreenState extends State<InviteSentScreen>
                   ),
                   children: [
                     TextSpan(
-                      text: '@donkwaz',
+                      text: '@${widget.username}',
                       style: textTheme.subtitle1?.copyWith(
                         color: ClashColors.green200,
                         fontSize: 18.0,

@@ -50,8 +50,11 @@ class RouteGenerator {
           ),
         );
       case inviteStateScreen:
+        final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) => const InviteStateScreen(),
+          builder: (context) => InviteStateScreen(
+            username: args,
+          ),
         );
       case createClashRoomScreen:
         return MaterialPageRoute(
@@ -78,8 +81,12 @@ class RouteGenerator {
           builder: (context) => const SubCategoryScreen(),
         );
       case inviteSentScreen:
+        final args = settings.arguments as String;
+
         return MaterialPageRoute(
-          builder: (context) => const InviteSentScreen(),
+          builder: (context) => InviteSentScreen(
+            username: args,
+          ),
         );
       case userNameScreen:
         return MaterialPageRoute(

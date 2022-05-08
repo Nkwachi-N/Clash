@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:clash_flutter/core/api_route.dart';
 import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:pkce/pkce.dart';

@@ -1,14 +1,10 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 
-class InviteStateScreen extends StatefulWidget {
-  const InviteStateScreen({Key? key}) : super(key: key);
+class InviteStateScreen extends StatelessWidget {
+  final String username;
+  const InviteStateScreen({Key? key,required this.username,}) : super(key: key);
 
-  @override
-  _InviteStateScreenState createState() => _InviteStateScreenState();
-}
-
-class _InviteStateScreenState extends State<InviteStateScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -22,7 +18,7 @@ class _InviteStateScreenState extends State<InviteStateScreen> {
             Center(child: Image.asset('assets/images/success.png')),
             const Spacer(),
             Text(
-              'Donkwaz accepted your invite',
+              '$username accepted your invite',
               textAlign: TextAlign.center,
               style: textTheme.headline5?.copyWith(
                 fontWeight: FontWeight.w500,

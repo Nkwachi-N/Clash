@@ -55,10 +55,7 @@ class NotificationUtil{
 
           event.complete(null);
 
-
-
           final rawPayload = event.notification.additionalData;
-          print(rawPayload);
 
           if (rawPayload != null) {
             _handleNotification(rawPayload, context);
@@ -78,7 +75,7 @@ class NotificationUtil{
   }
 
   static void _handleNotification(Map<String,dynamic> rawPayload, BuildContext context) {
-    if(rawPayload[kTypeKey] == NotificationType.gameInvite) {
+    if(rawPayload[kTypeKey] == NotificationType.gameInvite.name) {
       final userName = rawPayload[kUserNameKey];
       Navigator.of(context).pushNamed(
         RouteGenerator.receivedInviteScreen,
