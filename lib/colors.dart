@@ -19,4 +19,11 @@ class ClashColors{
 
   static const Color red = Color(0xFFEB5757);
 
+  static const Color brown = Color(0xFF4E3A08);
+
+  static const Color brown200 = Color(0xFFAE7D00);
+
+  ///I don't really know the name of this color lol.
+  static const Color orangeIsh = Color(0xFFFBEFD1);
+
 }

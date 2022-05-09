@@ -28,7 +28,7 @@ class SuccessScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(),
-            Center(child: Image.asset('assets/images/success.png')),
+            Flexible(child: Center(child: Image.asset('assets/images/success.png'))),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

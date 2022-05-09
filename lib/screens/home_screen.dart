@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
             child: TextButton(
           onPressed: () {
-           Navigator.of(context).pushNamed(RouteGenerator.createClashRoomScreen,arguments: 'Kwaz');
+           Navigator.of(context).pushNamed(RouteGenerator.setUpArmouryScreen,arguments: 'Kwaz');
           },
           child: const Text(
             'Play',

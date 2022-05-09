@@ -8,6 +8,7 @@ import 'package:clash_flutter/screens/invite/invite_declined_screen.dart';
 import 'package:clash_flutter/screens/invite/invite_sent_screen.dart';
 import 'package:clash_flutter/screens/invite/received_invite_screen.dart';
 import 'package:clash_flutter/screens/rounds_screen.dart';
+import 'package:clash_flutter/screens/set_up_armoury_screen.dart';
 import 'package:clash_flutter/screens/sub_category_screen.dart';
 import 'package:clash_flutter/screens/home_screen.dart';
 import 'package:clash_flutter/screens/host_mode_screen.dart';
@@ -37,12 +38,17 @@ class RouteGenerator {
   static const createClashRoomScreen = '/createClashRoomScreen';
   static const receivedInviteScreen = '/receivedInviteScreen';
   static const successScreen = '/successScreen';
+  static const setUpArmouryScreen = '/setUpArmouryScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case authScreen:
         return MaterialPageRoute(
           builder: (context) => const AuthScreen(),
+        );
+      case setUpArmouryScreen:
+        return MaterialPageRoute(
+          builder: (context) => const SetUpArmouryScreen(),
         );
       case successScreen:
         final args = settings.arguments as SuccessScreenArgs;
