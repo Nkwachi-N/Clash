@@ -212,7 +212,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                 ),
 
                 Consumer<GameProvider>(
-                  builder: (_, __, child) {
+                  builder: (_, gameModel, child) {
                     return TextButton(
                          onPressed: model.userNameProgress == UserNameState.exists ? () => inviteUser() : null,
                       child: Row(
@@ -222,9 +222,9 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                           const SizedBox(
                             width: 8.0,
                           ),
-                          const Visibility(
-                            visible: false,
-                            child: SpinKitThreeBounce(
+                           Visibility(
+                            visible: gameModel.invitingUser,
+                            child: const SpinKitThreeBounce(
                             size: Constants.kButtonLoaderSize,
                             color: Colors.white,
                           ),),

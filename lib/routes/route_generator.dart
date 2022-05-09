@@ -4,14 +4,15 @@ import 'package:clash_flutter/screens/category_screen.dart';
 import 'package:clash_flutter/screens/clash_mode_screen.dart';
 import 'package:clash_flutter/screens/clash_room.dart';
 import 'package:clash_flutter/screens/create_clash_room.dart';
+import 'package:clash_flutter/screens/invite/invite_declined_screen.dart';
 import 'package:clash_flutter/screens/invite/invite_sent_screen.dart';
-import 'package:clash_flutter/screens/invite/invite_state_screen.dart';
 import 'package:clash_flutter/screens/invite/received_invite_screen.dart';
 import 'package:clash_flutter/screens/rounds_screen.dart';
 import 'package:clash_flutter/screens/sub_category_screen.dart';
 import 'package:clash_flutter/screens/home_screen.dart';
 import 'package:clash_flutter/screens/host_mode_screen.dart';
 import 'package:clash_flutter/screens/join_clash_room.dart';
+import 'package:clash_flutter/screens/success_screen.dart';
 import 'package:clash_flutter/screens/user_name_screen.dart';
 import 'package:clash_flutter/screens/waiting_room_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class RouteGenerator {
   static const authScreen = '/';
   static const categoryScreen = '/categoryScreen';
   static const waitingRoomScreen = '/waitingRoomScreen';
+  static const inviteDeclinedScreen = '/inviteDeclinedScreen';
   static const clashModeScreen = '/clashModeScreen';
   static const clashRoomScreen = '/clashRoomScreen';
   static const subCategoryScreen = '/genreScreen';
@@ -33,14 +35,19 @@ class RouteGenerator {
   static const roundsScreen = '/roundsScreen';
   static const inviteSentScreen = '/inviteSentScreen';
   static const createClashRoomScreen = '/createClashRoomScreen';
-  static const inviteStateScreen = '/inviteStateScreen';
   static const receivedInviteScreen = '/receivedInviteScreen';
+  static const successScreen = '/successScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case authScreen:
         return MaterialPageRoute(
           builder: (context) => const AuthScreen(),
+        );
+      case successScreen:
+        final args = settings.arguments as SuccessScreenArgs;
+        return MaterialPageRoute(
+          builder: (context) => SuccessScreen(args: args),
         );
       case receivedInviteScreen:
         final args = settings.arguments as String;
@@ -49,16 +56,18 @@ class RouteGenerator {
             userName: args,
           ),
         );
-      case inviteStateScreen:
-        final args = settings.arguments as String;
-        return MaterialPageRoute(
-          builder: (context) => InviteStateScreen(
-            username: args,
-          ),
-        );
+
       case createClashRoomScreen:
         return MaterialPageRoute(
           builder: (context) => const CreateClashRoom(),
+        );
+      case inviteDeclinedScreen:
+        final args = settings.arguments as String;
+
+        return MaterialPageRoute(
+          builder: (context) => InviteDeclinedScreen(
+            username: args,
+          ),
         );
       case clashRoomScreen:
         return MaterialPageRoute(

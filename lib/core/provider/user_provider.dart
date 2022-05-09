@@ -1,5 +1,5 @@
 import 'package:clash_flutter/core/models/http_response.dart';
-import 'package:clash_flutter/core/repository/notification_util.dart';
+import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/cupertino.dart' show ChangeNotifier;

@@ -1,4 +1,4 @@
-import 'package:clash_flutter/core/repository/notification_util.dart';
+import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../routes/route_generator.dart';
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
             child: TextButton(
           onPressed: () {
-           Navigator.of(context).pushNamed(RouteGenerator.clashModeScreen);
+           Navigator.of(context).pushNamed(RouteGenerator.createClashRoomScreen,arguments: 'Kwaz');
           },
           child: const Text(
             'Play',

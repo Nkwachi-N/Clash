@@ -1,9 +1,13 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 
-class InviteStateScreen extends StatelessWidget {
+class InviteDeclinedScreen extends StatelessWidget {
   final String username;
-  const InviteStateScreen({Key? key,required this.username,}) : super(key: key);
+
+  const InviteDeclinedScreen({
+    Key? key,
+    required this.username,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +18,14 @@ class InviteStateScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+
             const Spacer(),
-            Center(child: Image.asset('assets/images/success.png')),
-            const Spacer(),
+            Center(child: Image.asset('assets/images/warning.png')),
+            const SizedBox(
+              height: 80.0,
+            ),
             Text(
-              '$username accepted your invite',
+              '$username declined your invite',
               textAlign: TextAlign.center,
               style: textTheme.headline5?.copyWith(
                 fontWeight: FontWeight.w500,
@@ -28,7 +35,7 @@ class InviteStateScreen extends StatelessWidget {
               height: 8.0,
             ),
             Text(
-              'The stage is set',
+              'Ouch',
               textAlign: TextAlign.center,
               style: textTheme.headline6?.copyWith(
                 fontWeight: FontWeight.w400,
@@ -36,16 +43,24 @@ class InviteStateScreen extends StatelessWidget {
                 fontSize: 18.0,
               ),
             ),
-
             const Spacer(
               flex: 2,
             ),
             TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Cancel',
+                ),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
+            TextButton(
               onPressed: () {},
-              child: Text('Let\'s go',
-                  style: textTheme.button?.copyWith(
-                    color: Colors.white,
-                  )),
+              child: const Text('Try again',),
             ),
             const SizedBox(
               height: 32.0,

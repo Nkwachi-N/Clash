@@ -62,36 +62,42 @@ class _InviteSentScreenState extends State<InviteSentScreen>
             size: const Size(double.infinity, double.infinity),
             painter: CircleWavePainter(waveRadius),
           ),
-          Align(
+         //TODO: Implement cancel functionality.
+         /* Align(
             alignment: const Alignment(0.9, -0.85),
-            child: Container(
-              padding: const EdgeInsets.all(12.5),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: ClashColors.grey400),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 20.0,
-                  ),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  Text(
-                    'CANCEL',
-                    style: textTheme.subtitle1?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12.0,
+            child: InkWell(
+              onTap: (){
+
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12.5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: ClashColors.grey400),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.close,
                       color: Colors.white,
+                      size: 20.0,
                     ),
-                  )
-                ],
+                    const SizedBox(
+                      width: 4.0,
+                    ),
+                    Text(
+                      'CANCEL',
+                      style: textTheme.subtitle1?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.0,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
+          ),*/
           Image.asset('assets/images/invite_sent.png'),
           Align(
             alignment: const Alignment(0.0, 0.75),
