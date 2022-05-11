@@ -13,6 +13,8 @@ class Constants{
 
   static const kButtonLoaderSize = 10.0;
 
+  static const kSearchSize = 20;
+
   ///Shared Preference Keys
   static const kAccessToken = 'access_token';
 

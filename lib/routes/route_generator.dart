@@ -1,3 +1,4 @@
+import 'package:clash_flutter/screens/armoury/armoury_search.dart';
 import 'package:clash_flutter/screens/auth_screen.dart';
 import 'package:clash_flutter/screens/avatar_screen.dart';
 import 'package:clash_flutter/screens/category_screen.dart';
@@ -39,6 +40,7 @@ class RouteGenerator {
   static const receivedInviteScreen = '/receivedInviteScreen';
   static const successScreen = '/successScreen';
   static const setUpArmouryScreen = '/setUpArmouryScreen';
+  static const armourySearchScreen = '/armourySearchScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -49,6 +51,10 @@ class RouteGenerator {
       case setUpArmouryScreen:
         return MaterialPageRoute(
           builder: (context) => const SetUpArmouryScreen(),
+        );
+      case armourySearchScreen:
+        return MaterialPageRoute(
+          builder: (context) => const ArmourySearch(),
         );
       case successScreen:
         final args = settings.arguments as SuccessScreenArgs;

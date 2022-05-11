@@ -73,7 +73,6 @@ class NotificationUtil {
             'Authorization': 'Bearer ${Constants.oneSignalRestApiKey}',
             'Content-Type': 'application/json'
           });
-      print(response.body);
 
       final Map<String, dynamic> responseMap = jsonDecode(response.body);
 

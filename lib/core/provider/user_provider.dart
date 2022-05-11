@@ -52,18 +52,18 @@ class UserProvider extends ChangeNotifier {
         final existingUser = await _userRepository.checkUserExists();
         if (existingUser != null) {
           user = existingUser;
-          httpResponse = HttpResponse(responseStatus: ResponseStatus.success,
+          httpResponse = HttpResponse(status: Status.success,
               data: RouteGenerator.homeScreen);
         } else {
-          httpResponse = HttpResponse(responseStatus: ResponseStatus.success,
+          httpResponse = HttpResponse(status: Status.success,
               data: RouteGenerator.userNameScreen);
         }
       }else{
-        httpResponse = HttpResponse(responseStatus: ResponseStatus.failed,
+        httpResponse = HttpResponse(status: Status.failed,
             data: 'Sorry, something went wrong');
       }
     } catch (_){
-      httpResponse = HttpResponse(responseStatus: ResponseStatus.failed,
+      httpResponse = HttpResponse(status: Status.failed,
           data: 'Sorry, something went wrong');
     } finally {
       authorizing = false;

@@ -1,4 +1,4 @@
-import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/core/provider/search_provider.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()..initUser()),
         ChangeNotifierProvider(create: (context) => GameProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
       ],
       child: MaterialApp(
         title: 'Clash',

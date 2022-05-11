@@ -14,10 +14,36 @@ class ClashTheme{
         fontSize: 20.0,
         fontWeight: FontWeight.normal,
       ),
+
     ),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: ClashColors.green200,
       selectionColor: ClashColors.green200,
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      iconTheme: IconThemeData(
+        color: ClashColors.green200
+      )
+    ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: ClashColors.grey500,
+      hintStyle: const TextStyle(
+        color: ClashColors.grey900,
+        fontSize: 16.0,
+      ),
+
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40.0),
+      ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(

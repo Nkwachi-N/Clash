@@ -85,8 +85,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                 ),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
-                  filled: true,
-                  fillColor: ClashColors.grey500,
+
                   hintText: 'username (at least 3 characters)',
                   suffixIcon: Visibility(
                     visible:
@@ -128,18 +127,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                     ),
                   ),
                   isDense: true,
-                  hintStyle: const TextStyle(
-                    color: ClashColors.grey900,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  ),
+
                 ),
               ),
                 const Spacer(),

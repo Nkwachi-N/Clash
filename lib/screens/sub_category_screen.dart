@@ -1,14 +1,12 @@
 import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/game.dart';
-import 'package:clash_flutter/core/models/http_response.dart';
+import 'package:clash_flutter/core/response_handler.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/artist_card.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../colors.dart';
 import '../core/provider/game_provider.dart';
 
@@ -26,7 +24,7 @@ class SubCategoryScreen extends StatefulWidget {
   _SubCategoryScreenState createState() => _SubCategoryScreenState();
 }
 
-class _SubCategoryScreenState extends State<SubCategoryScreen> {
+class _SubCategoryScreenState extends State<SubCategoryScreen> with ResponseHandler{
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -147,19 +145,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
 
   Future<void> init() async {
     final status = await context.read<GameProvider>().getSubCategory();
-    if(status == ResponseStatus.reAuthenticate) {
-
-      _showSnackBar(status.message());
-      Navigator.of(context).pushNamedAndRemoveUntil(RouteGenerator.authScreen, (route) => false);
-      final prefs = await SharedPreferences.getInstance();
-      prefs.clear();
-
-    }else if(status == ResponseStatus.failed) {
-      _showSnackBar(status.message());
-    }
+    handleResponse(context, status);
   }
-  void _showSnackBar(String message) {
-    final snackBar = SnackBar(content: Text(message,style: const TextStyle(color: Colors.white)),backgroundColor: Colors.red,);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+
 }

@@ -84,7 +84,7 @@ class AuthScreen extends StatelessWidget {
 
   Future<void> authorize(BuildContext context) async{
     final result = await context.read<UserProvider>().authorize();
-    if(result.responseStatus == ResponseStatus.success) {
+    if(result.status == Status.success) {
       Navigator.of(context).pushReplacementNamed(result.data!);
     }else{
       //TODO:Show unable to login with flushbar.

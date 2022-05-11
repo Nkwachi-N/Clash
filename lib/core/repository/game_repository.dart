@@ -12,19 +12,19 @@ class GameRepository{
     try{
       final response =  await _dioUtil.get(ApiRoute.getGenre);
 
-      if(response.responseStatus == ResponseStatus.success) {
+      if(response.status == Status.success) {
         try{
           final list = response.data!['genres'].map<String>((json) => json as String).toList();
-          return HttpResponse(responseStatus: ResponseStatus.success,data: list);
+          return HttpResponse(status: Status.success,data: list);
         }catch(e){
-          return HttpResponse(responseStatus: response.responseStatus,data: <String>[]);
+          return HttpResponse(status: response.status,data: <String>[]);
         }
 
       }
-      return HttpResponse(responseStatus: response.responseStatus,data: <String>[]);
+      return HttpResponse(status: response.status,data: <String>[]);
     }catch(e){
 
-      return HttpResponse(responseStatus: ResponseStatus.unknown,data: <String>[]);
+      return HttpResponse(status: Status.unknown,data: <String>[]);
 
     }
   }
@@ -33,16 +33,16 @@ class GameRepository{
     try{
       final response = await _dioUtil.get(ApiRoute.getUserTopArtists);
 
-      if(response.responseStatus == ResponseStatus.success) {
+      if(response.status == Status.success) {
 
         final list = response.data!['items'].map<Artist>((json) => Artist.fromJson(json)).toList();
-        return HttpResponse(responseStatus: ResponseStatus.success,data: list);
+        return HttpResponse(status: Status.success,data: list);
       }
 
-      return HttpResponse(responseStatus: response.responseStatus,data: <Artist>[]);
+      return HttpResponse(status: response.status,data: <Artist>[]);
 
     }catch(_){
-      return HttpResponse(responseStatus: ResponseStatus.failed,data: <Artist>[]);
+      return HttpResponse(status: Status.failed,data: <Artist>[]);
     }
   }
 

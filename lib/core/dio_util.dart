@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
@@ -11,7 +12,8 @@ class DioUtil {
   DioUtil._();
 
   static final _dioUtil = DioUtil._();
-   static String? token;
+  static String? token;
+
 
   factory DioUtil() {
     _initToken();
@@ -51,32 +53,55 @@ class DioUtil {
     }
   }
 
-  Future<HttpResponse<Map<String,dynamic>>> get(String url, {bool requiresToken = true}) async {
-    final Map<String,String> header = {};
-    if(requiresToken) {
-      if(token == null || (token?.isEmpty ?? true)) {
+  Future<HttpResponse<Map<String, dynamic>>> get(String url,
+      {bool requiresToken = true,
+      Map<String, String>? queryParameters}) async {
+    final Map<String, String> header = {};
+    if (requiresToken) {
+      if (token == null || (token?.isEmpty ?? true)) {
         await _initToken();
       }
       header['Authorization'] = 'Bearer $token';
     }
 
     try {
+      final uri = Uri.parse(url).replace(queryParameters: queryParameters);
+
       final response = await http.get(
-        Uri.parse(url),
+        uri,
         headers: header,
       );
 
-      if(response.statusCode == 401) {
-        return await _retryGetResponse(url,requiresToken);
-      }
 
-      return HttpResponse(responseStatus: ResponseStatus.success,data: jsonDecode(response.body));
-    } catch (e){
-      return HttpResponse(responseStatus: ResponseStatus.unknown);
+      if (response.statusCode == 401) {
+        return await _retryGetResponse(url, requiresToken);
+      } else if (response.statusCode == 200) {
+        return HttpResponse(
+          status: Status.success,
+          data: jsonDecode(response.body),
+        );
+      } else if (response.statusCode == 403) {
+        return HttpResponse(
+          status: Status.rateExceeded,
+          data: jsonDecode(response.body),
+        );
+      } else {
+        return HttpResponse(
+          status: Status.unknown,
+        );
+      }
+    } on SocketException {
+      return HttpResponse(
+        status: Status.noInternet,
+      );
+    } catch (e) {
+      return HttpResponse(
+        status: Status.unknown,
+      );
     }
   }
 
-  Future<ResponseStatus> _refreshToken() async {
+  Future<Status> _refreshToken() async {
     final prefs = await SharedPreferences.getInstance();
     final refreshToken = prefs.getString(Constants.kRefreshToken);
 
@@ -101,43 +126,42 @@ class DioUtil {
         headers: _header,
       );
 
-      if(response.statusCode == 400) {
-        return ResponseStatus.reAuthenticate;
+      if (response.statusCode == 400) {
+        return Status.reAuthenticate;
       }
 
       final accessToken = jsonDecode(response.body)['access_token'];
       prefs.setString(Constants.kAccessToken, accessToken);
-      return ResponseStatus.success;
-
-    }  catch (e) {
-
-      return ResponseStatus.unknown;
-     
+      return Status.success;
+    } catch (e) {
+      return Status.unknown;
     }
   }
 
-  static Future<void> _initToken() async{
+  static Future<void> _initToken() async {
     final prefs = await SharedPreferences.getInstance();
 
     token = prefs.getString(Constants.kAccessToken) ?? '';
   }
 
- Future<HttpResponse<Map<String,dynamic>>> _retryGetResponse(String url, bool requiresToken) async {
+  Future<HttpResponse<Map<String, dynamic>>> _retryGetResponse(
+      String url, bool requiresToken) async {
     final refreshResponse = await _refreshToken();
-    if(refreshResponse == ResponseStatus.success) {
-      final Map<String,String> header = {};
-      if(requiresToken) {
+    if (refreshResponse == Status.success) {
+      final Map<String, String> header = {};
+      if (requiresToken) {
         final prefs = await SharedPreferences.getInstance();
         token = prefs.getString(Constants.kAccessToken);
         header['Authorization'] = 'Bearer $token';
       }
-      final response = await http.get(Uri.parse(url),headers: header);
-      if(response.statusCode == 200 ) {
-        return HttpResponse(responseStatus: ResponseStatus.success,data: jsonDecode(response.body));
+      final response = await http.get(Uri.parse(url), headers: header);
+      if (response.statusCode == 200) {
+        return HttpResponse(
+            status: Status.success,
+            data: jsonDecode(response.body));
       }
-      return HttpResponse(responseStatus: ResponseStatus.failed);
+      return HttpResponse(status: Status.failed);
     }
-    return HttpResponse(responseStatus: ResponseStatus.reAuthenticate);
-
+    return HttpResponse(status: Status.reAuthenticate);
   }
 }

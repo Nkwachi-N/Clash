@@ -61,7 +61,7 @@ class GameProvider extends ChangeNotifier {
     this.artist = artist;
   }
 
-  Future<ResponseStatus> getSubCategory() async {
+  Future<Status> getSubCategory() async {
     gettingSubCategory = true;
 
     switch (category) {
@@ -73,11 +73,11 @@ class GameProvider extends ChangeNotifier {
     }
   }
 
-  Future<ResponseStatus> _getGenre() async {
+  Future<Status> _getGenre() async {
     final response = await _gameRepository.getGenre();
-    ResponseStatus status = response.responseStatus;
+    Status status = response.status;
 
-    if (status == ResponseStatus.success) {
+    if (status == Status.success) {
       genreList = response.data ?? [];
     }
     gettingSubCategory = false;
@@ -86,11 +86,11 @@ class GameProvider extends ChangeNotifier {
     return status;
   }
 
-  Future<ResponseStatus> _getArtist() async {
+  Future<Status> _getArtist() async {
     final response = await _gameRepository.getArtists();
-    ResponseStatus status = response.responseStatus;
+    Status status = response.status;
 
-    if (status == ResponseStatus.success) {
+    if (status == Status.success) {
       artistList = response.data ?? [];
     }
 
@@ -126,7 +126,6 @@ class GameProvider extends ChangeNotifier {
 
     if (user != null) {
       if (inviteState == InviteState.accepted) {
-        print('accepting invite');
         status = await NotificationUtil.acceptInvite(user.id, userName);
       } else {
         status = await NotificationUtil.rejectInvite(user.id, userName);

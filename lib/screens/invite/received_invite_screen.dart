@@ -1,7 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
-import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/screens/success_screen.dart';
 import 'package:flutter/material.dart';
