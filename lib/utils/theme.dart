@@ -22,6 +22,7 @@ class ClashTheme{
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
+      centerTitle: true,
       iconTheme: IconThemeData(
         color: ClashColors.green200
       )

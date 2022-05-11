@@ -35,7 +35,7 @@ class SetUpArmouryScreen extends StatelessWidget {
               const Text(
                 'These are the songs you’ll be clashing with',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                     color: ClashColors.grey900,
                     fontWeight: FontWeight.w400,
                     fontSize: 15.0),
@@ -74,7 +74,7 @@ class SetUpArmouryScreen extends StatelessWidget {
                       'and is based, in the most part, on the total number of plays the track has had and'
                       ' how recent those plays are.\n \nThe popularity value may lag actual popularity by a few days i.e '
                       'the value is not updated in real time.',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13.0,
                         fontWeight: FontWeight.w400,
                         color: ClashColors.brown200,

@@ -9,56 +9,93 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ArmourySearch extends StatefulWidget  {
+class ArmourySearch extends StatefulWidget {
   const ArmourySearch({Key? key}) : super(key: key);
 
   @override
   State<ArmourySearch> createState() => _ArmourySearchState();
 }
 
-class _ArmourySearchState extends State<ArmourySearch> with ResponseHandler,SingleTickerProviderStateMixin {
+class _ArmourySearchState extends State<ArmourySearch>
+    with ResponseHandler, SingleTickerProviderStateMixin {
   final player = AudioPlayer();
 
   int lastPlayedIndex = 0;
   late AnimationController _controller;
-
+  late TextEditingController _textEditingController;
+  late Animation<double> _fadeOutAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync:this ,duration: Duration(seconds: 30),);
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 30),
+    );
+
+    _fadeOutAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.75, 1.0),
+      )
+
+    );
     _controller.addListener(() {
-      setState(() {
-      print('animating');
-      });
+     print(_controller.value);
+
+      setState(() {});
+      player
+          .setVolume(_fadeOutAnimation.value);
+    });
+    _textEditingController = TextEditingController();
+
+    _textEditingController.addListener(() async {
+      final value = _textEditingController.text;
+      if (value.isNotEmpty) {
+        if (player.playing) {
+          player.stop();
+          _revertState(lastPlayedIndex);
+        }
+
+        final response = await context
+            .read<SearchProvider>()
+            .searchTracks(value, 'afrobeat');
+        handleResponse(context, response);
+      }
     });
 
     player.playerStateStream.listen((state) {
-      if (state.playing){
-        _controller.forward();
-      }else if(state.processingState == ProcessingState.completed){
-       _revertState(lastPlayedIndex);
-
+      if (state.playing) {
+        _controller.forward().then((value) {});
+      } else {
+        print(state.processingState.name);
       }
     });
   }
-  List<bool> playing = List.filled(Constants.kSearchSize, false,growable: false);
 
+  List<bool> playing =
+      List.filled(Constants.kSearchSize, false, growable: false);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final searchModel = context.watch<SearchProvider>();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Armoury'),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
+            const SizedBox(
+              height: 8.0,
+            ),
             TextField(
               style: textTheme.subtitle1?.copyWith(
                 color: ClashColors.green200,
               ),
+              controller: _textEditingController,
               decoration: InputDecoration(
                 hintText: 'Search for a song',
                 prefixIcon: UnconstrainedBox(
@@ -69,12 +106,6 @@ class _ArmourySearchState extends State<ArmourySearch> with ResponseHandler,Sing
                   ),
                 ),
               ),
-              onChanged: (value) async {
-                final response =
-                    await searchModel.searchTracks(value, 'afrobeat');
-
-                handleResponse(context, response);
-              },
             ),
             const SizedBox(
               height: 32.0,
@@ -129,37 +160,48 @@ class _ArmourySearchState extends State<ArmourySearch> with ResponseHandler,Sing
                                       );
                                     },
                                     duration: const Duration(milliseconds: 500),
-                                    child: _getProgressIndicator(playing[index]),
+                                    child:
+                                        _getProgressIndicator(playing[index]),
                                   ),
                                 ),
                                 AnimatedCrossFade(
-                                    firstChild: IconButton(
-                                      key: const ValueKey('play'),
-                                      icon: const Icon(
-                                        Icons.play_arrow_rounded,
-                                        size: 35.0,
-                                      ),
-                                      onPressed: () async{
-                                        playing[index] = !playing[index];
-                                        lastPlayedIndex = index;
-                                        final duration = await player.setUrl(track.audioUrl!);
-                                        _controller.duration = duration;
-                                        player.play();
-                                      },
+                                  firstChild: IconButton(
+                                    key: const ValueKey('play'),
+                                    icon: const Icon(
+                                      Icons.play_arrow_rounded,
+                                      size: 35.0,
                                     ),
-                                    secondChild: IconButton(
-                                      key: const ValueKey('pause'),
-                                      icon: const Icon(
-                                        Icons.pause_rounded,
-                                        size: 35.0,
-                                      ),
-                                      onPressed: () {
-                                        player.stop();
-                                        _revertState(index);
-                                      },
+                                    onPressed: () async {
+                                      playing[index] = !playing[index];
+                                      lastPlayedIndex = index;
+                                      final duration =
+                                          await player.setAudioSource(
+                                        ProgressiveAudioSource(
+                                          Uri.parse(track.audioUrl!),
+                                        ),
+                                      );
+
+                                      _controller.duration = duration;
+                                      player.play().then((value) =>
+                                          _revertState(lastPlayedIndex));
+                                    },
+                                  ),
+                                  secondChild: IconButton(
+                                    key: const ValueKey('pause'),
+                                    icon: const Icon(
+                                      Icons.stop_rounded,
+                                      size: 30.0,
                                     ),
-                                    crossFadeState: playing[index] ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                    duration: const Duration(milliseconds: 200))
+                                    onPressed: () {
+                                      player.stop();
+                                      _revertState(index);
+                                    },
+                                  ),
+                                  crossFadeState: playing[index]
+                                      ? CrossFadeState.showSecond
+                                      : CrossFadeState.showFirst,
+                                  duration: const Duration(milliseconds: 200),
+                                )
                               ],
                             ),
                             const SizedBox(
@@ -167,7 +209,8 @@ class _ArmourySearchState extends State<ArmourySearch> with ResponseHandler,Sing
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -229,8 +272,17 @@ class _ArmourySearchState extends State<ArmourySearch> with ResponseHandler,Sing
     }
   }
 
+  @override
+  void dispose() {
+    player.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
   void _revertState(int lastPlayedIndex) {
-    playing[lastPlayedIndex] = false;
     _controller.reset();
+    setState(() {
+      playing[lastPlayedIndex] = false;
+    });
   }
 }
