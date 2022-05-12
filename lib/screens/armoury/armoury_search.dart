@@ -1,5 +1,5 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/core/constants.dart';
+import 'package:clash_flutter/core/models/track.dart';
 import 'package:clash_flutter/core/provider/search_provider.dart';
 import 'package:clash_flutter/core/response_handler.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+extension PlayerUtil on AudioPlayer {
+
+
+   String? getMusic() {
+    final ProgressiveAudioSource? audioSource = this.audioSource as ProgressiveAudioSource?;
+
+    return audioSource?.uri.toString();
+  }
+}
 
 class ArmourySearch extends StatefulWidget {
   const ArmourySearch({Key? key}) : super(key: key);
@@ -18,68 +28,60 @@ class ArmourySearch extends StatefulWidget {
 
 class _ArmourySearchState extends State<ArmourySearch>
     with ResponseHandler, SingleTickerProviderStateMixin {
-  final player = AudioPlayer();
-
-  int lastPlayedIndex = 0;
-  late AnimationController _controller;
   late TextEditingController _textEditingController;
+  late AnimationController _controller;
   late Animation<double> _fadeOutAnimation;
+  final AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
+
+    _textEditingController = TextEditingController();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 30),
     );
 
-    _fadeOutAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.75, 1.0),
-      )
+    _fadeOutAnimation =
+        Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.75, 1.0),
+    ));
 
-    );
-    _controller.addListener(() {
-     print(_controller.value);
-
-      setState(() {});
-      player
-          .setVolume(_fadeOutAnimation.value);
+    player.playerStateStream.listen((state) {
+      if (state.playing) {
+        _controller.forward();
+      }
     });
-    _textEditingController = TextEditingController();
+    _controller.addListener(() {
+      player.setVolume(_fadeOutAnimation.value);
+    });
 
     _textEditingController.addListener(() async {
       final value = _textEditingController.text;
       if (value.isNotEmpty) {
-        if (player.playing) {
+        //TODO:revert state and stop playing.
+        if(player.playing) {
           player.stop();
-          _revertState(lastPlayedIndex);
         }
 
         final response = await context
             .read<SearchProvider>()
             .searchTracks(value, 'afrobeat');
-        handleResponse(context, response);
-      }
-    });
-
-    player.playerStateStream.listen((state) {
-      if (state.playing) {
-        _controller.forward().then((value) {});
-      } else {
-        print(state.processingState.name);
+        if(mounted) {
+          handleResponse(context, response);
+        }
       }
     });
   }
-
-  List<bool> playing =
-      List.filled(Constants.kSearchSize, false, growable: false);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final searchModel = context.watch<SearchProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Armoury'),
@@ -126,86 +128,33 @@ class _ArmourySearchState extends State<ArmourySearch>
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                ClipOval(
-                                  child: Opacity(
-                                    opacity: 0.5,
-                                    child: FadeInImage.memoryNetwork(
-                                      image: track.imageUrl,
-                                      height: 60.0,
-                                      width: 60.0,
-                                      placeholder: kTransparentImage,
-                                    ),
-                                  ),
-                                ),
-                                Positioned.fill(
-                                  child: AnimatedSwitcher(
-                                    layoutBuilder:
-                                        (currentChild, previousChildren) {
-                                      return Stack(
-                                        alignment: Alignment.center,
-                                        children: <Widget>[
-                                          ...[
-                                            for (Widget child
-                                                in previousChildren)
-                                              Positioned.fill(child: child)
-                                          ],
-                                          if (currentChild != null)
-                                            Positioned.fill(
-                                              child: currentChild,
-                                            ),
-                                        ],
-                                      );
-                                    },
-                                    duration: const Duration(milliseconds: 500),
-                                    child:
-                                        _getProgressIndicator(playing[index]),
-                                  ),
-                                ),
-                                AnimatedCrossFade(
-                                  firstChild: IconButton(
-                                    key: const ValueKey('play'),
-                                    icon: const Icon(
-                                      Icons.play_arrow_rounded,
-                                      size: 35.0,
-                                    ),
-                                    onPressed: () async {
-                                      playing[index] = !playing[index];
-                                      lastPlayedIndex = index;
-                                      final duration =
-                                          await player.setAudioSource(
-                                        ProgressiveAudioSource(
-                                          Uri.parse(track.audioUrl!),
-                                        ),
-                                      );
+                            PlayWidget(
+                              track: track,
+                              animation: _controller,
+                              player: player, pausePressed: () {
+                                player.stop();
+                                _revertState();
+                            },
+                              playPressed: ()async {
+                              if (track.audioUrl != null) {
 
-                                      _controller.duration = duration;
-                                      player.play().then((value) =>
-                                          _revertState(lastPlayedIndex));
-                                    },
+                                if(player.playing) {
+                                  player.stop();
+                                }
+
+                                final duration =
+                                await player.setAudioSource(
+                                  ProgressiveAudioSource(
+                                    Uri.parse(track.audioUrl!),
                                   ),
-                                  secondChild: IconButton(
-                                    key: const ValueKey('pause'),
-                                    icon: const Icon(
-                                      Icons.stop_rounded,
-                                      size: 30.0,
-                                    ),
-                                    onPressed: () {
-                                      player.stop();
-                                      _revertState(index);
-                                    },
-                                  ),
-                                  crossFadeState: playing[index]
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                                  duration: const Duration(milliseconds: 200),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 16.0,
+                                );
+
+                                _controller.duration = duration;
+                                player
+                                    .play()
+                                    .then((value) => _revertState());
+                              }
+                            },
                             ),
                             Expanded(
                               child: Padding(
@@ -246,7 +195,10 @@ class _ArmourySearchState extends State<ArmourySearch>
                                 style: TextStyle(fontSize: 14.0),
                               ),
                               icon: const Icon(Icons.add, size: 20),
-                              onPressed: () {},
+                              onPressed: () async {
+
+
+                              },
                             ),
                           ],
                         ),
@@ -260,10 +212,120 @@ class _ArmourySearchState extends State<ArmourySearch>
     );
   }
 
+  void _revertState() {
+    if (mounted) {
+      _controller.stop();
+      _controller.reset();
+    }
+  }
+
+  void cleanUp() async {
+    _controller.dispose();
+    if (player.playing) {
+      await player.stop();
+    }
+    player.dispose();
+  }
+
+  @override
+  void dispose() {
+    cleanUp();
+    super.dispose();
+  }
+}
+
+class PlayWidget extends StatelessWidget {
+  final Track track;
+  final Animation<double> animation;
+  final AudioPlayer player;
+  final VoidCallback playPressed;
+  final VoidCallback pausePressed;
+
+  const PlayWidget({
+    Key? key,
+    required this.player,
+    required this.track,
+    required this.animation,
+    required this.playPressed,
+    required this.pausePressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context,child){
+        final playing = player.playing && player.getMusic() == track.audioUrl;
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            child!,
+            Positioned.fill(
+              child: AnimatedSwitcher(
+                layoutBuilder: (currentChild, previousChildren) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      ...[
+                        for (Widget child in previousChildren)
+                          Positioned.fill(child: child)
+                      ],
+                      if (currentChild != null)
+                        Positioned.fill(
+                          child: currentChild,
+                        ),
+                    ],
+                  );
+                },
+                duration: const Duration(milliseconds: 500),
+                child: _getProgressIndicator(playing),
+              ),
+            ),
+            Visibility(
+              visible: track.audioUrl != null,
+              child: AnimatedCrossFade(
+                firstChild: IconButton(
+                  key: const ValueKey('play'),
+                  icon: const Icon(
+                    Icons.play_arrow_rounded,
+                    size: 35.0,
+                  ),
+                  onPressed: playPressed,
+                ),
+                secondChild: IconButton(
+                  key: const ValueKey('pause'),
+                  icon: const Icon(
+                    Icons.stop_rounded,
+                    size: 30.0,
+                  ),
+                  onPressed: pausePressed,
+                ),
+                crossFadeState:
+                playing ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 200),
+              ),
+            ),
+          ],
+        );
+      },
+      child: ClipOval(
+        child: Opacity(
+          opacity: 0.5,
+          child: FadeInImage.memoryNetwork(
+            image: track.imageUrl,
+            height: 60.0,
+            width: 60.0,
+            placeholder: kTransparentImage,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _getProgressIndicator(bool playing) {
     if (playing) {
       return CircularProgressIndicator(
-        value: _controller.value,
+        value: animation.value,
         color: ClashColors.green200,
         strokeWidth: 2.0,
       );
@@ -272,17 +334,5 @@ class _ArmourySearchState extends State<ArmourySearch>
     }
   }
 
-  @override
-  void dispose() {
-    player.dispose();
-    _controller.dispose();
-    super.dispose();
-  }
 
-  void _revertState(int lastPlayedIndex) {
-    _controller.reset();
-    setState(() {
-      playing[lastPlayedIndex] = false;
-    });
-  }
 }
