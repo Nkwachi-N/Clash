@@ -48,6 +48,7 @@ dependencies:
   flutter_svg: ^1.0.3
   onesignal_flutter: ^3.3.0
   just_audio: ^0.9.21
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:

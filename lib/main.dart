@@ -1,3 +1,4 @@
+import 'package:clash_flutter/core/provider/audio_provider.dart';
 import 'package:clash_flutter/core/provider/search_provider.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => UserProvider()..initUser()),
         ChangeNotifierProvider(create: (context) => GameProvider()),
         ChangeNotifierProvider(create: (context) => SearchProvider()),
+        Provider(create: (context) => AudioProvider(),),
       ],
       child: MaterialApp(
         title: 'Clash',
