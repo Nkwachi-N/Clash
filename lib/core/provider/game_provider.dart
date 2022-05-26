@@ -3,6 +3,7 @@ import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/repository/game_repository.dart';
 import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:clash_flutter/core/repository/user_repository.dart';
+import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 import '../models/game.dart';
 
@@ -21,9 +22,10 @@ extension ParseToString on InviteState {
   }
 }
 
-class GameProvider extends ChangeNotifier {
-  final _gameRepository = GameRepository();
-  final _userRepository = UserRepository();
+class GameProvider extends ChangeNotifier{
+  GameRepository? _gameRepository;
+  UserRepository? _userRepository;
+  SpotifyRepository? _spotifyRepository;
   List<String> genreList = [];
   bool gettingSubCategory = false;
   late Category category;
@@ -74,36 +76,46 @@ class GameProvider extends ChangeNotifier {
   }
 
   Future<Status> _getGenre() async {
-    final response = await _gameRepository.getGenre();
-    Status status = response.status;
+    final response = await _spotifyRepository?.getGenre();
+    if(response != null) {
+      Status status = response.status;
 
-    if (status == Status.success) {
-      genreList = response.data ?? [];
+      if (status == Status.success) {
+        genreList = response.data ?? [];
+      }
+      gettingSubCategory = false;
+      notifyListeners();
+
+      return status;
     }
-    gettingSubCategory = false;
-    notifyListeners();
+    return Status.unknown;
 
-    return status;
   }
 
   Future<Status> _getArtist() async {
-    final response = await _gameRepository.getArtists();
-    Status status = response.status;
+    final response = await _spotifyRepository?.getUserTopArtists();
 
-    if (status == Status.success) {
-      artistList = response.data ?? [];
+    if(response != null) {
+      Status status = response.status;
+
+      if (status == Status.success) {
+        artistList = response.data ?? [];
+      }
+
+      gettingSubCategory = false;
+      notifyListeners();
+      return status;
     }
 
-    gettingSubCategory = false;
-    notifyListeners();
-    return status;
+    return Status.unknown;
+
   }
 
   Future<bool> inviteUser(String userName) async {
     _invitingUser = true;
     bool status = false;
     notifyListeners();
-    final user = await _userRepository.getUserByUserName(userName);
+    final user = await _userRepository?.getUserByUserName(userName);
     if (user != null) {
       status = await NotificationUtil.inviteUser(user.id, userName);
     }
@@ -122,7 +134,7 @@ class GameProvider extends ChangeNotifier {
     _inviteState = inviteState;
     notifyListeners();
     bool status = false;
-    final user = await _userRepository.getUserByUserName(userName);
+    final user = await _userRepository?.getUserByUserName(userName);
 
     if (user != null) {
       if (inviteState == InviteState.accepted) {
@@ -135,5 +147,12 @@ class GameProvider extends ChangeNotifier {
     _inviteState = InviteState.unDecided;
     notifyListeners();
     return status;
+  }
+
+
+  initialise(SpotifyRepository spotifyRepository, UserRepository userRepository, GameRepository gameRepository) {
+    _spotifyRepository = spotifyRepository;
+    _userRepository = userRepository;
+    _gameRepository = gameRepository;
   }
 }

@@ -2,11 +2,11 @@ import 'package:clash_flutter/core/models/http_response.dart';
 import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
 import 'package:hive/hive.dart';
 import '../constants.dart';
 import '../models/user.dart';
-import '../repository/auth_repository.dart';
 
 enum UserNameState{
   idle,
@@ -16,13 +16,13 @@ enum UserNameState{
 }
 
 class UserProvider extends ChangeNotifier {
-  final _authRepository = AuthRepository();
-  final _userRepository = UserRepository();
+  SpotifyRepository? _spotifyRepository;
+  UserRepository? _userRepository;
 
   bool storingUserName = false;
   bool storingAvatar = false;
   bool authorizing = false;
-  int? selectedAvatar;
+  String? selectedAvatar;
 
   UserNameState userNameProgress = UserNameState.idle;
 
@@ -47,7 +47,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
     late HttpResponse<String> httpResponse;
     try {
-      bool response = await _authRepository.authorize();
+      bool response = await _spotifyRepository?.authorize() ?? false;
       if (response) {
         final existingUser = await _userRepository.checkUserExists();
         if (existingUser != null) {
@@ -85,7 +85,7 @@ class UserProvider extends ChangeNotifier {
     return status;
   }
 
-  void changeAvatar(int index) {
+  void changeAvatar(String index) {
     selectedAvatar = index;
     notifyListeners();
   }
@@ -130,6 +130,11 @@ class UserProvider extends ChangeNotifier {
   void resetUserNameState() {
     userNameProgress = UserNameState.idle;
     notifyListeners();
+  }
+
+  void initialise(SpotifyRepository spotify, UserRepository user) {
+    _userRepository = user;
+    _spotifyRepository = spotify;
   }
 
 

@@ -1,13 +1,12 @@
-import 'package:clash_flutter/core/api_route.dart';
 import 'package:clash_flutter/core/constants.dart';
-import 'package:clash_flutter/core/dio_util.dart';
 import 'package:clash_flutter/core/models/user.dart';
+import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 class UserRepository{
 
-  final _dioUtil = DioUtil();
+  SpotifyRepository? _spotifyRepository;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -15,7 +14,7 @@ class UserRepository{
   Future<bool> storeUserName(String userName) async {
     bool status = false;
     try {
-      String? userId = await _getUserId();
+      String? userId = await _spotifyRepository?.getUserId();
 
       if (userId != null) {
         status = await _saveUser(User(
@@ -51,12 +50,12 @@ class UserRepository{
     return result.docs.isEmpty;
   }
 
-  Future<bool> saveAvatar(int avatar) async {
+  Future<bool> saveAvatar(String avatar) async {
     bool status = false;
     try {
       final box = Hive.box(Constants.kHiveBox);
       final User user = box.get('user');
-      user.avatar = avatar.toString();
+      user.avatar = avatar;
       status = await _saveUser(user);
     } catch (e) {
       return status;
@@ -64,16 +63,14 @@ class UserRepository{
     return status;
   }
 
-  Future<String?> _getUserId() async {
-    final response = await _dioUtil.get(
-      ApiRoute.getUserInfo,
-    );
 
-    return response.data!['id'];
-  }
 
   Future<User?> checkUserExists() async {
-    final userId = await _getUserId();
+    final userId = await _spotifyRepository?.getUserId();
+
+    if(userId == null || userId.isEmpty) {
+      return null;
+    }
     final userSnapShot =  await users.doc(userId).get();
     if(userSnapShot.exists) {
       final user = User.fromJson(userSnapShot.data()  as Map<String, dynamic>);

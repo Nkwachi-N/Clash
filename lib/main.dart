@@ -2,7 +2,10 @@ import 'package:clash_flutter/core/provider/audio_provider.dart';
 import 'package:clash_flutter/core/provider/search_provider.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
+import 'package:clash_flutter/core/repository/game_repository.dart';
+import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:clash_flutter/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -56,15 +59,51 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider(
+          create: (context) => SpotifyRepository(),
+        ),
+        Provider(
+          create: (context) => UserRepository(),
+        ),
+        Provider(
+          create: (context) => GameRepository(),
+        ),
         ChangeNotifierProvider(create: (context) => UserProvider()..initUser()),
-        ChangeNotifierProvider(create: (context) => GameProvider()),
-        ChangeNotifierProvider(create: (context) => SearchProvider()),
-        Provider(create: (context) => AudioProvider(),),
+        ChangeNotifierProxyProvider3<SpotifyRepository, GameRepository,
+            UserRepository, GameProvider>(
+          create: (context) => GameProvider(),
+          update: (context, spotifyRepository, user, game, gameProvider) {
+            if (gameProvider == null) throw ArgumentError.notNull();
+            gameProvider.initialise(spotifyRepository, game, user);
+            return gameProvider;
+          },
+        ),
+        ChangeNotifierProxyProvider2<SpotifyRepository, UserRepository,
+            UserProvider>(
+          create: (context) => UserProvider()..initUser(),
+          lazy: false,
+          update: (context, spotify, user, userProvider) {
+            if (userProvider == null) throw ArgumentError.notNull();
+            userProvider.initialise(spotify, user);
+            return userProvider;
+          },
+        ),
+        ChangeNotifierProxyProvider<SpotifyRepository, SearchProvider>(
+          create: (context) => SearchProvider(),
+          update: (context, spotifyRepo, searchProvider) {
+            if (searchProvider == null) throw ArgumentError.notNull();
+            searchProvider.initialise(spotifyRepo);
+            return searchProvider;
+          },
+        ),
+        Provider(
+          create: (context) => AudioProvider(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         title: 'Clash',
@@ -76,5 +115,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-

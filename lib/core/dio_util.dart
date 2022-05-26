@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/models/http_response.dart';
-import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'api_route.dart';
 import 'package:http/http.dart' as http;
 
 class DioUtil {
@@ -73,9 +71,9 @@ class DioUtil {
       );
 
 
-      if (response.statusCode == 401) {
+    /*  if (response.statusCode == 401) {
         return await _retryGetResponse(url, requiresToken);
-      } else if (response.statusCode == 200) {
+      } else*/ if (response.statusCode == 200) {
         return HttpResponse(
           status: Status.success,
           data: jsonDecode(response.body),
@@ -101,42 +99,6 @@ class DioUtil {
     }
   }
 
-  Future<Status> _refreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString(Constants.kRefreshToken);
-
-    final _data = {
-      'grant_type': 'refresh_token',
-      'refresh_token': refreshToken,
-      'client_id': kClientId,
-    };
-
-    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-
-    final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
-    final _header = {
-      'Authorization': 'Basic $encodedString',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(ApiRoute.autGetTokenUrl),
-        body: _data,
-        headers: _header,
-      );
-
-      if (response.statusCode == 400) {
-        return Status.reAuthenticate;
-      }
-
-      final accessToken = jsonDecode(response.body)['access_token'];
-      prefs.setString(Constants.kAccessToken, accessToken);
-      return Status.success;
-    } catch (e) {
-      return Status.unknown;
-    }
-  }
 
   static Future<void> _initToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -144,7 +106,7 @@ class DioUtil {
     token = prefs.getString(Constants.kAccessToken) ?? '';
   }
 
-  Future<HttpResponse<Map<String, dynamic>>> _retryGetResponse(
+/*  Future<HttpResponse<Map<String, dynamic>>> _retryGetResponse(
       String url, bool requiresToken) async {
     final refreshResponse = await _refreshToken();
     if (refreshResponse == Status.success) {
@@ -163,5 +125,5 @@ class DioUtil {
       return HttpResponse(status: Status.failed);
     }
     return HttpResponse(status: Status.reAuthenticate);
-  }
+  }*/
 }

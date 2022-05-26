@@ -1,10 +1,17 @@
 
 class Game{
   Category? category;
-  List<String>? subCategory;
   int? rounds;
 
-  Game({this.category, this.rounds, this.subCategory});
+  Game({this.category, this.rounds, });
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (category != null) "category": category?.name,
+      if (rounds != null) "rounds": rounds,
+
+    };
+  }
 
 }
 

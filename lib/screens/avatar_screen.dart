@@ -1,5 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
+import 'package:clash_flutter/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -40,47 +41,62 @@ class _AvatarScreenState extends State<AvatarScreen> {
             const SizedBox(
               height: 32.0,
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              AvatarWidget(
+                path: Assets.images.avatar1.path,
+              ),
+              AvatarWidget(
+                path: Assets.images.avatar2.path,
+              ),
+              AvatarWidget(
+                path: Assets.images.avatar3.path,
+              ),
+            ]),
+            const SizedBox(
+              height: 32.0,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                3,
-                (index) => AvatarWidget(
-                  imageIndex: ++index,
+              children: [
+                AvatarWidget(
+                  path: Assets.images.avatar4.path,
                 ),
-              ),
+                AvatarWidget(
+                  path: Assets.images.avatar5.path,
+                ),
+                AvatarWidget(
+                  path: Assets.images.avatar6.path,
+                ),
+              ],
             ),
             const SizedBox(
               height: 32.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                3,
-                (index) => AvatarWidget(
-                  imageIndex: index + 4,
+              children: [
+                AvatarWidget(
+                  path: Assets.images.avatar7.path,
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 32.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                3,
-                (index) => AvatarWidget(
-                  imageIndex: index + 7,
+                AvatarWidget(
+                  path: Assets.images.avatar8.path,
                 ),
-              ),
+                AvatarWidget(
+                  path: Assets.images.avatar9.path,
+                ),
+              ],
             ),
             const Spacer(),
             TextButton(
               onPressed: () async {
                 bool status = await model.storeAvatar();
-                if(status){
-                  Navigator.of(context).pushReplacementNamed(RouteGenerator.homeScreen);
-                }else{
-                  const snackBar = SnackBar(content: Text('Unable to save avatar'),);
+                if (status) {
+                  Navigator.of(context)
+                      .pushReplacementNamed(RouteGenerator.homeScreen);
+                } else {
+                  const snackBar = SnackBar(
+                    content: Text('Unable to save avatar'),
+                  );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
@@ -115,11 +131,11 @@ class _AvatarScreenState extends State<AvatarScreen> {
 }
 
 class AvatarWidget extends StatelessWidget {
-  final int imageIndex;
+  final String path;
 
   const AvatarWidget({
     Key? key,
-    required this.imageIndex,
+    required this.path,
   }) : super(key: key);
 
   @override
@@ -127,7 +143,7 @@ class AvatarWidget extends StatelessWidget {
     final model = context.read<UserProvider>();
     return InkWell(
       onTap: () {
-        model.changeAvatar(imageIndex);
+        model.changeAvatar(path);
       },
       child: Container(
         height: 100.0,
@@ -135,7 +151,7 @@ class AvatarWidget extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: imageIndex == model.selectedAvatar
+            color: path == model.selectedAvatar
                 ? Colors.green
                 : Colors.transparent,
             width: 2.0,
@@ -143,7 +159,7 @@ class AvatarWidget extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.contain,
             image: AssetImage(
-              'assets/images/avatar_$imageIndex.png',
+              path,
             ),
           ),
         ),

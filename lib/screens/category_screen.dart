@@ -4,7 +4,6 @@ import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../colors.dart';
 
 class CategoryScreen extends StatelessWidget {
