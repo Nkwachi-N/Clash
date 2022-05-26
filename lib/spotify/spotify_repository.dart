@@ -13,12 +13,11 @@ import '../core/models/http_response.dart';
 import 'spotify_route.dart';
 import 'package:http/http.dart' as http;
 
-class SpotifyRepository{
+class SpotifyRepository {
   static const state = 'HappyBaby257';
   final _dio = Dio();
 
   final _dioUtil = DioUtil();
-
 
   Future<bool> authorize() async {
     final pkcePair = PkcePair.generate();
@@ -83,10 +82,12 @@ class SpotifyRepository{
     try {
       final response = await _dio.post(SpotifyRoute.autGetTokenUrl,
           data: data, options: Options(headers: header));
+      print('response is ${response.data}');
       final accessToken = response.data['access_token'];
       final refreshToken = response.data['refresh_token'];
       prefs.setString(Constants.kAccessToken, accessToken);
       prefs.setString(Constants.kRefreshToken, refreshToken);
+
 
       return true;
     } catch (_) {
@@ -102,50 +103,48 @@ class SpotifyRepository{
     return response.data!['id'];
   }
 
-  Future<HttpResponse<List<Artist>>> getUserTopArtists() async{
-    try{
+  Future<HttpResponse<List<Artist>>> getUserTopArtists() async {
+    try {
       final response = await _dioUtil.get(SpotifyRoute.getUserTopArtists);
 
-      if(response.status == Status.success) {
-
-        final list = response.data!['items'].map<Artist>((json) => Artist.fromJson(json)).toList();
-        return HttpResponse(status: Status.success,data: list);
+      if (response.status == Status.success) {
+        final list = response.data!['items']
+            .map<Artist>((json) => Artist.fromJson(json))
+            .toList();
+        return HttpResponse(status: Status.success, data: list);
       }
 
-      return HttpResponse(status: response.status,data: <Artist>[]);
-
-    }catch(_){
-      return HttpResponse(status: Status.failed,data: <Artist>[]);
+      return HttpResponse(status: response.status, data: <Artist>[]);
+    } catch (_) {
+      return HttpResponse(status: Status.failed, data: <Artist>[]);
     }
   }
 
   Future<HttpResponse<List<String>>> getGenre() async {
+    try {
+      final response = await _dioUtil.get(SpotifyRoute.getGenre);
 
-    try{
-      final response =  await _dioUtil.get(SpotifyRoute.getGenre);
-
-      if(response.status == Status.success) {
-        try{
-          final list = response.data!['genres'].map<String>((json) => json as String).toList();
-          return HttpResponse(status: Status.success,data: list);
-        }catch(e){
-          return HttpResponse(status: response.status,data: <String>[]);
+      if (response.status == Status.success) {
+        try {
+          final list = response.data!['genres']
+              .map<String>((json) => json as String)
+              .toList();
+          return HttpResponse(status: Status.success, data: list);
+        } catch (e) {
+          return HttpResponse(status: response.status, data: <String>[]);
         }
-
       }
-      return HttpResponse(status: response.status,data: <String>[]);
-    }catch(e){
-
-      return HttpResponse(status: Status.unknown,data: <String>[]);
-
+      return HttpResponse(status: response.status, data: <String>[]);
+    } catch (e) {
+      return HttpResponse(status: Status.unknown, data: <String>[]);
     }
   }
 
   Future<HttpResponse<List<Track>>> searchByGenre(
-      String query,
-      String genre, {
-        int offset = 0,
-      }) async {
+    String query,
+    String genre, {
+    int offset = 0,
+  }) async {
     final response = await _search(
       '$query genre:$genre',
       offset: offset,
@@ -158,12 +157,11 @@ class SpotifyRepository{
   }
 
   Future<HttpResponse<Map<String, dynamic>>> _search(
-      String query,{
-        int offset = 0,
-        int limit = Constants.kSearchSize,
-        String type = 'track',
-      }) async {
-
+    String query, {
+    int offset = 0,
+    int limit = Constants.kSearchSize,
+    String type = 'track',
+  }) async {
     return await _dioUtil.get(SpotifyRoute.search, queryParameters: {
       'q': query,
       'type': type,
@@ -178,10 +176,10 @@ class SpotifyRepository{
         .toList();
   }
 
-
-  Future<Status> _refreshToken() async {
+  Future<Status> refreshToken() async {
     final prefs = await SharedPreferences.getInstance();
     final refreshToken = prefs.getString(Constants.kRefreshToken);
+
 
     final data = {
       'grant_type': 'refresh_token',
@@ -193,27 +191,22 @@ class SpotifyRepository{
 
     final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
     final header = {
-      'Authorization': 'Basic $encodedString',
+      // 'Authorization': 'Basic $encodedString',
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
+    print(jsonEncode(data));
     try {
-      final response = await http.post(
-        Uri.parse(SpotifyRoute.autGetTokenUrl),
-        body: data,
-        headers: header,
-      );
+      final response = await _dio.post(SpotifyRoute.autGetTokenUrl,
+          data: data, options: Options(headers: header),);
+      print('response is ${response.data}');
 
-      if (response.statusCode == 400) {
-        return Status.reAuthenticate;
-      }
-
-      final accessToken = jsonDecode(response.body)['access_token'];
-      prefs.setString(Constants.kAccessToken, accessToken);
       return Status.success;
-    } catch (e) {
+    } on DioError  catch (e){
+      print(e.response?.data);
+      return Status.failed;
+    }catch(e){
       return Status.unknown;
     }
   }
-
 }

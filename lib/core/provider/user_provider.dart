@@ -3,7 +3,7 @@ import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/spotify/spotify_repository.dart';
-import 'package:flutter/cupertino.dart' show ChangeNotifier;
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../constants.dart';
 import '../models/user.dart';

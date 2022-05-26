@@ -1,8 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:clash_flutter/core/util/notification_util.dart';
+import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../routes/route_generator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
             child: TextButton(
           onPressed: () {
-           Navigator.of(context).pushNamed(RouteGenerator.clashRoomScreen,);
+           context.read<SpotifyRepository>().refreshToken();
           },
           child: const Text(
             'Play',

@@ -2,6 +2,7 @@ import 'package:clash_flutter/core/constants.dart';
 import 'package:clash_flutter/core/models/user.dart';
 import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:hive/hive.dart';
 
 class UserRepository{
@@ -13,9 +14,11 @@ class UserRepository{
 
   Future<bool> storeUserName(String userName) async {
     bool status = false;
+    print('storing user name $userName and ${_spotifyRepository == null}');
     try {
       String? userId = await _spotifyRepository?.getUserId();
 
+      print(userId);
       if (userId != null) {
         status = await _saveUser(User(
           id: userId,
@@ -23,6 +26,7 @@ class UserRepository{
         ));
       }
     } catch (e) {
+      print(e);
       return status;
     }
     return status;
