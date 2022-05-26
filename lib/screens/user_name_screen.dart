@@ -90,6 +90,17 @@ class _UserNameScreenState extends State<UserNameScreen> {
                   suffixIcon: Visibility(
                     visible:
                     model.userNameProgress == UserNameState.notFound,
+                    replacement: Visibility(
+                      visible:
+                      model.userNameProgress == UserNameState.loading,
+                      child: const SizedBox(
+                        width: 10.0,
+                        child: SpinKitThreeBounce(
+                          color: ClashColors.green200,
+                          size: 10.0,
+                        ),
+                      ),
+                    ),
                     child: Container(
                       margin: const EdgeInsets.all(
                         9.0,
@@ -101,17 +112,6 @@ class _UserNameScreenState extends State<UserNameScreen> {
                       child: const Icon(
                         Icons.check,
                         color: Colors.white,
-                      ),
-                    ),
-                    replacement: Visibility(
-                      visible:
-                      model.userNameProgress == UserNameState.loading,
-                      child: const SizedBox(
-                        width: 10.0,
-                        child: SpinKitThreeBounce(
-                          color: ClashColors.green200,
-                          size: 10.0,
-                        ),
                       ),
                     ),
                   ),
@@ -135,15 +135,18 @@ class _UserNameScreenState extends State<UserNameScreen> {
                   onPressed:model.userNameProgress == UserNameState.notFound ? () async {
                     if (_formKey.currentState!.validate()) {
                       bool status = await model.storeUserName(_controller.text);
-                      if (status) {
-                        Navigator.of(context)
-                            .pushReplacementNamed(RouteGenerator.avatarScreen);
-                      } else {
-                        const snackBar = SnackBar(
-                            content:
-                            Text('Something went wrong, please try again'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      if(mounted) {
+                        if (status) {
+                          Navigator.of(context)
+                              .pushReplacementNamed(RouteGenerator.avatarScreen);
+                        } else {
+                          const snackBar = SnackBar(
+                              content:
+                              Text('Something went wrong, please try again'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       }
+
                     }
                   } : null,
                   child: Row(

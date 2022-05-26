@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:clash_flutter/core/util/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -78,3 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 }
+
+
+

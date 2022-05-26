@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/gen/assets.gen.dart';
@@ -90,15 +92,18 @@ class _AvatarScreenState extends State<AvatarScreen> {
             TextButton(
               onPressed: () async {
                 bool status = await model.storeAvatar();
-                if (status) {
-                  Navigator.of(context)
-                      .pushReplacementNamed(RouteGenerator.homeScreen);
-                } else {
-                  const snackBar = SnackBar(
-                    content: Text('Unable to save avatar'),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                if(mounted) {
+                  if (status) {
+                    Navigator.of(context)
+                        .pushReplacementNamed(RouteGenerator.homeScreen);
+                  } else {
+                    const snackBar = SnackBar(
+                      content: Text('Unable to save avatar'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 }
+
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

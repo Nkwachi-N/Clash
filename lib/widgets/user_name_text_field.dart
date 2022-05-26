@@ -48,6 +48,17 @@ class UserNameTextField extends StatelessWidget {
         suffixIcon: Visibility(
           visible:
           model.userNameProgress == UserNameState.notFound,
+          replacement: Visibility(
+            visible:
+            model.userNameProgress == UserNameState.loading,
+            child: const SizedBox(
+              width: 10.0,
+              child: SpinKitThreeBounce(
+                color: ClashColors.green200,
+                size: 10.0,
+              ),
+            ),
+          ),
           child: Container(
             margin: const EdgeInsets.all(
               9.0,
@@ -59,17 +70,6 @@ class UserNameTextField extends StatelessWidget {
             child: const Icon(
               Icons.check,
               color: Colors.white,
-            ),
-          ),
-          replacement: Visibility(
-            visible:
-            model.userNameProgress == UserNameState.loading,
-            child: const SizedBox(
-              width: 10.0,
-              child: SpinKitThreeBounce(
-                color: ClashColors.green200,
-                size: 10.0,
-              ),
             ),
           ),
         ),

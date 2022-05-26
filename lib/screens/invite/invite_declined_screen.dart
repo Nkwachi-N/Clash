@@ -48,12 +48,12 @@ class InviteDeclinedScreen extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {},
-                child: const Text(
-                  'Cancel',
-                ),
               style: TextButton.styleFrom(
                 backgroundColor: Colors.transparent,
               ),
+                child: const Text(
+                  'Cancel',
+                ),
             ),
             const SizedBox(
               height: 16.0,

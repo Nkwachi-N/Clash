@@ -87,6 +87,9 @@ class ReceivedInviteScreen extends StatelessWidget {
                   builder: (context, invite,child) {
                   return Visibility(
                     visible: invite != InviteState.unDecided,
+                    replacement: const SizedBox(
+                      height: 16.0,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -102,9 +105,6 @@ class ReceivedInviteScreen extends StatelessWidget {
                           size: Constants.kButtonLoaderSize,
                         )
                       ],
-                    ),
-                    replacement: const SizedBox(
-                      height: 16.0,
                     ),
                   );
                 }

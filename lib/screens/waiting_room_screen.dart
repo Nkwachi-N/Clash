@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/models/game.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
@@ -131,6 +133,24 @@ class AvatarImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
       visible: avatar.isNotEmpty,
+      replacement: Center(
+        child: InkResponse(
+
+          onTap: (){
+            Navigator.of(context).pushNamed(RouteGenerator.createClashRoomScreen);
+
+          },
+          child: Container(
+            height: 140.0,
+            width: 140.0,
+            decoration: DottedDecoration(
+              shape: Shape.circle,
+              color: const Color(0xFF686868).withOpacity(0.8),
+            ),
+            child: const Icon(Icons.add,color: Color(0xFF686868),)
+          ),
+        ),
+      ),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -162,24 +182,6 @@ class AvatarImage extends StatelessWidget {
                     ))),
           ),
         ],
-      ),
-      replacement: Center(
-        child: InkResponse(
-
-          onTap: (){
-            Navigator.of(context).pushNamed(RouteGenerator.createClashRoomScreen);
-
-          },
-          child: Container(
-            height: 140.0,
-            width: 140.0,
-            decoration: DottedDecoration(
-              shape: Shape.circle,
-              color: const Color(0xFF686868).withOpacity(0.8),
-            ),
-            child: const Icon(Icons.add,color: Color(0xFF686868),)
-          ),
-        ),
       )
     );
   }

@@ -121,13 +121,13 @@ class _PlayIconState extends State<PlayIcon>
                         _revertState();
                       }
 
-                     final _duration = await player.setAudioSource(
+                     final duration = await player.setAudioSource(
                         ProgressiveAudioSource(
                           Uri.parse(audioUrl),
                         ),
                       );
 
-                      _controller.duration = _duration;
+                      _controller.duration = duration;
 
                       player.play().then((value) => {
                         _revertState(),

@@ -112,6 +112,17 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                       visible:
                       model.userNameProgress == UserNameState.exists &&
                           _controller.text != model.user.name,
+                      replacement: Visibility(
+                        visible:
+                        model.userNameProgress == UserNameState.loading,
+                        child: const SizedBox(
+                          width: 10.0,
+                          child: SpinKitThreeBounce(
+                            color: ClashColors.green200,
+                            size: 10.0,
+                          ),
+                        ),
+                      ),
                       child: Container(
                         margin: const EdgeInsets.all(
                           9.0,
@@ -123,17 +134,6 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                         child: const Icon(
                           Icons.check,
                           color: Colors.white,
-                        ),
-                      ),
-                      replacement: Visibility(
-                        visible:
-                        model.userNameProgress == UserNameState.loading,
-                        child: const SizedBox(
-                          width: 10.0,
-                          child: SpinKitThreeBounce(
-                            color: ClashColors.green200,
-                            size: 10.0,
-                          ),
                         ),
                       ),
                     ),

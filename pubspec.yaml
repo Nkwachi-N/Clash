@@ -49,11 +49,13 @@ dependencies:
   onesignal_flutter: ^3.3.0
   just_audio: ^0.9.21
   badges: ^2.0.2
+  logging: ^1.0.2
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
 

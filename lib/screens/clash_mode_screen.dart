@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 

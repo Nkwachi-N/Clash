@@ -6,9 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme
@@ -84,10 +89,12 @@ class AuthScreen extends StatelessWidget {
 
   Future<void> authorize(BuildContext context) async{
     final result = await context.read<UserProvider>().authorize();
-    if(result.status == Status.success) {
-      Navigator.of(context).pushReplacementNamed(result.data!);
-    }else{
-      //TODO:Show unable to login with flushbar.
+    if(mounted) {
+      if(result.status == Status.success) {
+        Navigator.of(context).pushReplacementNamed(result.data!);
+      }else{
+        //TODO:Show unable to login with flushbar.
+      }
     }
   }
 }

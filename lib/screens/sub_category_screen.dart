@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/game.dart';
 import 'package:clash_flutter/core/response_handler.dart';
@@ -145,7 +147,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> with ResponseHand
 
   Future<void> init() async {
     final status = await context.read<GameProvider>().getSubCategory();
-    handleResponse(context, status);
+    if(mounted) handleResponse(context, status);
   }
 
 }

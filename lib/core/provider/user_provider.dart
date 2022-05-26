@@ -49,7 +49,7 @@ class UserProvider extends ChangeNotifier {
     try {
       bool response = await _spotifyRepository?.authorize() ?? false;
       if (response) {
-        final existingUser = await _userRepository.checkUserExists();
+        final existingUser = await _userRepository?.checkUserExists();
         if (existingUser != null) {
           user = existingUser;
           httpResponse = HttpResponse(status: Status.success,
@@ -77,7 +77,7 @@ class UserProvider extends ChangeNotifier {
     storingUserName = true;
     notifyListeners();
 
-    bool status = await _userRepository.storeUserName(userName);
+    bool status = await _userRepository?.storeUserName(userName) ?? false;
 
     storingUserName = false;
     notifyListeners();
@@ -94,7 +94,7 @@ class UserProvider extends ChangeNotifier {
     storingAvatar = true;
     notifyListeners();
 
-    bool status = await _userRepository.saveAvatar(selectedAvatar!);
+    bool status = await _userRepository?.saveAvatar(selectedAvatar!) ?? false;
 
     storingAvatar = false;
     notifyListeners();
@@ -109,7 +109,7 @@ class UserProvider extends ChangeNotifier {
     userNameProgress = UserNameState.loading;
     notifyListeners();
 
-    bool result =  await _userRepository.usernameCheck(userName);
+    bool result =  await _userRepository?.usernameCheck(userName) ?? false;
 
     if(result) {
       //user name exists.

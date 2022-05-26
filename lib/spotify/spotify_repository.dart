@@ -64,7 +64,7 @@ class SpotifyRepository{
   Future<bool> _getToken(String code, String codeVerifier) async {
     final prefs = await SharedPreferences.getInstance();
 
-    final _data = {
+    final data = {
       'grant_type': 'authorization_code',
       'code': code,
       'redirect_uri': Constants.kRedirectUri,
@@ -75,14 +75,14 @@ class SpotifyRepository{
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
     final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
-    final _header = {
+    final header = {
       'Authorization': 'Basic $encodedString',
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
     try {
       final response = await _dio.post(SpotifyRoute.autGetTokenUrl,
-          data: _data, options: Options(headers: _header));
+          data: data, options: Options(headers: header));
       final accessToken = response.data['access_token'];
       final refreshToken = response.data['refresh_token'];
       prefs.setString(Constants.kAccessToken, accessToken);
@@ -183,7 +183,7 @@ class SpotifyRepository{
     final prefs = await SharedPreferences.getInstance();
     final refreshToken = prefs.getString(Constants.kRefreshToken);
 
-    final _data = {
+    final data = {
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
       'client_id': kClientId,
@@ -192,7 +192,7 @@ class SpotifyRepository{
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
     final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
-    final _header = {
+    final header = {
       'Authorization': 'Basic $encodedString',
       'Content-Type': 'application/x-www-form-urlencoded',
     };
@@ -200,8 +200,8 @@ class SpotifyRepository{
     try {
       final response = await http.post(
         Uri.parse(SpotifyRoute.autGetTokenUrl),
-        body: _data,
-        headers: _header,
+        body: data,
+        headers: header,
       );
 
       if (response.statusCode == 400) {
