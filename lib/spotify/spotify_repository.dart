@@ -6,18 +6,22 @@ import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/track.dart';
 import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/models/http_response.dart';
 import 'spotify_route.dart';
-import 'package:http/http.dart' as http;
 
-class SpotifyRepository {
+
+enum AuthenticationState{authenticated, unAuthenticated}
+class SpotifyRepository{
   static const state = 'HappyBaby257';
   final _dio = Dio();
 
   final _dioUtil = DioUtil();
+
+  final ValueNotifier<AuthenticationState> authenticationListenable = ValueNotifier(AuthenticationState.unAuthenticated);
 
   Future<bool> authorize() async {
     final pkcePair = PkcePair.generate();
@@ -79,22 +83,23 @@ class SpotifyRepository {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
+
     try {
       final response = await _dio.post(SpotifyRoute.autGetTokenUrl,
           data: data, options: Options(headers: header));
-      print('response is ${response.data}');
-      final accessToken = response.data['access_token'];
-      final refreshToken = response.data['refresh_token'];
-      prefs.setString(Constants.kAccessToken, accessToken);
-      prefs.setString(Constants.kRefreshToken, refreshToken);
-
-
+      _saveToken(prefs, response.data);
       return true;
     } catch (_) {
       return false;
     }
   }
 
+
+  void _saveToken(SharedPreferences prefs, Map<String,dynamic> response) {
+    authenticationListenable.value = AuthenticationState.authenticated;
+    prefs.setString(Constants.kAccessToken, response['access_token']);
+    prefs.setString(Constants.kRefreshToken, response['refresh_token']);
+  }
   Future<String?> getUserId() async {
     final response = await _dioUtil.get(
       SpotifyRoute.getUserInfo,
@@ -187,24 +192,23 @@ class SpotifyRepository {
       'client_id': kClientId,
     };
 
-    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-
-    final encodedString = stringToBase64.encode('$kClientId:$kSecretKey');
     final header = {
-      // 'Authorization': 'Basic $encodedString',
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
-    print(jsonEncode(data));
     try {
       final response = await _dio.post(SpotifyRoute.autGetTokenUrl,
           data: data, options: Options(headers: header),);
-      print('response is ${response.data}');
-
+      _saveToken(prefs, response.data);
       return Status.success;
     } on DioError  catch (e){
-      print(e.response?.data);
-      return Status.failed;
+      print(e.response?.statusCode);
+      if(e.response?.statusCode == 400) {
+        authenticationListenable.value = AuthenticationState.unAuthenticated;
+        print(authenticationListenable.value.name);
+        return Status.reAuthenticate;
+      }
+      return Status.unknown;
     }catch(e){
       return Status.unknown;
     }

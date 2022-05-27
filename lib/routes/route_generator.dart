@@ -3,7 +3,7 @@ import 'package:clash_flutter/screens/auth_screen.dart';
 import 'package:clash_flutter/screens/avatar_screen.dart';
 import 'package:clash_flutter/screens/category_screen.dart';
 import 'package:clash_flutter/screens/clash_mode_screen.dart';
-import 'package:clash_flutter/screens/clash_room.dart';
+import 'package:clash_flutter/screens/clash_room_screen.dart';
 import 'package:clash_flutter/screens/create_clash_room.dart';
 import 'package:clash_flutter/screens/invite/invite_declined_screen.dart';
 import 'package:clash_flutter/screens/invite/invite_sent_screen.dart';

@@ -33,7 +33,7 @@ void main() async {
 
   OneSignal.shared.setAppId(Constants.oneSignalAppId);
 
-/*  if (accessToken != null) {
+  if (accessToken != null) {
     final box = Hive.box(Constants.kHiveBox);
     final User? user = box.get('user');
     if (user != null) {
@@ -41,7 +41,7 @@ void main() async {
     } else {
       initialRoute = RouteGenerator.userNameScreen;
     }
-  }*/
+  }
   runApp(
     MyApp(
       initialRoute: initialRoute,
@@ -64,6 +64,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         Provider(
+          lazy: false,
           create: (context) => SpotifyRepository(),
         ),
         Provider(

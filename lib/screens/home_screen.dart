@@ -1,11 +1,12 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:clash_flutter/core/util/notification_util.dart';
+import 'package:clash_flutter/gen/assets.gen.dart';
+import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import '../routes/route_generator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,8 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SvgPicture.asset(
-              'assets/images/home.svg',
-              color: IconTheme.of(context).color,
+              Assets.images.home,
+              color: IconTheme
+                  .of(context)
+                  .color,
               height: 25.0,
               width: 25.0,
             ),
@@ -42,8 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 46.0,
             ),
             SvgPicture.asset(
-              'assets/images/stat.svg',
-              color: IconTheme.of(context).color,
+              Assets.images.stat,
+              color: IconTheme
+                  .of(context)
+                  .color,
               height: 25.0,
               width: 25.0,
             ),
@@ -51,8 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 46.0,
             ),
             SvgPicture.asset(
-              'assets/images/profile.svg',
-              color: IconTheme.of(context).color,
+              Assets.images.profile,
+              color: IconTheme
+                  .of(context)
+                  .color,
               height: 30.0,
               width: 30.0,
             ),
@@ -63,13 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Center(
             child: TextButton(
-          onPressed: () {
-           context.read<SpotifyRepository>().refreshToken();
-          },
-          child: const Text(
-            'Play',
-          ),
-        )),
+              onPressed: () {
+               Navigator.of(context).pushNamed(RouteGenerator.clashRoomScreen,);
+              },
+              child: const Text(
+                'Play',
+              ),
+            )),
       ),
     );
   }
@@ -78,6 +85,27 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     NotificationUtil.setupInteractedMessage(context);
+    context.read<SpotifyRepository>().authenticationListenable.addListener(_handleAppLifecycle);
+  }
+
+
+  void _handleAppLifecycle() {
+    final spotifyRepo = context.read<SpotifyRepository>();
+    final authenticationStatus = spotifyRepo.authenticationListenable.value;
+    switch (authenticationStatus) {
+      case AuthenticationState.authenticated:
+      ///Do Nothing
+        break;
+      case AuthenticationState.unAuthenticated:
+        if (mounted) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            RouteGenerator.authScreen, (route) => false,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Please re-authenticate with Spotify again'),),);
+        }
+        break;
+    }
   }
 
 

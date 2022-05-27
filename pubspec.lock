@@ -197,13 +197,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.3"
-  dashed_circle:
-    dependency: "direct main"
-    description:
-      name: dashed_circle
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   dio:
     dependency: "direct main"
     description:

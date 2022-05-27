@@ -1,33 +1,32 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 
-class ClashTheme{
-  static final darkTheme  = ThemeData(
+class ClashTheme {
+  static final darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: ClashColors.black200,
-    textTheme: Typography.material2018().white.copyWith(
-      button: const TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 18.0,
-      ),
-      headline6: const TextStyle(
-        fontSize: 20.0,
-        fontWeight: FontWeight.normal,
-      ),
-
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ClashColors.green200,
+      foregroundColor: Colors.white,
     ),
+    textTheme: Typography.material2018().white.copyWith(
+          button: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 18.0,
+          ),
+          headline6: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: ClashColors.green200,
       selectionColor: ClashColors.green200,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      iconTheme: IconThemeData(
-        color: ClashColors.green200
-      )
-    ),
-
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: ClashColors.green200)),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: ClashColors.grey500,
@@ -35,7 +34,6 @@ class ClashTheme{
         color: ClashColors.grey900,
         fontSize: 16.0,
       ),
-
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(40.0),
       ),
@@ -58,7 +56,7 @@ class ClashTheme{
         ),
         foregroundColor: MaterialStateProperty.all(Colors.white),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+          (Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
               return ClashColors.grey700;
             }
