@@ -130,12 +130,22 @@ class GameCard extends StatelessWidget {
                       width: _kImageSize,
                       decoration: DottedDecoration(
                         shape: Shape.circle,
+                        color: ClashColors.grey200,
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF272222),
+                        ),
                       ),
                     ),
-                    child: Image.asset(
-                      Assets.images.avatar1.path,
-                      height: _kImageSize,
-                      width: _kImageSize,
+                    child: Hero(
+                      tag: track?.name ?? '',
+                      child: Image.asset(
+                        Assets.images.avatar1.path,
+                        height: _kImageSize,
+                        width: _kImageSize,
+                      ),
                     ),
                   ),
                 ),

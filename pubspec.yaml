@@ -50,6 +50,9 @@ dependencies:
   just_audio: ^0.9.21
   badges: ^2.0.2
   logging: ^1.0.2
+  get_it: ^7.2.0
+  injectable: ^1.5.3
+  flutter_hooks: ^0.18.4
 
 
 dev_dependencies:

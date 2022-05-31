@@ -2,25 +2,17 @@ import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-class UserNameScreen extends StatefulWidget {
-  const UserNameScreen({Key? key}) : super(key: key);
+class UserNameScreen extends StatelessWidget {
+  UserNameScreen({Key? key}) : super(key: key);
 
-  @override
-  State<UserNameScreen> createState() => _UserNameScreenState();
-}
 
-class _UserNameScreenState extends State<UserNameScreen> {
-  late TextEditingController _controller;
   final _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +20,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
         .of(context)
         .textTheme;
     final model = context.watch<UserProvider>();
+    final controller = useTextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -59,7 +52,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                   height: 16.0,
                 ),
               TextFormField(
-                controller: _controller,
+                controller: controller,
                 validator: (value) {
                   if (value != null && value.isEmpty) {
                     return 'please enter your username';
@@ -134,8 +127,8 @@ class _UserNameScreenState extends State<UserNameScreen> {
                 TextButton(
                   onPressed:model.userNameProgress == UserNameState.notFound ? () async {
                     if (_formKey.currentState!.validate()) {
-                      bool status = await model.storeUserName(_controller.text);
-                      if(mounted) {
+                      bool status = await model.storeUserName(controller.text);
+
                         if (status) {
                           Navigator.of(context)
                               .pushReplacementNamed(RouteGenerator.avatarScreen);
@@ -145,7 +138,7 @@ class _UserNameScreenState extends State<UserNameScreen> {
                               Text('Something went wrong, please try again'));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
-                      }
+
 
                     }
                   } : null,
@@ -180,9 +173,5 @@ class _UserNameScreenState extends State<UserNameScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
+
 }
