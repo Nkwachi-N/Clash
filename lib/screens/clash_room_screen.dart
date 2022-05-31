@@ -1,4 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/models/track.dart';
 import 'package:clash_flutter/gen/assets.gen.dart';
@@ -7,14 +6,10 @@ import 'package:flutter/material.dart';
 
 
 const _kImageSize = 120.0;
-class ClashRoomScreen extends StatefulWidget {
+class ClashRoomScreen extends StatelessWidget {
   const ClashRoomScreen({Key? key}) : super(key: key);
 
-  @override
-  _ClashRoomScreenState createState() => _ClashRoomScreenState();
-}
 
-class _ClashRoomScreenState extends State<ClashRoomScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

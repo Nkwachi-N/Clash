@@ -71,7 +71,7 @@ class RouteGenerator {
 
       case createClashRoomScreen:
         return MaterialPageRoute(
-          builder: (context) => const CreateClashRoom(),
+          builder: (context) =>  CreateClashRoom(),
         );
       case inviteDeclinedScreen:
         final args = settings.arguments as String;
@@ -111,7 +111,7 @@ class RouteGenerator {
         );
       case userNameScreen:
         return MaterialPageRoute(
-          builder: (context) => const UserNameScreen(),
+          builder: (context) =>  UserNameScreen(),
         );
       case joinClashRoomScreen:
         return MaterialPageRoute(

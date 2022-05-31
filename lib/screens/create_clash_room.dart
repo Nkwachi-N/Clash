@@ -3,33 +3,16 @@ import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../colors.dart';
 
-class CreateClashRoom extends StatefulWidget {
-  const CreateClashRoom({Key? key}) : super(key: key);
+class CreateClashRoom extends StatelessWidget {
+  CreateClashRoom({Key? key}) : super(key: key);
 
-  @override
-  State<CreateClashRoom> createState() => _CreateClashRoomState();
-}
-
-class _CreateClashRoomState extends State<CreateClashRoom> {
-  late TextEditingController _controller;
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +20,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
         .of(context)
         .textTheme;
     final model = context.watch<UserProvider>();
+    final controller = useTextEditingController();
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -77,7 +61,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                   height: 32.0,
                 ),
                 TextFormField(
-                  controller: _controller,
+                  controller: controller,
                   validator: (value) {
                     if (value != null && value.isEmpty) {
                       return 'please enter your friend\'s username';
@@ -111,7 +95,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                     suffixIcon: Visibility(
                       visible:
                       model.userNameProgress == UserNameState.exists &&
-                          _controller.text != model.user.name,
+                          controller.text != model.user.name,
                       replacement: Visibility(
                         visible:
                         model.userNameProgress == UserNameState.loading,
@@ -214,7 +198,7 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
                 Consumer<GameProvider>(
                   builder: (_, gameModel, child) {
                     return TextButton(
-                         onPressed: model.userNameProgress == UserNameState.exists ? () => inviteUser() : null,
+                         onPressed: model.userNameProgress == UserNameState.exists ? () => inviteUser(context,controller.text) : null,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -248,13 +232,16 @@ class _CreateClashRoomState extends State<CreateClashRoom> {
     );
   }
 
-   inviteUser() {
-    context.read<GameProvider>().inviteUser(_controller.text).then((value){
+   inviteUser(BuildContext context, String text) {
+
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    context.read<GameProvider>().inviteUser(text).then((value){
       if(value){
-        Navigator.of(context).pushNamed(RouteGenerator.inviteSentScreen,arguments: _controller.text);
+        navigator.pushNamed(RouteGenerator.inviteSentScreen,arguments: text);
       }else{
         const snackBar = SnackBar(content: Text('Invite sending failed, please try again'),);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        scaffoldMessenger.showSnackBar(snackBar);
       }
     });
   }

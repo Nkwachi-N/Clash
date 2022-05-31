@@ -112,6 +112,7 @@ class CategoryScreen extends StatelessWidget {
   void navigateToSubCategoryScreen(BuildContext context, Category category){
     final model = context.read<GameProvider>();
     model.selectCategory(category);
+    model.getSubCategory();
     Navigator.of(context).pushNamed(RouteGenerator.subCategoryScreen);
   }
 }

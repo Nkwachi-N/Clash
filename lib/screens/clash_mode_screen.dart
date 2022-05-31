@@ -1,18 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api
 
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
 
-class ClashModeScreen extends StatefulWidget {
+class ClashModeScreen extends StatelessWidget {
   const ClashModeScreen({Key? key}) : super(key: key);
 
-  @override
-  _ClashModeScreenState createState() => _ClashModeScreenState();
-}
 
-class _ClashModeScreenState extends State<ClashModeScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

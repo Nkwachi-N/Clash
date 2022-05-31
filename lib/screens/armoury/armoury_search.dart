@@ -1,52 +1,34 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/audio_provider.dart';
 import 'package:clash_flutter/core/provider/search_provider.dart';
-import 'package:clash_flutter/core/response_handler.dart';
 import 'package:clash_flutter/widgets/play_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
 
-
-class ArmourySearch extends StatefulWidget {
+class ArmourySearch extends StatelessWidget {
   const ArmourySearch({Key? key}) : super(key: key);
 
-  @override
-  State<ArmourySearch> createState() => _ArmourySearchState();
-}
-
-class _ArmourySearchState extends State<ArmourySearch>
-    with ResponseHandler {
-  late TextEditingController _textEditingController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _textEditingController = TextEditingController();
-
-    _textEditingController.addListener(() async {
-      final value = _textEditingController.text;
-      if (value.isNotEmpty) {
-       context.read<AudioProvider>().stopMusic();
-
-        final response = await context
-            .read<SearchProvider>()
-            .searchTracks(value, 'afrobeat');
-        if (mounted) {
-          handleResponse(context, response);
-        }
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final searchModel = context.watch<SearchProvider>();
+    final textEditingController = useTextEditingController();
+    textEditingController.addListener(() {
+      final value = textEditingController.text;
+      if (value.isNotEmpty) {
+        context.read<AudioProvider>().stopMusic();
+
+        context
+            .read<SearchProvider>()
+            .searchTracks(value, 'afrobeat');
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -85,7 +67,7 @@ class _ArmourySearchState extends State<ArmourySearch>
               style: textTheme.subtitle1?.copyWith(
                 color: ClashColors.green200,
               ),
-              controller: _textEditingController,
+              controller: textEditingController,
               decoration: InputDecoration(
                 hintText: 'Search for a song',
                 prefixIcon: UnconstrainedBox(
@@ -172,10 +154,5 @@ class _ArmourySearchState extends State<ArmourySearch>
     );
   }
 
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
 }
 

@@ -1,8 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:clash_flutter/core/models/artists.dart';
 import 'package:clash_flutter/core/models/game.dart';
-import 'package:clash_flutter/core/response_handler.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/artist_card.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
@@ -19,14 +16,10 @@ const purple = [Color(0xFFBF67D2), Color(0xFFEE609C)];
 
 const colors = [greenYellow, redOrange, blue, purple];
 
-class SubCategoryScreen extends StatefulWidget {
+class SubCategoryScreen extends StatelessWidget {
   const SubCategoryScreen({Key? key}) : super(key: key);
 
-  @override
-  _SubCategoryScreenState createState() => _SubCategoryScreenState();
-}
 
-class _SubCategoryScreenState extends State<SubCategoryScreen> with ResponseHandler{
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -100,7 +93,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> with ResponseHand
                       return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        onTap: () => selectGenre(genre),
+                        onTap: () => selectGenre(context,genre),
                         child: GradientCard(
                           colors: colors[index % 4],
                           text: genre,
@@ -112,7 +105,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> with ResponseHand
                       return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        onTap:() => selectArtist(artist),
+                        onTap:() => selectArtist(context,artist),
                         child: ArtistCard(
                           artist:artist,
                         ),
@@ -129,25 +122,18 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> with ResponseHand
     ));
   }
 
-  void selectArtist(Artist artist){
+  void selectArtist(BuildContext context,Artist artist){
     context.read<GameProvider>().selectArtist(artist);
     Navigator.of(context).pushNamed(RouteGenerator.roundsScreen);
   }
 
-  void selectGenre(String genre){
+  void selectGenre(BuildContext context,String genre){
     context.read<GameProvider>().selectGenre(genre);
     Navigator.of(context).pushNamed(RouteGenerator.roundsScreen);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
 
-  Future<void> init() async {
-    final status = await context.read<GameProvider>().getSubCategory();
-    if(mounted) handleResponse(context, status);
-  }
+
+
 
 }

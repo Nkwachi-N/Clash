@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/gen/assets.gen.dart';
@@ -8,14 +6,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import '../routes/route_generator.dart';
 
-class AvatarScreen extends StatefulWidget {
+class AvatarScreen extends StatelessWidget {
   const AvatarScreen({Key? key}) : super(key: key);
 
-  @override
-  _AvatarScreenState createState() => _AvatarScreenState();
-}
-
-class _AvatarScreenState extends State<AvatarScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -91,19 +84,18 @@ class _AvatarScreenState extends State<AvatarScreen> {
             const Spacer(),
             TextButton(
               onPressed: () async {
+                final navigator = Navigator.of(context);
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
                 bool status = await model.storeAvatar();
-                if(mounted) {
-                  if (status) {
-                    Navigator.of(context)
-                        .pushReplacementNamed(RouteGenerator.homeScreen);
-                  } else {
-                    const snackBar = SnackBar(
-                      content: Text('Unable to save avatar'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                }
 
+                if (status) {
+                  navigator.pushReplacementNamed(RouteGenerator.homeScreen);
+                } else {
+                  const snackBar = SnackBar(
+                    content: Text('Unable to save avatar'),
+                  );
+                  scaffoldMessenger.showSnackBar(snackBar);
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

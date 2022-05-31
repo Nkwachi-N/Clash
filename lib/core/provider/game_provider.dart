@@ -63,15 +63,16 @@ class GameProvider extends ChangeNotifier{
     this.artist = artist;
   }
 
-  Future<Status> getSubCategory() async {
+  Future<void> getSubCategory() async {
     gettingSubCategory = true;
-
     switch (category) {
       case Category.genre:
-        return _getGenre();
+        _getGenre();
+        break;
 
       case Category.artist:
-        return _getArtist();
+        _getArtist();
+        break;
     }
   }
 

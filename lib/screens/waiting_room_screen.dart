@@ -1,26 +1,20 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/core/models/game.dart';
 import 'package:clash_flutter/core/provider/user_provider.dart';
 import 'package:clash_flutter/core/provider/game_provider.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/widgets/room_card.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class WaitingRoomScreen extends StatefulWidget {
+class WaitingRoomScreen extends StatelessWidget {
   const WaitingRoomScreen({Key? key}) : super(key: key);
 
   @override
-  _WaitingRoomScreenState createState() => _WaitingRoomScreenState();
-}
-
-class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
-  @override
   Widget build(BuildContext context) {
     final gameModel = context.watch<GameProvider>();
-    final user = context.read<UserProvider>().user;
+    final user = context.watch<UserProvider>().user;
 
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -89,15 +83,16 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        height: 10,
-                        margin: const EdgeInsets.symmetric(horizontal: 38.0,),
-                        decoration: BoxDecoration(
-                          color:  const Color(0xFF686868),
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                      )
-                    ),
+                        child: Container(
+                      height: 10,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 38.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF686868),
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                    )),
                   ],
                 )
               ],
@@ -135,20 +130,21 @@ class AvatarImage extends StatelessWidget {
       visible: avatar.isNotEmpty,
       replacement: Center(
         child: InkResponse(
-
-          onTap: (){
-            Navigator.of(context).pushNamed(RouteGenerator.createClashRoomScreen);
-
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed(RouteGenerator.createClashRoomScreen);
           },
           child: Container(
-            height: 140.0,
-            width: 140.0,
-            decoration: DottedDecoration(
-              shape: Shape.circle,
-              color: const Color(0xFF686868).withOpacity(0.8),
-            ),
-            child: const Icon(Icons.add,color: Color(0xFF686868),)
-          ),
+              height: 140.0,
+              width: 140.0,
+              decoration: DottedDecoration(
+                shape: Shape.circle,
+                color: const Color(0xFF686868).withOpacity(0.8),
+              ),
+              child: const Icon(
+                Icons.add,
+                color: Color(0xFF686868),
+              )),
         ),
       ),
       child: Stack(
@@ -174,67 +170,13 @@ class AvatarImage extends StatelessWidget {
             height: 120.0,
             width: 120.0,
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: AssetImage(
-                      avatar,
-                    ))),
-          ),
-        ],
-      )
-    );
-  }
-}
-
-class RoomCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-
-  const RoomCard({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 16.0,
-        top: 8.0,
-        bottom: 8.0,
-      ),
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4.0),
-        color: ClashColors.grey500,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: textTheme.subtitle2?.copyWith(
-                    color: ClashColors.grey900,
-                    fontWeight: FontWeight.w400,
-                  ),
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                image: AssetImage(
+                  avatar,
                 ),
-                const SizedBox(
-                  height: 4.0,
-                ),
-                Text(
-                  subtitle,
-                  style: textTheme.subtitle1?.copyWith(
-                    color: ClashColors.grey400,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
+              ),
             ),
           ),
         ],

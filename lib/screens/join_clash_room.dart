@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import '../colors.dart';
 
 class JoinClashRoom extends StatefulWidget {
@@ -12,13 +13,14 @@ class JoinClashRoom extends StatefulWidget {
 }
 
 class _JoinClashRoomState extends State<JoinClashRoom> {
-  late TextEditingController _controller;
-  late FocusNode _focusNode;
+
   final otpLength = 6;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final controller = useTextEditingController();
+    final focusNode = useFocusNode();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -65,7 +67,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                     otpLength,
                         (index) {
                       String text = '';
-                      String controllerText = _controller.text;
+                      String controllerText = controller.text;
                       if (controllerText.length > index) {
                         text = controllerText[index];
                       }
@@ -108,8 +110,8 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                 maintainSize: true,
                 maintainInteractivity: true,
                 child: TextField(
-                  controller: _controller,
-                  focusNode: _focusNode,
+                  controller: controller,
+                  focusNode: focusNode,
                   maxLength: otpLength,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -125,7 +127,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
                   onChanged: (value) {
                     setState(() {});
                     if (value.length == otpLength) {
-                      _focusNode.unfocus();
+                      focusNode.unfocus();
                     }
                   },
                 ),
@@ -136,7 +138,7 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextButton(
-              onPressed: _controller.text.length > 5 ? () {} : null,
+              onPressed: controller.text.length > 5 ? () {} : null,
               child: Text(
                 'Join room',
                 style: textTheme.button,
@@ -151,17 +153,5 @@ class _JoinClashRoomState extends State<JoinClashRoom> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-    _focusNode = FocusNode();
-  }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
 }
