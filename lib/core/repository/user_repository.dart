@@ -1,12 +1,15 @@
 import 'package:clash_flutter/core/constants.dart';
+import 'package:clash_flutter/core/di/set_up.dart';
 import 'package:clash_flutter/core/models/user.dart';
 import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class UserRepository{
 
-  SpotifyRepository? _spotifyRepository;
+  final _spotifyRepository = getIt<SpotifyRepository>();
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -14,7 +17,7 @@ class UserRepository{
   Future<bool> storeUserName(String userName) async {
     bool status = false;
     try {
-      String? userId = await _spotifyRepository?.getUserId();
+      String? userId = await _spotifyRepository.getUserId();
       if (userId != null) {
         status = await _saveUser(User(
           id: userId,

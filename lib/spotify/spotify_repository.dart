@@ -8,6 +8,7 @@ import 'package:clash_flutter/core/secret_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:injectable/injectable.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/models/http_response.dart';
@@ -15,6 +16,8 @@ import 'spotify_route.dart';
 
 
 enum AuthenticationState{authenticated, unAuthenticated}
+
+@lazySingleton
 class SpotifyRepository{
   static const state = 'HappyBaby257';
   final _dio = Dio();

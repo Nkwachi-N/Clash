@@ -14,6 +14,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants.dart';
+import 'core/di/set_up.dart';
 import 'core/models/user.dart';
 import 'firebase_options.dart';
 
@@ -42,6 +43,8 @@ void main() async {
       initialRoute = RouteGenerator.userNameScreen;
     }
   }
+
+  configureDependencies();
   runApp(
     MyApp(
       initialRoute: initialRoute,
@@ -74,32 +77,15 @@ class _MyAppState extends State<MyApp> {
           create: (context) => GameRepository(),
         ),
         ChangeNotifierProvider(create: (context) => UserProvider()..initUser()),
-        ChangeNotifierProxyProvider3<SpotifyRepository, GameRepository,
-            UserRepository, GameProvider>(
+        ChangeNotifierProvider<GameProvider>(
           create: (context) => GameProvider(),
-          update: (context, spotifyRepository, user, game, gameProvider) {
-            if (gameProvider == null) throw ArgumentError.notNull();
-            gameProvider.initialise(spotifyRepository, game, user);
-            return gameProvider;
-          },
         ),
-        ChangeNotifierProxyProvider2<SpotifyRepository, UserRepository,
-            UserProvider>(
+        ChangeNotifierProvider<UserProvider>(
           create: (context) => UserProvider()..initUser(),
           lazy: false,
-          update: (context, spotify, user, userProvider) {
-            if (userProvider == null) throw ArgumentError.notNull();
-            userProvider.initialise(spotify, user);
-            return userProvider;
-          },
         ),
-        ChangeNotifierProxyProvider<SpotifyRepository, SearchProvider>(
+        ChangeNotifierProvider<SearchProvider>(
           create: (context) => SearchProvider(),
-          update: (context, spotifyRepo, searchProvider) {
-            if (searchProvider == null) throw ArgumentError.notNull();
-            searchProvider.initialise(spotifyRepo);
-            return searchProvider;
-          },
         ),
         Provider(
           create: (context) => AudioProvider(),
