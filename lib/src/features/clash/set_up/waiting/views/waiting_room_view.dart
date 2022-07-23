@@ -1,5 +1,4 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/room_card.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
@@ -129,8 +128,8 @@ class AvatarImage extends StatelessWidget {
       replacement: Center(
         child: InkResponse(
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(RouteGenerator.createClashRoomScreen);
+            // Navigator.of(context)
+            //     .pushNamed(RouteGenerator.createClashRoomScreen);
           },
           child: Container(
               height: 140.0,

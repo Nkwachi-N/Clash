@@ -1,4 +1,3 @@
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/src/features/clash/set_up/clash_mode/views/clash_mode_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -91,7 +90,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
               ),
               Expanded(
                 child: InkWell(
-                  onTap: () => Navigator.of(context).pushNamed(RouteGenerator.hostModeScreen),
+                  // onTap: () => Navigator.of(context).pushNamed(RouteGenerator.hostModeScreen),
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(

@@ -1,5 +1,4 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/mode_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -38,7 +37,7 @@ class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
               height: 40.0,
             ),
             ModeTile(
-              onTap: () => Navigator.of(context).pushNamed(RouteGenerator.categoryScreen),
+              // onTap: () => Navigator.of(context).pushNamed(RouteGenerator.categoryScreen),
               title: 'Host',
               subtitle:
               'Invite friends by their username or share your battle room code',
@@ -48,7 +47,7 @@ class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
             ),
             ModeTile(
               title: 'Join',
-              onTap: () => Navigator.of(context).pushNamed(RouteGenerator.joinClashRoomScreen),
+              // onTap: () => Navigator.of(context).pushNamed(RouteGenerator.joinClashRoomScreen),
               subtitle:
               'Accept invites from friends through your username or join by their battle room code',
             ),

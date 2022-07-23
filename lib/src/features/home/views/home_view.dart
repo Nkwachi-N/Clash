@@ -1,5 +1,4 @@
 import 'package:clash_flutter/gen/assets.gen.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/src/features/home/views/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,9 +57,9 @@ class HomeView extends ViewModelBuilderWidget<HomeViewModel> {
         child: Center(
             child: TextButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(
+            /*Navigator.of(context).pushNamed(
               RouteGenerator.clashRoomScreen,
-            );
+            );*/
           },
           child: const Text(
             'Play',
