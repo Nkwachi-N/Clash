@@ -1,12 +1,9 @@
 import 'dart:convert';
-
-import 'package:clash_flutter/core/api_route.dart';
-import 'package:clash_flutter/core/credentials.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
-import 'package:clash_flutter/widgets/success_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+import '../api/api_route.dart';
 
 enum NotificationType {
   gameInvite,
@@ -62,7 +59,7 @@ class NotificationUtil {
 
   static Future<bool> _sendNotification(Map<String, dynamic> body) async {
     final postBody = {
-      "app_id": Constants.oneSignalAppId,
+      "app_id": Credentials.oneSignalAppId,
       "channel_for_external_user_ids": "push",
       ...body
     };
@@ -70,7 +67,7 @@ class NotificationUtil {
       final response = await http.post(Uri.parse(ApiRoute.createNotification),
           body: jsonEncode(postBody),
           headers: {
-            'Authorization': 'Bearer ${Constants.oneSignalRestApiKey}',
+            'Authorization': 'Bearer ${Credentials.oneSignalRestApiKey}',
             'Content-Type': 'application/json'
           });
 
@@ -88,10 +85,10 @@ class NotificationUtil {
 
   static Future<bool> cancelNotification(String notificationId) async {
     final url =
-        'https://onesignal.com/api/v1/notifications/$notificationId?app_id=${Constants.oneSignalRestApiKey}';
+        'https://onesignal.com/api/v1/notifications/$notificationId?app_id=${Credentials.oneSignalRestApiKey}';
     try {
       final response = await http.delete(Uri.parse(url), headers: {
-        'Authorization': 'Bearer ${Constants.oneSignalRestApiKey}',
+        'Authorization': 'Bearer ${Credentials.oneSignalRestApiKey}',
       });
       final Map<String, dynamic> responseMap = jsonDecode(response.body);
 
@@ -108,7 +105,7 @@ class NotificationUtil {
     OneSignal.shared.setExternalUserId(userId);
   }
 
-  static void setupInteractedMessage(BuildContext context) {
+  static void setupInteractedMessage() {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
       event.complete(null);
@@ -116,7 +113,7 @@ class NotificationUtil {
       final rawPayload = event.notification.additionalData;
 
       if (rawPayload != null) {
-        _handleNotification(rawPayload, context);
+        _handleNotification(rawPayload);
       }
     });
 
@@ -124,36 +121,37 @@ class NotificationUtil {
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       final rawPayload = result.notification.additionalData;
       if (rawPayload != null) {
-        _handleNotification(rawPayload, context);
+        _handleNotification(rawPayload);
       }
     });
   }
 
   static void _handleNotification(
-      Map<String, dynamic> rawPayload, BuildContext context) {
+      Map<String, dynamic> rawPayload) {
     final String notificationType = rawPayload[kTypeKey];
     if (notificationType == NotificationType.gameInvite.name) {
       final userName = rawPayload[kUserNameKey];
-      Navigator.of(context).pushNamed(
-        RouteGenerator.receivedInviteScreen,
-        arguments: userName,
-      );
+      //TODO:
+      // Navigator.of(context).pushNamed(
+      //   RouteGenerator.receivedInviteScreen,
+      //   arguments: userName,
+      // );
     } else if (notificationType == NotificationType.inviteAccepted.name) {
       final userName = rawPayload[kUserNameKey];
-      Navigator.of(context).pushNamed(
-        RouteGenerator.successScreen,
-        arguments: SuccessScreenArgs(
-          title: '$userName accepted your invite',
-          onTap: () {},
-          subtitle: 'The stage is set.',
-        ),
-      );
+      // Navigator.of(context).pushNamed(
+      //   RouteGenerator.successScreen,
+      //   arguments: SuccessScreenArgs(
+      //     title: '$userName accepted your invite',
+      //     onTap: () {},
+      //     subtitle: 'The stage is set.',
+      //   ),
+      // );
     } else if (notificationType == NotificationType.inviteDeclined.name) {
       final userName = rawPayload[kUserNameKey];
-      Navigator.of(context).pushNamed(
-        RouteGenerator.inviteDeclinedScreen,
-        arguments: userName,
-      );
+      // Navigator.of(context).pushNamed(
+      //   RouteGenerator.inviteDeclinedScreen,
+      //   arguments: userName,
+      // );
     }
   }
 }

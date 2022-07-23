@@ -74,31 +74,17 @@ class GameRepository{
     }
   }
 
-  Future<Status> _getGenre() async {
-    final response = await _spotifyRepository.getGenre();
-    Status status = response.status;
+  Future<void> _getGenre() async {
+    genreList = await _spotifyRepository.getGenre();
 
-    if (status == Status.success) {
-      genreList = response.data ?? [];
-    }
     gettingSubCategory = false;
-
-    return status;
 
   }
 
-  Future<Status> _getArtist() async {
-    final response = await _spotifyRepository.getUserTopArtists();
-
-    Status status = response.status;
-
-    if (status == Status.success) {
-      artistList = response.data ?? [];
-    }
+  Future<void> _getArtist() async {
+    artistList = await _spotifyRepository.getUserTopArtists();
 
     gettingSubCategory = false;
-    return status;
-
 
   }
 

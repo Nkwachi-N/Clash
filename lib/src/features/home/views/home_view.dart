@@ -1,19 +1,15 @@
 import 'package:clash_flutter/gen/assets.gen.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/src/features/home/views/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ViewModelBuilderWidget<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
 
   @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, HomeViewModel viewModel, Widget? child) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
@@ -75,36 +71,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    NotificationUtil.setupInteractedMessage(context);
-    context
-        .read<SpotifyRepository>()
-        .authenticationListenable
-        .addListener(_handleAppLifecycle);
-  }
+  HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
 
-  void _handleAppLifecycle() {
-    final spotifyRepo = context.read<SpotifyRepository>();
-    final authenticationStatus = spotifyRepo.authenticationListenable.value;
-    switch (authenticationStatus) {
-      case AuthenticationState.authenticated:
-
-        ///Do Nothing
-        break;
-      case AuthenticationState.unAuthenticated:
-        if (mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            RouteGenerator.authScreen,
-            (route) => false,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Please re-authenticate with Spotify again'),
-            ),
-          );
-        }
-        break;
-    }
-  }
+  @override
+  void onViewModelReady(HomeViewModel viewModel) => viewModel.init();
 }

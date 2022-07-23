@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +9,6 @@ class DioUtil {
 
   static final _dioUtil = DioUtil._();
   static String? token;
-
 
   factory DioUtil() {
     _initToken();
@@ -49,9 +48,8 @@ class DioUtil {
     }
   }
 
-  Future<HttpResponse<Map<String, dynamic>>> get(String url,
-      {bool requiresToken = true,
-      Map<String, String>? queryParameters}) async {
+  Future<Map<String, dynamic>> get(String url,
+      {bool requiresToken = true, Map<String, String>? queryParameters}) async {
     final Map<String, String> header = {};
     if (requiresToken) {
       if (token == null || (token?.isEmpty ?? true)) {
@@ -68,40 +66,22 @@ class DioUtil {
         headers: header,
       );
 
-
-    /*  if (response.statusCode == 401) {
-        return await _retryGetResponse(url, requiresToken);
-      } else*/ if (response.statusCode == 200) {
-        return HttpResponse(
-          status: Status.success,
-          data: jsonDecode(response.body),
-        );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
       } else if (response.statusCode == 403) {
-        return HttpResponse(
-          status: Status.rateExceeded,
-          data: jsonDecode(response.body),
-        );
+        throw Exception('Rate exceeded');
       } else {
-        return HttpResponse(
-          status: Status.unknown,
-        );
+        throw Exception('Unknown error');
       }
-    } on SocketException {
-      return HttpResponse(
-        status: Status.noInternet,
-      );
     } catch (e) {
-      return HttpResponse(
-        status: Status.unknown,
-      );
+      rethrow;
     }
   }
-
 
   static Future<void> _initToken() async {
     final prefs = await SharedPreferences.getInstance();
 
-    token = prefs.getString(Constants.kAccessToken) ?? '';
+    token = prefs.getString(PrefConstants.kAccessToken) ?? '';
   }
 
 /*  Future<HttpResponse<Map<String, dynamic>>> _retryGetResponse(

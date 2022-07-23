@@ -87,7 +87,7 @@ class RouteGenerator {
         );
       case categoryScreen:
         return MaterialPageRoute(
-          builder: (context) => const CategoryScreen(),
+          builder: (context) => const CategoryView(),
         );
       case clashModeScreen:
         return MaterialPageRoute(

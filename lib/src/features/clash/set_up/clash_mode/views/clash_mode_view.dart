@@ -1,12 +1,15 @@
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/src/features/clash/set_up/clash_mode/views/clash_mode_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+import '../../../../../../colors.dart';
 
-class ClashModeScreen extends StatelessWidget {
+class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
   const ClashModeScreen({Key? key}) : super(key: key);
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, ClashModeViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -157,4 +160,7 @@ class ClashModeScreen extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  ClashModeViewModel viewModelBuilder(BuildContext context) => ClashModeViewModel();
 }

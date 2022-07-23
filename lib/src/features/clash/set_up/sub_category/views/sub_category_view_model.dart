@@ -29,4 +29,6 @@ class SubCategoryViewModel extends BaseViewModel {
     _gameRepository.selectGenre(genre);
     //TODO:navigate to rounds screen.
   }
+
+  void getSubCategory() => _gameRepository.getSubCategory();
 }

@@ -1,3 +1,4 @@
+/*
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/widgets/play_icon.dart';
 import 'package:flutter/material.dart';
@@ -154,3 +155,4 @@ class SearchArmouryView extends StatelessWidget {
 
 }
 
+*/

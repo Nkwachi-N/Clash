@@ -2,17 +2,16 @@ import 'dart:convert';
 import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/models/http_response.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../api/dio_util.dart';
 import '../../models/artists.dart';
+import '../../models/track.dart';
 import '../../secret_keys.dart';
 import 'spotify_route.dart';
 
 
-enum AuthenticationState{authenticated, unAuthenticated}
 
 class SpotifyRepository{
   static const state = 'HappyBaby257';
@@ -20,7 +19,6 @@ class SpotifyRepository{
 
   final _dioUtil = DioUtil();
 
-  final ValueNotifier<AuthenticationState> authenticationListenable = ValueNotifier(AuthenticationState.unAuthenticated);
 
   Future<bool> authorize() async {
     final pkcePair = PkcePair.generate();
@@ -95,58 +93,55 @@ class SpotifyRepository{
 
 
   void _saveToken(SharedPreferences prefs, Map<String,dynamic> response) {
-    authenticationListenable.value = AuthenticationState.authenticated;
     prefs.setString(PrefConstants.kAccessToken, response['access_token']);
-    prefs.setString(Constants.kRefreshToken, response['refresh_token']);
+    prefs.setString(PrefConstants.kRefreshToken, response['refresh_token']);
   }
 
   
   Future<String?> getUserId() async {
-    final response = await _dioUtil.get(
-      SpotifyRoute.getUserInfo,
-    );
 
-    return response.data!['id'];
+    try{
+      final response = await _dioUtil.get(
+        SpotifyRoute.getUserInfo,
+      );
+
+      return response['id'];
+    }catch(_){
+      return null;
+    }
+
   }
 
-  Future<HttpResponse<List<Artist>>> getUserTopArtists() async {
+  Future<List<Artist>> getUserTopArtists() async {
     try {
       final response = await _dioUtil.get(SpotifyRoute.getUserTopArtists);
 
-      if (response.status == Status.success) {
-        final list = response.data!['items']
+
+        final list = response['items']
             .map<Artist>((json) => Artist.fromJson(json))
             .toList();
-        return HttpResponse(status: Status.success, data: list);
-      }
+        return list;
 
-      return HttpResponse(status: response.status, data: <Artist>[]);
     } catch (_) {
-      return HttpResponse(status: Status.failed, data: <Artist>[]);
+      return <Artist>[];
     }
   }
 
-  Future<HttpResponse<List<String>>> getGenre() async {
+  Future<List<String>> getGenre() async {
     try {
       final response = await _dioUtil.get(SpotifyRoute.getGenre);
 
-      if (response.status == Status.success) {
-        try {
-          final list = response.data!['genres']
-              .map<String>((json) => json as String)
-              .toList();
-          return HttpResponse(status: Status.success, data: list);
-        } catch (e) {
-          return HttpResponse(status: response.status, data: <String>[]);
-        }
-      }
-      return HttpResponse(status: response.status, data: <String>[]);
+      final list = response['genres']
+          .map<String>((json) => json as String)
+          .toList();
+
+      return list;
     } catch (e) {
-      return HttpResponse(status: Status.unknown, data: <String>[]);
+      return <String>[];
     }
   }
 
-  Future<HttpResponse<List<Track>>> searchByGenre(
+  Future<List<Track>> searchByGenre(
     String query,
     String genre, {
     int offset = 0,
@@ -155,20 +150,16 @@ class SpotifyRepository{
       '$query genre:$genre',
       offset: offset,
     );
-    if (response.status == Status.success) {
-      return HttpResponse(
-          status: Status.success, data: _parseTrackResponse(response.data!));
-    }
-    return HttpResponse(status: response.status);
+    return  _parseTrackResponse(response);
   }
 
-  Future<HttpResponse<Map<String, dynamic>>> _search(
+  Future<Map<String, dynamic>> _search(
     String query, {
     int offset = 0,
-    int limit = Constants.kSearchSize,
+    int limit = kSearchSize,
     String type = 'track',
   }) async {
-    return await _dioUtil.get(SpotifyRoute.search, queryParameters: {
+    return _dioUtil.get(SpotifyRoute.search, queryParameters: {
       'q': query,
       'type': type,
       'limit': limit.toString(),
@@ -177,14 +168,19 @@ class SpotifyRepository{
   }
 
   List<Track> _parseTrackResponse(Map<String, dynamic> data) {
-    return data['tracks']['items']
-        .map<Track>((json) => Track.fromJson(json))
-        .toList();
+    try{
+      return data['tracks']['items']
+          .map<Track>((json) => Track.fromJson(json))
+          .toList();
+    } catch(_) {
+      return  <Track>[];
+    }
+
   }
 
   Future<Status> refreshToken() async {
     final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString(Constants.kRefreshToken);
+    final refreshToken = prefs.getString(PrefConstants.kRefreshToken);
 
 
     final data = {
@@ -203,11 +199,8 @@ class SpotifyRepository{
       _saveToken(prefs, response.data);
       return Status.success;
     } on DioError  catch (e){
-      print(e.response?.statusCode);
       if(e.response?.statusCode == 400) {
-        authenticationListenable.value = AuthenticationState.unAuthenticated;
-        print(authenticationListenable.value.name);
-        return Status.reAuthenticate;
+        //TODO:navigate to home screen
       }
       return Status.unknown;
     }catch(e){

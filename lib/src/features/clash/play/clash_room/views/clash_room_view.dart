@@ -3,8 +3,11 @@ import 'package:clash_flutter/gen/assets.gen.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/models/track.dart';
+
 
 const _kImageSize = 120.0;
+
 class ClashRoomView extends StatelessWidget {
   const ClashRoomView({Key? key}) : super(key: key);
 

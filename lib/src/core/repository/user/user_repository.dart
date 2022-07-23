@@ -47,7 +47,7 @@ class UserRepository {
 
     try {
       await users.doc(user.id).set(user.toMap());
-      final box = Hive.box(Constants.kHiveBox);
+      final box = Hive.box(PrefConstants.kHiveBox);
       box.put('user', user);
       status = true;
     } catch (e) {
@@ -65,7 +65,7 @@ class UserRepository {
   Future<bool> saveAvatar(String avatar) async {
     bool status = false;
     try {
-      final box = Hive.box(Constants.kHiveBox);
+      final box = Hive.box(PrefConstants.kHiveBox);
       final User user = box.get('user');
       user.avatar = avatar;
       status = await _saveUser(user);

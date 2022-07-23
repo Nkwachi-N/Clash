@@ -119,4 +119,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
   @override
   SubCategoryViewModel viewModelBuilder(BuildContext context) =>
       SubCategoryViewModel();
+
+  @override
+  void onViewModelReady(SubCategoryViewModel viewModel) => viewModel.getSubCategory();
 }
