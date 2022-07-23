@@ -1,26 +1,15 @@
+import 'package:clash_flutter/src/core/repository/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:clash_flutter/core/provider/audio_provider.dart';
-import 'package:clash_flutter/core/provider/search_provider.dart';
-import 'package:clash_flutter/core/provider/user_provider.dart';
-import 'package:clash_flutter/core/provider/game_provider.dart';
-import 'package:clash_flutter/core/repository/game_repository.dart';
-import 'package:clash_flutter/core/repository/user_repository.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
-import 'package:clash_flutter/spotify/spotify_repository.dart';
 import 'package:clash_flutter/utils/theme.dart';
 
 
-class ClashApp extends StatefulWidget {
+class ClashApp extends StatelessWidget {
   final String initialRoute;
 
   const ClashApp({Key? key, required this.initialRoute}) : super(key: key);
 
-  @override
-  State<ClashApp> createState() => _ClashAppState();
-}
-
-class _ClashAppState extends State<ClashApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

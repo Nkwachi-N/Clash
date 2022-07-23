@@ -1,13 +1,11 @@
 import 'package:clash_flutter/app.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
+import 'package:clash_flutter/src/core/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'core/constants.dart';
-import 'core/di/set_up.dart';
-import 'core/models/user.dart';
 import 'firebase_options.dart';
 
 void main() async {

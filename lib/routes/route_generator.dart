@@ -1,22 +1,22 @@
-import 'package:clash_flutter/screens/armoury/armoury_search.dart';
+import 'package:clash_flutter/screens/search_armoury/search_armoury_view.dart';
 import 'package:clash_flutter/screens/auth_screen.dart';
 import 'package:clash_flutter/screens/avatar_screen.dart';
-import 'package:clash_flutter/screens/category_screen.dart';
+import 'package:clash_flutter/src/features/clash/set_up/category/views/category_view.dart';
 import 'package:clash_flutter/screens/clash_mode_screen.dart';
 import 'package:clash_flutter/screens/clash_room_screen.dart';
 import 'package:clash_flutter/screens/create_clash_room.dart';
 import 'package:clash_flutter/screens/invite/invite_declined_screen.dart';
 import 'package:clash_flutter/screens/invite/invite_sent_screen.dart';
 import 'package:clash_flutter/screens/invite/received_invite_screen.dart';
-import 'package:clash_flutter/screens/rounds_screen.dart';
+import 'package:clash_flutter/src/features/clash/set_up/rounds/views/rounds_screen.dart';
 import 'package:clash_flutter/screens/set_up_armoury_screen.dart';
 import 'package:clash_flutter/screens/sub_category_screen.dart';
 import 'package:clash_flutter/screens/home_screen.dart';
 import 'package:clash_flutter/screens/host_mode_screen.dart';
 import 'package:clash_flutter/screens/join_clash_room.dart';
-import 'package:clash_flutter/screens/success_screen.dart';
+import 'package:clash_flutter/widgets/success_screen.dart';
 import 'package:clash_flutter/screens/user_name_screen.dart';
-import 'package:clash_flutter/screens/waiting_room_screen.dart';
+import 'package:clash_flutter/src/features/clash/set_up/waiting/views/waiting_room_view.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -95,7 +95,7 @@ class RouteGenerator {
         );
       case waitingRoomScreen:
         return MaterialPageRoute(
-          builder: (context) => const WaitingRoomScreen(),
+          builder: (context) => const WaitingRoomView(),
         );
       case subCategoryScreen:
         return MaterialPageRoute(
@@ -131,7 +131,7 @@ class RouteGenerator {
         );
       case roundsScreen:
         return MaterialPageRoute(
-          builder: (context) => const RoundsScreen(),
+          builder: (context) => const RoundsView(),
         );
       default:
         throw const FormatException('Route not Found');

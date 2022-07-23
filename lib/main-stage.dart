@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'core/constants.dart';
+import 'core/credentials.dart';
 import 'core/di/set_up.dart';
 import 'core/models/user.dart';
 import 'firebase_options.dart';

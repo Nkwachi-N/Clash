@@ -30,7 +30,7 @@ class UserNameTextField extends StatelessWidget {
       },
       onChanged: (value) async {
         if (value.length >= 3) {
-          await model.userNameCheck(value);
+          await model._userNameCheck(value);
           onChanged;
         }else {
           model.resetUserNameState();
