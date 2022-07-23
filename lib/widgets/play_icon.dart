@@ -1,10 +1,12 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/core/models/track.dart';
-import 'package:clash_flutter/core/provider/audio_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import '../src/core/models/track.dart';
+import '../src/core/provider/audio_provider.dart';
 
 class PlayIcon extends StatefulWidget {
   final Track track;
