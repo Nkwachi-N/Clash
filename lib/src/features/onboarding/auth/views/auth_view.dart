@@ -1,14 +1,16 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:stacked/stacked.dart';
 import '../../../../core/constants/dimensions.dart';
 import 'auth_view_model.dart';
 
-class AuthView extends StatelessWidget {
+class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
   const AuthView({Key? key}) : super(key: key);
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, AuthViewModel viewModel,_) {
     final textTheme = Theme.of(context).textTheme;
 
     final model = AuthViewModel();
@@ -75,4 +77,7 @@ class AuthView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  AuthViewModel viewModelBuilder(BuildContext context) => AuthViewModel();
 }

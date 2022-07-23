@@ -2,37 +2,36 @@ import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:stacked/stacked.dart';
 
 import 'user_name_view_model.dart';
 
-class UserNameView extends StatelessWidget {
+class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
   const UserNameView({Key? key}) : super(key: key);
 
+
   @override
-  Widget build(BuildContext context) {
-
+  Widget builder(BuildContext context, UserNameViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
-
-    final model = UserNameViewModel();
 
     final controller = useTextEditingController();
 
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: const BackButton(
-            color: ClashColors.green200,
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: const BackButton(
+          color: ClashColors.green200,
         ),
-        body: Padding(
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
           ),
           child: Form(
-            key: model.formKey,
+            key: viewModel.formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -48,8 +47,8 @@ class UserNameView extends StatelessWidget {
                 ),
                 TextFormField(
                   controller: controller,
-                  validator: (value) => model.validateField(value),
-                  onChanged: model.fieldChanged,
+                  validator: (value) => viewModel.validateField(value),
+                  onChanged: viewModel.fieldChanged,
                   style: const TextStyle(
                     color: ClashColors.green200,
                     fontSize: 18.0,
@@ -59,10 +58,10 @@ class UserNameView extends StatelessWidget {
                         vertical: 16.0, horizontal: 8.0),
                     hintText: 'username (at least 3 characters)',
                     suffixIcon: Visibility(
-                      visible: model.userNameProgress == UserNameState.notFound,
+                      visible: viewModel.userNameProgress == UserNameState.notFound,
                       replacement: Visibility(
                         visible:
-                        model.userNameProgress == UserNameState.loading,
+                        viewModel.userNameProgress == UserNameState.loading,
                         child: const SizedBox(
                           width: 10.0,
                           child: SpinKitThreeBounce(
@@ -101,9 +100,9 @@ class UserNameView extends StatelessWidget {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: model.userNameProgress == UserNameState.notFound
+                  onPressed: viewModel.userNameProgress == UserNameState.notFound
                       ? () async {
-                    model.saveUserName(controller.text);
+                    viewModel.saveUserName(controller.text);
                   } : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +115,7 @@ class UserNameView extends StatelessWidget {
                         width: 8.0,
                       ),
                       Visibility(
-                        visible: model.storingUserName,
+                        visible: viewModel.storingUserName,
                         child: const SpinKitThreeBounce(
                           size: 10.0,
                           color: Colors.white,
@@ -135,4 +134,7 @@ class UserNameView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  UserNameViewModel viewModelBuilder(BuildContext context) => UserNameViewModel();
 }

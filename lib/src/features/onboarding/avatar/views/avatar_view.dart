@@ -2,15 +2,16 @@ import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
+import 'avatar_view_model.dart';
 
-class AvatarView extends StatelessWidget {
+class AvatarView extends ViewModelBuilderWidget<AvatarViewModel> {
   const AvatarView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(
+      BuildContext context, AvatarViewModel viewModel,_) {
     final textTheme = Theme.of(context).textTheme;
-    final model = context.watch<UserProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,12 +38,21 @@ class AvatarView extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               AvatarWidget(
                 path: Assets.images.avatar1.path,
+                selected:
+                    viewModel.selectedAvatar == Assets.images.avatar1.path,
+                onTap: () => viewModel.changeAvatar(Assets.images.avatar1.path),
               ),
               AvatarWidget(
                 path: Assets.images.avatar2.path,
+                selected:
+                    viewModel.selectedAvatar == Assets.images.avatar2.path,
+                onTap: () => viewModel.changeAvatar(Assets.images.avatar2.path),
               ),
               AvatarWidget(
                 path: Assets.images.avatar3.path,
+                selected:
+                    viewModel.selectedAvatar == Assets.images.avatar3.path,
+                onTap: () => viewModel.changeAvatar(Assets.images.avatar3.path),
               ),
             ]),
             const SizedBox(
@@ -53,12 +63,24 @@ class AvatarView extends StatelessWidget {
               children: [
                 AvatarWidget(
                   path: Assets.images.avatar4.path,
+                  selected:
+                      viewModel.selectedAvatar == Assets.images.avatar4.path,
+                  onTap: () =>
+                      viewModel.changeAvatar(Assets.images.avatar4.path),
                 ),
                 AvatarWidget(
                   path: Assets.images.avatar5.path,
+                  selected:
+                      viewModel.selectedAvatar == Assets.images.avatar5.path,
+                  onTap: () =>
+                      viewModel.changeAvatar(Assets.images.avatar5.path),
                 ),
                 AvatarWidget(
                   path: Assets.images.avatar6.path,
+                  selected:
+                      viewModel.selectedAvatar == Assets.images.avatar6.path,
+                  onTap: () =>
+                      viewModel.changeAvatar(Assets.images.avatar6.path),
                 ),
               ],
             ),
@@ -70,31 +92,30 @@ class AvatarView extends StatelessWidget {
               children: [
                 AvatarWidget(
                   path: Assets.images.avatar7.path,
+                  selected:
+                      viewModel.selectedAvatar == Assets.images.avatar7.path,
+                  onTap: () =>
+                      viewModel.changeAvatar(Assets.images.avatar7.path),
                 ),
                 AvatarWidget(
                   path: Assets.images.avatar8.path,
+                  selected:
+                      viewModel.selectedAvatar == Assets.images.avatar8.path,
+                  onTap: () =>
+                      viewModel.changeAvatar(Assets.images.avatar8.path),
                 ),
                 AvatarWidget(
                   path: Assets.images.avatar9.path,
+                  selected:
+                      viewModel.selectedAvatar == Assets.images.avatar9.path,
+                  onTap: () =>
+                      viewModel.changeAvatar(Assets.images.avatar9.path),
                 ),
               ],
             ),
             const Spacer(),
             TextButton(
-              onPressed: () async {
-                final navigator = Navigator.of(context);
-                final scaffoldMessenger = ScaffoldMessenger.of(context);
-                bool status = await model.storeAvatar();
-
-                if (status) {
-                  navigator.pushReplacementNamed(RouteGenerator.homeScreen);
-                } else {
-                  const snackBar = SnackBar(
-                    content: Text('Unable to save avatar'),
-                  );
-                  scaffoldMessenger.showSnackBar(snackBar);
-                }
-              },
+              onPressed: () async {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -106,7 +127,7 @@ class AvatarView extends StatelessWidget {
                     width: 16.0,
                   ),
                   Visibility(
-                    visible: model.storingAvatar,
+                    visible: viewModel.isBusy,
                     child: const SpinKitThreeBounce(
                       color: Colors.white,
                       size: 10.0,
@@ -123,32 +144,34 @@ class AvatarView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  AvatarViewModel viewModelBuilder(BuildContext context) => AvatarViewModel();
 }
 
 class AvatarWidget extends StatelessWidget {
+  final bool selected;
   final String path;
+  final VoidCallback onTap;
 
   const AvatarWidget({
     Key? key,
+    this.selected = false,
     required this.path,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<UserProvider>();
     return InkWell(
-      onTap: () {
-        model.changeAvatar(path);
-      },
+      onTap: onTap,
       child: Container(
         height: 100.0,
         width: 100.0,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: path == model.selectedAvatar
-                ? Colors.green
-                : Colors.transparent,
+            color: selected ? Colors.green : Colors.transparent,
             width: 2.0,
           ),
           image: DecorationImage(

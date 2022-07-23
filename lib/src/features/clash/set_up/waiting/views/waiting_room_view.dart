@@ -3,16 +3,16 @@ import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/room_card.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-class WaitingRoomView extends StatelessWidget {
+import 'waiting_room_view_model.dart';
+
+class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
   const WaitingRoomView({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final gameModel = context.watch<GameProvider>();
-    final user = context.watch<UserProvider>().user;
 
+  @override
+  Widget builder(BuildContext context, WaitingRoomViewModel viewModel,_) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
@@ -38,8 +38,8 @@ class WaitingRoomView extends StatelessWidget {
                   children: [
                     Expanded(
                         child: AvatarImage(
-                      avatar: 'assets/images/avatar_${user.avatar}.png',
-                    )),
+                          avatar: 'assets/images/avatar_${viewModel.avatar}.png',
+                        )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
@@ -51,8 +51,8 @@ class WaitingRoomView extends StatelessWidget {
                     ),
                     const Expanded(
                         child: AvatarImage(
-                      avatar: '',
-                    )),
+                          avatar: '',
+                        )),
                   ],
                 ),
                 const SizedBox(
@@ -63,7 +63,7 @@ class WaitingRoomView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        user.name.toUpperCase(),
+                        viewModel.name,
                         textAlign: TextAlign.center,
                         style: textTheme.headline6?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -81,15 +81,15 @@ class WaitingRoomView extends StatelessWidget {
                     ),
                     Expanded(
                         child: Container(
-                      height: 10,
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 38.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF686868),
-                        borderRadius: BorderRadius.circular(2.0),
-                      ),
-                    )),
+                          height: 10,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 38.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF686868),
+                            borderRadius: BorderRadius.circular(2.0),
+                          ),
+                        )),
                   ],
                 )
               ],
@@ -98,14 +98,14 @@ class WaitingRoomView extends StatelessWidget {
               flex: 2,
             ),
             RoomCard(
-                title: 'Clash category', subtitle: gameModel.category.name),
+                title: 'Clash category', subtitle: viewModel.categoryName),
             ...[
               if (gameModel.category == Category.genre)
-                RoomCard(title: 'Genre category', subtitle: gameModel.genre),
+                RoomCard(title: 'Genre category', subtitle: viewModel.genre),
             ],
             RoomCard(
                 title: 'Number of Rounds',
-                subtitle: '${gameModel.rounds} rounds'),
+                subtitle: '${viewModel.rounds} rounds'),
             const Spacer(
               flex: 2,
             ),
@@ -114,6 +114,9 @@ class WaitingRoomView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  WaitingRoomViewModel viewModelBuilder(BuildContext context) => WaitingRoomViewModel();
 }
 
 class AvatarImage extends StatelessWidget {

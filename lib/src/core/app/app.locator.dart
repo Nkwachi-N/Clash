@@ -10,7 +10,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../core.dart';
 
 final locator = StackedLocator.instance;
 
@@ -19,14 +18,5 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerEnvironment(
       environment: environment, environmentFilter: environmentFilter);
 
-// Register dependencies
-  locator.registerLazySingleton(() => NavigationService());
-  locator.registerLazySingleton(() => AnalyticsService());
-  locator.registerLazySingleton(() => WalletService());
-  locator.registerLazySingleton(() => NetworksService());
-  locator.registerLazySingleton(() => SnackbarService());
-  locator.registerLazySingleton(() => EthereumClient());
-  locator.registerLazySingleton(() => EthProviderService());
-  locator.registerLazySingleton(() => NubianDappService());
-  locator.registerLazySingleton(() => SecureAppService());
+
 }
