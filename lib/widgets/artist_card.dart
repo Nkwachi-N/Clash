@@ -1,7 +1,7 @@
+import 'package:clash_flutter/src/core/models/artists.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../core/models/artists.dart';
 
 class ArtistCard extends StatelessWidget {
   final Artist artist;

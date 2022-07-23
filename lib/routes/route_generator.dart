@@ -8,7 +8,7 @@ import 'package:clash_flutter/screens/create_clash_room.dart';
 import 'package:clash_flutter/screens/invite/invite_declined_screen.dart';
 import 'package:clash_flutter/screens/invite/invite_sent_screen.dart';
 import 'package:clash_flutter/screens/invite/received_invite_screen.dart';
-import 'package:clash_flutter/src/features/clash/set_up/rounds/views/rounds_screen.dart';
+import 'package:clash_flutter/src/features/clash/set_up/rounds/views/rounds_view.dart';
 import 'package:clash_flutter/screens/set_up_armoury_screen.dart';
 import 'package:clash_flutter/screens/sub_category_screen.dart';
 import 'package:clash_flutter/screens/home_screen.dart';

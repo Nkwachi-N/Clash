@@ -1,18 +1,21 @@
+import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:stacked/stacked.dart';
+import 'join_room_view_model.dart';
 
-class JoinRoomView extends StatelessWidget{
+class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
 
-  final otpLength = 6;
 
   const JoinRoomView({Key? key}) : super(key: key);
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, JoinRoomViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     final controller = useTextEditingController();
-    final focusNode = useFocusNode();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -56,7 +59,7 @@ class JoinRoomView extends StatelessWidget{
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
-                    otpLength,
+                    viewModel.otpLength,
                         (index) {
                       String text = '';
                       String controllerText = controller.text;
@@ -103,8 +106,8 @@ class JoinRoomView extends StatelessWidget{
                 maintainInteractivity: true,
                 child: TextField(
                   controller: controller,
-                  focusNode: focusNode,
-                  maxLength: otpLength,
+                  focusNode: viewModel.focusNode,
+                  maxLength: viewModel.otpLength,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     counterText: '',
@@ -116,12 +119,7 @@ class JoinRoomView extends StatelessWidget{
                     FilteringTextInputFormatter.allow(
                         RegExp(r'^[0-9]+$')),
                   ],
-                  onChanged: (value) {
-                    setState(() {});
-                    if (value.length == otpLength) {
-                      focusNode.unfocus();
-                    }
-                  },
+                  onChanged: viewModel.onChanged,
                 ),
               ),
             ],
@@ -144,6 +142,9 @@ class JoinRoomView extends StatelessWidget{
       ),
     );
   }
+
+  @override
+  JoinRoomViewModel viewModelBuilder(BuildContext context) => JoinRoomViewModel();
 
 
 }

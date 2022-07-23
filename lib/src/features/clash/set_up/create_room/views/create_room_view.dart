@@ -1,21 +1,21 @@
-import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
+import '../../../../../../colors.dart';
+import '../../../../../core/constants/dimensions.dart';
+import 'create_room_view_model.dart';
 
-class CreateRoomView extends StatelessWidget {
-  CreateRoomView({Key? key}) : super(key: key);
-
-  final _formKey = GlobalKey<FormState>();
+class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
+  const CreateRoomView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme
-        .of(context)
-        .textTheme;
-    final model = context.watch<UserProvider>();
+  Widget builder(
+      BuildContext context, CreateRoomViewModel model, Widget? child) {
+    final textTheme = Theme.of(context).textTheme;
+
     final controller = useTextEditingController();
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -29,7 +29,7 @@ class CreateRoomView extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
-            key: _formKey,
+            key: model.formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -57,26 +57,8 @@ class CreateRoomView extends StatelessWidget {
                 ),
                 TextFormField(
                   controller: controller,
-                  validator: (value) {
-                    if (value != null && value.isEmpty) {
-                      return 'please enter your friend\'s username';
-                    } else if (value != null && value.length < 3) {
-                      return 'username must be at least 3 characters';
-                    }
-                    if (model.userNameProgress == UserNameState.notFound) {
-                      return 'Username does not exist, please check again.';
-                    }
-                    if (value == model.user.name) {
-                      return 'You can\'t play a game with yourself.';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) async {
-                    if (value.length >= 3) {
-                      await model._userNameCheck(value);
-                      _formKey.currentState!.validate();
-                    }
-                  },
+                  validator: (value) => model.validateUserName(value),
+                  onChanged: (value) => model.onChanged(value),
                   style: const TextStyle(
                     color: ClashColors.green200,
                     fontSize: 18.0,
@@ -88,12 +70,10 @@ class CreateRoomView extends StatelessWidget {
                     fillColor: ClashColors.grey500,
                     hintText: 'username (at least 3 characters)',
                     suffixIcon: Visibility(
-                      visible:
-                      model.userNameProgress == UserNameState.exists &&
-                          controller.text != model.user.name,
+                      visible: model.userNameIsValid,
                       replacement: Visibility(
-                        visible:
-                        model.userNameProgress == UserNameState.loading,
+                        // visible:
+                        // model.userNameProgress == UserNameState.loading,
                         child: const SizedBox(
                           width: 10.0,
                           child: SpinKitThreeBounce(
@@ -189,31 +169,28 @@ class CreateRoomView extends StatelessWidget {
                 const Spacer(
                   flex: 2,
                 ),
-
-                Consumer<GameProvider>(
-                  builder: (_, gameModel, child) {
-                    return TextButton(
-                      onPressed: model.userNameProgress == UserNameState.exists ? () => inviteUser(context,controller.text) : null,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          child!,
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Visibility(
-                            visible: gameModel.invitingUser,
-                            child: const SpinKitThreeBounce(
-                              size: Constants.kButtonLoaderSize,
-                              color: Colors.white,
-                            ),),
-                        ],
+                TextButton(
+                  onPressed: model.userNameIsValid
+                      ? () => model.inviteUser(controller.text)
+                      : null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Continue',
+                        style: textTheme.button,
                       ),
-                    );
-                  },
-                  child: Text(
-                    'Continue',
-                    style: textTheme.button,
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Visibility(
+                        visible: model.isBusy,
+                        child: const SpinKitThreeBounce(
+                          size: kButtonLoaderSize,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(
@@ -227,17 +204,7 @@ class CreateRoomView extends StatelessWidget {
     );
   }
 
-  inviteUser(BuildContext context, String text) {
-
-    final navigator = Navigator.of(context);
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    context.read<GameProvider>().inviteUser(text).then((value){
-      if(value){
-        navigator.pushNamed(RouteGenerator.inviteSentScreen,arguments: text);
-      }else{
-        const snackBar = SnackBar(content: Text('Invite sending failed, please try again'),);
-        scaffoldMessenger.showSnackBar(snackBar);
-      }
-    });
-  }
+  @override
+  CreateRoomViewModel viewModelBuilder(BuildContext context) =>
+      CreateRoomViewModel();
 }

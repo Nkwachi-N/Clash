@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'package:clash_flutter/src/core/constants/constants.dart';
+import 'package:clash_flutter/src/core/models/http_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:injectable/injectable.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../api/dio_util.dart';
+import '../../models/artists.dart';
+import '../../secret_keys.dart';
 import 'spotify_route.dart';
 
 
 enum AuthenticationState{authenticated, unAuthenticated}
 
-@lazySingleton
 class SpotifyRepository{
   static const state = 'HappyBaby257';
   final _dio = Dio();
@@ -31,7 +34,7 @@ class SpotifyRepository{
     final url = Uri.https('accounts.spotify.com', '/authorize', {
       'response_type': 'code',
       'client_id': kClientId,
-      'redirect_uri': Constants.kRedirectUri,
+      'redirect_uri': SpotifyRoute.kRedirectUri,
       'state': state,
       'code_challenge_method': 'S256',
       'code_challenge': codeChallenge,
@@ -66,7 +69,7 @@ class SpotifyRepository{
     final data = {
       'grant_type': 'authorization_code',
       'code': code,
-      'redirect_uri': Constants.kRedirectUri,
+      'redirect_uri': SpotifyRoute.kRedirectUri,
       'client_id': kClientId,
       'code_verifier': codeVerifier
     };
@@ -93,7 +96,7 @@ class SpotifyRepository{
 
   void _saveToken(SharedPreferences prefs, Map<String,dynamic> response) {
     authenticationListenable.value = AuthenticationState.authenticated;
-    prefs.setString(Constants.kAccessToken, response['access_token']);
+    prefs.setString(PrefConstants.kAccessToken, response['access_token']);
     prefs.setString(Constants.kRefreshToken, response['refresh_token']);
   }
 

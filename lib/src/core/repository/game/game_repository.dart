@@ -1,14 +1,141 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:injectable/injectable.dart';
+import 'package:clash_flutter/src/core/app/index.dart';
+import 'package:clash_flutter/src/core/repository/repository.dart';
+import '../../models/artists.dart';
+import '../../models/game.dart';
+import '../../models/http_response.dart';
+import '../../util/notification_util.dart';
 
 
-@lazySingleton
+enum InviteState { accepted, declined, unDecided }
+
+extension ParseToString on InviteState {
+  String toMessage() {
+    switch (this) {
+      case InviteState.accepted:
+        return 'accepting';
+      case InviteState.declined:
+        return 'declining';
+      case InviteState.unDecided:
+        return 'undecided';
+    }
+  }
+}
+
 class GameRepository{
+  final _userRepository = locator<UserRepository>();
+  final _spotifyRepository = locator<SpotifyRepository>();
 
-  CollectionReference games = FirebaseFirestore.instance.collection('games');
+  List<String> genreList = [];
+  bool gettingSubCategory = false;
+  late Category category;
+  List<Artist> artistList = [];
+  late String genre;
+  late Artist artist;
+  int? rounds;
 
-  Future<void> createGame(Game game,String userId) async {
+  InviteState _inviteState = InviteState.unDecided;
+
+  bool _decidingInvite = false;
+
+  bool get decidingInvite => _decidingInvite;
+
+  InviteState get inviteState => _inviteState;
+
+  bool _invitingUser = false;
+
+  bool get invitingUser => _invitingUser;
+
+  void selectCategory(Category category) {
+    this.category = category;
+  }
+
+  void selectRounds(int rounds) {
+    this.rounds = rounds;
+  }
+
+  void selectGenre(String genre) {
+    this.genre = genre;
+  }
+
+  void selectArtist(Artist artist) {
+    this.artist = artist;
+  }
+
+  Future<void> getSubCategory() async {
+    gettingSubCategory = true;
+    switch (category) {
+      case Category.genre:
+        _getGenre();
+        break;
+
+      case Category.artist:
+        _getArtist();
+        break;
+    }
+  }
+
+  Future<Status> _getGenre() async {
+    final response = await _spotifyRepository.getGenre();
+    Status status = response.status;
+
+    if (status == Status.success) {
+      genreList = response.data ?? [];
+    }
+    gettingSubCategory = false;
+
+    return status;
 
   }
+
+  Future<Status> _getArtist() async {
+    final response = await _spotifyRepository.getUserTopArtists();
+
+    Status status = response.status;
+
+    if (status == Status.success) {
+      artistList = response.data ?? [];
+    }
+
+    gettingSubCategory = false;
+    return status;
+
+
+  }
+
+  Future<bool> inviteUser(String userName) async {
+    _invitingUser = true;
+    bool status = false;
+    final user = await _userRepository.getUserByUserName(userName);
+    if (user != null) {
+      status = await NotificationUtil.inviteUser(user.id, userName);
+    }
+    _invitingUser = false;
+    return status;
+  }
+
+  void cancelNotifcation() {
+    //call cancel notifcation in case user hasn't received it.
+    //
+  }
+
+  Future<bool> decide(String userName, InviteState inviteState) async {
+    _decidingInvite = true;
+    _inviteState = inviteState;
+    bool status = false;
+    final user = await _userRepository.getUserByUserName(userName);
+
+    if (user != null) {
+      if (inviteState == InviteState.accepted) {
+        status = await NotificationUtil.acceptInvite(user.id, userName);
+      } else {
+        status = await NotificationUtil.rejectInvite(user.id, userName);
+      }
+    }
+    _decidingInvite = false;
+    _inviteState = InviteState.unDecided;
+    return status;
+  }
+
+
 
 }

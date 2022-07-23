@@ -4,15 +4,13 @@ import 'package:clash_flutter/widgets/room_card.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-
 import 'waiting_room_view_model.dart';
 
 class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
   const WaitingRoomView({Key? key}) : super(key: key);
 
-
   @override
-  Widget builder(BuildContext context, WaitingRoomViewModel viewModel,_) {
+  Widget builder(BuildContext context, WaitingRoomViewModel viewModel, _) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
@@ -38,8 +36,8 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                   children: [
                     Expanded(
                         child: AvatarImage(
-                          avatar: 'assets/images/avatar_${viewModel.avatar}.png',
-                        )),
+                      avatar: 'assets/images/avatar_${viewModel.avatar}.png',
+                    )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
@@ -51,8 +49,8 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                     ),
                     const Expanded(
                         child: AvatarImage(
-                          avatar: '',
-                        )),
+                      avatar: '',
+                    )),
                   ],
                 ),
                 const SizedBox(
@@ -81,15 +79,15 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                     ),
                     Expanded(
                         child: Container(
-                          height: 10,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 38.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF686868),
-                            borderRadius: BorderRadius.circular(2.0),
-                          ),
-                        )),
+                      height: 10,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 38.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF686868),
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                    )),
                   ],
                 )
               ],
@@ -97,10 +95,9 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
             const Spacer(
               flex: 2,
             ),
-            RoomCard(
-                title: 'Clash category', subtitle: viewModel.categoryName),
+            RoomCard(title: 'Clash category', subtitle: viewModel.categoryName),
             ...[
-              if (gameModel.category == Category.genre)
+              if (viewModel.categoryIsGenre)
                 RoomCard(title: 'Genre category', subtitle: viewModel.genre),
             ],
             RoomCard(
@@ -116,7 +113,8 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
   }
 
   @override
-  WaitingRoomViewModel viewModelBuilder(BuildContext context) => WaitingRoomViewModel();
+  WaitingRoomViewModel viewModelBuilder(BuildContext context) =>
+      WaitingRoomViewModel();
 }
 
 class AvatarImage extends StatelessWidget {

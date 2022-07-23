@@ -2,12 +2,15 @@ import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/routes/route_generator.dart';
 import 'package:clash_flutter/widgets/mode_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+import 'host_mode_view_model.dart';
 
-class HostModeView extends StatelessWidget {
+class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
   const HostModeView({Key? key}) : super(key: key);
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, HostModeViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
@@ -54,4 +57,7 @@ class HostModeView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  HostModeViewModel viewModelBuilder(BuildContext context) => HostModeViewModel();
 }

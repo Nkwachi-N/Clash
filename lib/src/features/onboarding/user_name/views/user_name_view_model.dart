@@ -46,7 +46,7 @@ class UserNameViewModel extends BaseViewModel{
 
   void fieldChanged(value) async {
     if (value.length >= 3) {
-      await _userNameCheck(value);
+      await userNameCheck(value);
       _formKey.currentState!.validate();
     } else {
       resetUserNameState();
@@ -84,7 +84,7 @@ class UserNameViewModel extends BaseViewModel{
   }
 
 
-  Future<void> _userNameCheck(String userName) async {
+  Future<void> userNameCheck(String userName) async {
     userNameProgress = UserNameState.loading;
     notifyListeners();
 
