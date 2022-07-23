@@ -1,6 +1,5 @@
 
 
-import 'package:clash_flutter/core/di/set_up.config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
