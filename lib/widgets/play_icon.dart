@@ -1,12 +1,12 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/src/core/app/index.dart';
+import 'package:clash_flutter/src/core/repository/audio/audio_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../src/core/models/track.dart';
-import '../src/core/provider/audio_provider.dart';
 
 class PlayIcon extends StatefulWidget {
   final Track track;
@@ -42,7 +42,8 @@ class _PlayIconState extends State<PlayIcon>
           curve: const Interval(0.75, 1.0),
         ));
 
-    final audioProvider = context.read<AudioProvider>();
+    //TODO:fix
+    final audioProvider = locator<AudioService>();
 
     final player = audioProvider.player;
 
@@ -72,7 +73,7 @@ class _PlayIconState extends State<PlayIcon>
 
   @override
   Widget build(BuildContext context) {
-    final audioProvider = context.watch<AudioProvider>();
+    final audioProvider = locator<AudioService>();
 
     return AnimatedBuilder(
       animation: _controller,

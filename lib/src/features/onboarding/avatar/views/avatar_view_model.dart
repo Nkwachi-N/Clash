@@ -1,12 +1,14 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../../core/app/app.locator.dart';
+import '../../../../core/app/app.router.dart';
 import '../../../../core/repository/repository.dart';
 
 class AvatarViewModel extends BaseViewModel{
 
   final _userRepository = locator<UserRepository>();
   final _snackBarService = locator<SnackbarService>();
+  final _navigatorService = locator<NavigationService>();
 
   String? selectedAvatar;
 
@@ -16,7 +18,7 @@ class AvatarViewModel extends BaseViewModel{
     bool status = await _storeAvatar();
 
     if (status) {
-      //TODO: navigate to home screen
+     _navigatorService.clearStackAndShow(Routes.homeView);
     } else {
      _snackBarService.showSnackbar(message: 'Unable to save avatar');
     }

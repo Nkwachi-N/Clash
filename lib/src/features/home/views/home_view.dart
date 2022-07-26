@@ -56,11 +56,7 @@ class HomeView extends ViewModelBuilderWidget<HomeViewModel> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Center(
             child: TextButton(
-          onPressed: () {
-            /*Navigator.of(context).pushNamed(
-              RouteGenerator.clashRoomScreen,
-            );*/
-          },
+          onPressed: viewModel.createRoom,
           child: const Text(
             'Play',
           ),

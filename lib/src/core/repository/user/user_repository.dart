@@ -3,12 +3,10 @@ import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/repository/repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../models/user.dart';
 import '../../util/notification_util.dart';
 
-@lazySingleton
 class UserRepository {
   final _spotifyRepository = locator<SpotifyRepository>();
 

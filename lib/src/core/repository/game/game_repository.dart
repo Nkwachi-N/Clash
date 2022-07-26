@@ -88,16 +88,7 @@ class GameRepository{
 
   }
 
-  Future<bool> inviteUser(String userName) async {
-    _invitingUser = true;
-    bool status = false;
-    final user = await _userRepository.getUserByUserName(userName);
-    if (user != null) {
-      status = await NotificationUtil.inviteUser(user.id, userName);
-    }
-    _invitingUser = false;
-    return status;
-  }
+
 
   void cancelNotifcation() {
     //call cancel notifcation in case user hasn't received it.

@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:clash_flutter/src/core/app/index.dart';
 import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/models/http_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:pkce/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked_services/stacked_services.dart';
 import '../../api/dio_util.dart';
 import '../../models/artists.dart';
 import '../../models/track.dart';
@@ -18,6 +20,7 @@ class SpotifyRepository{
   final _dio = Dio();
 
   final _dioUtil = DioUtil();
+  final _navigationService = locator<NavigationService>();
 
 
   Future<bool> authorize() async {
@@ -200,11 +203,13 @@ class SpotifyRepository{
       return Status.success;
     } on DioError  catch (e){
       if(e.response?.statusCode == 400) {
-        //TODO:navigate to home screen
+        _navigationService.clearStackAndShow(Routes.authView);
       }
       return Status.unknown;
     }catch(e){
       return Status.unknown;
     }
   }
+
+  void searchTracks(String value, String s) {}
 }

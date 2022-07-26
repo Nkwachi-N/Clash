@@ -1,34 +1,21 @@
-/*
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/widgets/play_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
+import 'package:stacked/stacked.dart';
+
+import 'search_armoury_view_model.dart';
 
 
-class SearchArmouryView extends StatelessWidget {
+class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
   const SearchArmouryView({Key? key}) : super(key: key);
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, SearchArmouryViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
-    final searchModel = context.watch<SearchProvider>();
-    final textEditingController = useTextEditingController();
-    textEditingController.addListener(() {
-      final value = textEditingController.text;
-      if (value.isNotEmpty) {
-        context.read<AudioProvider>().stopMusic();
-
-        context
-            .read<SearchProvider>()
-            .searchTracks(value, 'afrobeat');
-      }
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Armoury'),
@@ -66,7 +53,7 @@ class SearchArmouryView extends StatelessWidget {
               style: textTheme.subtitle1?.copyWith(
                 color: ClashColors.green200,
               ),
-              controller: textEditingController,
+              controller: viewModel.textEditingController,
               decoration: InputDecoration(
                 hintText: 'Search for a song',
                 prefixIcon: UnconstrainedBox(
@@ -83,16 +70,16 @@ class SearchArmouryView extends StatelessWidget {
             ),
             Expanded(
               child: Visibility(
-                visible: !searchModel.searching,
+                visible: !viewModel.isBusy,
                 replacement: const Center(
                   child: SpinKitFadingFour(
                     color: ClashColors.green200,
                   ),
                 ),
                 child: ListView.builder(
-                    itemCount: searchModel.tracks.length,
+                    itemCount: viewModel.tracks.length,
                     itemBuilder: (context, index) {
-                      final track = searchModel.tracks[index];
+                      final track = viewModel.tracks[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
@@ -103,7 +90,7 @@ class SearchArmouryView extends StatelessWidget {
                             Expanded(
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -131,9 +118,9 @@ class SearchArmouryView extends StatelessWidget {
                             TextButton.icon(
                               style: TextButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
-                                horizontal: 22.0,
-                                vertical: 10.0,
-                              )),
+                                    horizontal: 22.0,
+                                    vertical: 10.0,
+                                  )),
                               label: const Text(
                                 'Add',
                                 style: TextStyle(fontSize: 14.0),
@@ -153,6 +140,8 @@ class SearchArmouryView extends StatelessWidget {
     );
   }
 
+  @override
+  SearchArmouryViewModel viewModelBuilder(BuildContext context) => SearchArmouryViewModel();
+
 }
 
-*/

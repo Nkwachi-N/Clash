@@ -1,4 +1,5 @@
 import 'package:clash_flutter/app.dart';
+import 'package:clash_flutter/src/core/app/app.router.dart';
 import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,25 +18,13 @@ void main() async {
 
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox(PrefConstants.kHiveBox);
-  final prefs = await SharedPreferences.getInstance();
-  final accessToken = prefs.getString(PrefConstants.kAccessToken);
   OneSignal.shared.setAppId(Credentials.oneSignalAppId);
 
 
-  /* String initialRoute = RouteGenerator.authScreen;
-
-
-  if (accessToken != null) {
-    final box = Hive.box(PrefConstants.kHiveBox);
-    final User? user = box.get('user');
-    if (user != null) {
-      initialRoute = RouteGenerator.homeScreen;
-    } else {
-      initialRoute = RouteGenerator.userNameScreen;
-    }
-  }*/
 
   runApp(
-    ClashApp(),
+    ClashApp(
+      initialRoute: '',
+    ),
   );
 }

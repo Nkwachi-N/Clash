@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../../core/app/app.locator.dart';
+import '../../../../core/app/app.router.dart';
 import '../../../../core/models/user.dart';
 
 enum UserNameState{
@@ -60,7 +61,7 @@ class UserNameViewModel extends BaseViewModel{
 
       if (status) {
 
-        // _navigatorService.navigateTo(RouteGenerator.avatarScreen);
+        _navigatorService.navigateTo(Routes.avatarView);
 
       } else {
 

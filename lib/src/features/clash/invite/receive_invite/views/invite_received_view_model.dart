@@ -9,9 +9,11 @@ class InviteReceivedViewModel extends BaseViewModel{
   final _navigationService = locator<NavigationService>();
   InviteState get inviteState => _gameRepository.inviteState;
 
+  String userName = '';
 
 
-  void declineInvite(String userName) {
+
+  void declineInvite() {
     setBusy(true);
     _gameRepository.decide(userName,InviteState.declined).then((value) {
       if (value) {
@@ -30,7 +32,7 @@ class InviteReceivedViewModel extends BaseViewModel{
   }
 
 
-  void acceptInvite(String userName) {
+  void acceptInvite() {
     setBusy(true);
     _gameRepository.decide(userName,InviteState.accepted).then((value) {
     /*  if (value) {

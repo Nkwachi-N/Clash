@@ -15,10 +15,9 @@ class AuthViewModel extends BaseViewModel {
       if (response) {
         final existingUser = await _userRepository.checkUserExists();
         if (existingUser != null) {
-          //TODO:navigate to home screen
+          _navigatorService.clearStackAndShow(Routes.homeView);
         } else {
-          //TODO: navigate to userNameScreen
-
+          _navigatorService.clearStackAndShow(Routes.userNameView);
         }
       } else {
         setError(true);

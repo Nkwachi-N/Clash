@@ -1,6 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 
-class AudioProvider {
+class AudioService {
   final player = AudioPlayer();
 
 
@@ -17,7 +17,7 @@ class AudioProvider {
 extension PlayerUtil on AudioPlayer {
   String? getMusic() {
     final ProgressiveAudioSource? audioSource =
-        this.audioSource as ProgressiveAudioSource?;
+    this.audioSource as ProgressiveAudioSource?;
 
     return audioSource?.uri.toString();
   }

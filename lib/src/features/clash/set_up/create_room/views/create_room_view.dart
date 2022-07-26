@@ -14,7 +14,6 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
       BuildContext context, CreateRoomViewModel model, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
 
-    final controller = useTextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -56,7 +55,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   height: 32.0,
                 ),
                 TextFormField(
-                  controller: controller,
+                  controller: model.controller,
                   validator: (value) => model.validateUserName(value),
                   onChanged: (value) => model.onChanged(value),
                   style: const TextStyle(
@@ -71,17 +70,6 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                     hintText: 'username (at least 3 characters)',
                     suffixIcon: Visibility(
                       visible: model.userNameIsValid,
-                      replacement: Visibility(
-                        // visible:
-                        // model.userNameProgress == UserNameState.loading,
-                        child: const SizedBox(
-                          width: 10.0,
-                          child: SpinKitThreeBounce(
-                            color: ClashColors.green200,
-                            size: 10.0,
-                          ),
-                        ),
-                      ),
                       child: Container(
                         margin: const EdgeInsets.all(
                           9.0,
@@ -171,7 +159,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                 ),
                 TextButton(
                   onPressed: model.userNameIsValid
-                      ? () => model.inviteUser(controller.text)
+                      ? () => model.inviteUser()
                       : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

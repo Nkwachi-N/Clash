@@ -1,0 +1,4 @@
+enum SnackBarType{
+  error,
+  message
+}
