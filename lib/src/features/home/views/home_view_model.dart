@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../core/util/notification_util.dart';
 
-class HomeViewModel extends BaseViewModel{
+class HomeViewModel extends IndexTrackingViewModel{
 
   final navigationService = locator<NavigationService>();
 

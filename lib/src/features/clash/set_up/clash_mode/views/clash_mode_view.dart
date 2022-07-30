@@ -1,9 +1,10 @@
 import 'package:clash_flutter/gen/assets.gen.dart';
-import 'package:clash_flutter/src/features/clash/set_up/clash_mode/views/clash_mode_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../../../colors.dart';
+import 'clash_mode_view_model.dart';
 
 class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
   const ClashModeScreen({Key? key}) : super(key: key);
@@ -14,27 +15,38 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: const BackButton(
-            color: ClashColors.green100,
-          ),
-        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(
-                height: 16.0,
+              SizedBox(
+                height: 50.h,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Welcome back, Emmanuel 👋 ',
+                    style: textTheme.subtitle1,
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset(Assets.images.flame),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  Text('0',style: textTheme.headline5,)
+
+                ],
+              ),
+              SizedBox(
+                height: 71.h,
               ),
               Text(
                 'How do you want to Clash?',
-                style: textTheme.headline6,
+                style: textTheme.subtitle2,
               ),
-              const SizedBox(
-                height: 32.0,
+              SizedBox(
+                height: 16.h,
               ),
               Expanded(
                 child: Container(
@@ -64,12 +76,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: 80.0,
-                        width: 80.0,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.orange),
-                      ),
+                      Assets.images.miroodlesColorComp.image(),
                       const SizedBox(
                         height: 16.0,
                       ),
@@ -97,7 +104,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
               ),
               Expanded(
                 child: InkWell(
-                  // onTap: () => Navigator.of(context).pushNamed(RouteGenerator.hostModeScreen),
+                  onTap: viewModel.navigateToHostModeView,
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(

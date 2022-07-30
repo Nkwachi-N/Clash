@@ -12,6 +12,10 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Miroodles Color Comp.png
+  AssetGenImage get miroodlesColorComp =>
+      const AssetGenImage('assets/images/Miroodles Color Comp.png');
+
   /// File path: assets/images/Spotify_Icon_White.png
   AssetGenImage get spotifyIconWhite =>
       const AssetGenImage('assets/images/Spotify_Icon_White.png');
@@ -61,6 +65,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/exclamation.png
   AssetGenImage get exclamation =>
       const AssetGenImage('assets/images/exclamation.png');
+
+  /// File path: assets/images/flame.svg
+  String get flame => 'assets/images/flame.svg';
 
   /// File path: assets/images/home.svg
   String get home => 'assets/images/home.svg';

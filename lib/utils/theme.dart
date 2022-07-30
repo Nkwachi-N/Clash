@@ -19,6 +19,14 @@ class ClashTheme {
             fontSize: 20.sp,
             fontWeight: FontWeight.normal,
           ),
+          headline5: TextStyle(
+            fontSize: 24.sp,
+            fontWeight: FontWeight.w500,
+          ),
+          subtitle2:  TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
           caption: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 12.sp,
