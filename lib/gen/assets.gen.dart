@@ -72,6 +72,9 @@ class $AssetsImagesGen {
   AssetGenImage get inviteSent =>
       const AssetGenImage('assets/images/invite_sent.png');
 
+  /// File path: assets/images/my_avatar.svg
+  String get myAvatar => 'assets/images/my_avatar.svg';
+
   /// File path: assets/images/profile-frame.svg
   String get profileFrame => 'assets/images/profile-frame.svg';
 
