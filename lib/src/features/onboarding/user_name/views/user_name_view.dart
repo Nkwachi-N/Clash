@@ -14,7 +14,6 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
   Widget builder(BuildContext context, UserNameViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
 
-    final controller = useTextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,7 +45,7 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
                   height: 16.0,
                 ),
                 TextFormField(
-                  controller: controller,
+                  controller: viewModel.controller,
                   validator: (value) => viewModel.validateField(value),
                   onChanged: viewModel.fieldChanged,
                   style: const TextStyle(
@@ -102,7 +101,7 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
                 TextButton(
                   onPressed: viewModel.userNameProgress == UserNameState.notFound
                       ? () async {
-                    viewModel.saveUserName(controller.text);
+                    viewModel.saveUserName();
                   } : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

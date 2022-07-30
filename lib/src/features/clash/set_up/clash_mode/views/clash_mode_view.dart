@@ -1,14 +1,16 @@
+import 'package:clash_flutter/gen/assets.gen.dart';
 import 'package:clash_flutter/src/features/clash/set_up/clash_mode/views/clash_mode_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../../../colors.dart';
 
 class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
   const ClashModeScreen({Key? key}) : super(key: key);
 
-
   @override
-  Widget builder(BuildContext context, ClashModeViewModel viewModel, Widget? child) {
+  Widget builder(
+      BuildContext context, ClashModeViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -35,7 +37,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                 height: 32.0,
               ),
               Expanded(
-                child : Container(
+                child: Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: ClashColors.grey500,
@@ -52,7 +54,14 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                             color: const Color(0xFFFCBD21),
                             borderRadius: BorderRadius.circular(16.0),
                           ),
-                          child: Text('Coming Soon', style: textTheme.subtitle2),
+                          child: Text(
+                            'Coming Soon',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 10.sp,
+                            ),
+                          ),
                         ),
                       ),
                       Container(
@@ -66,9 +75,8 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       ),
                       Text(
                         'With a Computer',
-                        style: textTheme.headline5?.copyWith(
-                          color: ClashColors.green100,
-                          fontWeight: FontWeight.w700,
+                        style: textTheme.headline6?.copyWith(
+                          color: ClashColors.green200,
                         ),
                       ),
                       const SizedBox(
@@ -77,8 +85,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       Text(
                         'Play against an automated system.',
                         style: textTheme.subtitle1?.copyWith(
-                          fontSize: 16.0,
-                          color: Colors.black87,
+                          color: ClashColors.grey400,
                         ),
                       ),
                     ],
@@ -105,14 +112,14 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                           clipBehavior: Clip.none,
                           children: [
                             Image.asset(
-                              'assets/images/avatar_1.png',
+                              Assets.images.avatar1.path,
                               height: 60.0,
                               width: 60.0,
                             ),
                             Positioned(
                               left: 40.0,
                               child: Image.asset(
-                                'assets/images/avatar_3.png',
+                                Assets.images.avatar3.path,
                                 height: 60.0,
                                 width: 60.0,
                               ),
@@ -120,7 +127,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                             Positioned(
                               left: 80.0,
                               child: Image.asset(
-                                'assets/images/avatar_5.png',
+                                Assets.images.avatar5.path,
                                 height: 60.0,
                                 width: 60.0,
                               ),
@@ -132,9 +139,8 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                         ),
                         Text(
                           'With Friends',
-                          style: textTheme.headline5?.copyWith(
-                            color: ClashColors.green100,
-                            fontWeight: FontWeight.w700,
+                          style: textTheme.headline6?.copyWith(
+                            color: ClashColors.green200,
                           ),
                         ),
                         const SizedBox(
@@ -143,8 +149,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                         Text(
                           'Mash heads with your gees and pals by inviting them to your clash room.',
                           style: textTheme.subtitle1?.copyWith(
-                            fontSize: 16.0,
-                            color: Colors.black87,
+                            color: ClashColors.grey400,
                           ),
                         ),
                       ],
@@ -161,5 +166,6 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
   }
 
   @override
-  ClashModeViewModel viewModelBuilder(BuildContext context) => ClashModeViewModel();
+  ClashModeViewModel viewModelBuilder(BuildContext context) =>
+      ClashModeViewModel();
 }

@@ -1,14 +1,17 @@
 import 'package:clash_flutter/src/features/home/profile/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../../../../gen/assets.gen.dart';
+import 'edit_profile_view_model.dart';
 
-class EditProfileView extends StatelessWidget {
+class EditProfileView extends ViewModelBuilderWidget<EditProfileViewModel> {
   const EditProfileView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(
+      BuildContext context, EditProfileViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
@@ -33,6 +36,7 @@ class EditProfileView extends StatelessWidget {
               ProfileTile(
                 title: 'My Username',
                 iconPath: Assets.images.inviteFriends,
+                onTap: viewModel.navigateToUserNameView,
               ),
               SizedBox(
                 height: 16.0,
@@ -40,12 +44,16 @@ class EditProfileView extends StatelessWidget {
               ProfileTile(
                 title: 'My Avatar',
                 iconPath: Assets.images.myAvatar,
+                onTap: viewModel.navigateToAvatarView,
               ),
-
             ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  EditProfileViewModel viewModelBuilder(BuildContext context) =>
+      EditProfileViewModel();
 }

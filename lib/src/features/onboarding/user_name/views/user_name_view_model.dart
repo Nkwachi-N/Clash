@@ -6,22 +6,22 @@ import '../../../../core/app/app.locator.dart';
 import '../../../../core/app/app.router.dart';
 import '../../../../core/models/user.dart';
 
-enum UserNameState{
+enum UserNameState {
   idle,
   loading,
   exists,
   notFound,
 }
 
-class UserNameViewModel extends BaseViewModel{
-
-
+class UserNameViewModel extends BaseViewModel {
   bool storingUserName = false;
   bool storingAvatar = false;
   bool authorizing = false;
   String? selectedAvatar;
 
   UserNameState userNameProgress = UserNameState.idle;
+
+  final controller = TextEditingController();
 
   late User user;
 
@@ -32,17 +32,16 @@ class UserNameViewModel extends BaseViewModel{
 
   GlobalKey<FormState> get formKey => _formKey;
 
-
   String? validateField(String? value) {
-      if (value != null && value.isEmpty) {
-        return 'please enter your username';
-      } else if (value != null && value.length < 3) {
-        return 'username must be at least 3 characters';
-      }
-      if (userNameProgress == UserNameState.exists) {
-        return 'Username is not available';
-      }
-      return null;
+    if (value != null && value.isEmpty) {
+      return 'please enter your username';
+    } else if (value != null && value.length < 3) {
+      return 'username must be at least 3 characters';
+    }
+    if (userNameProgress == UserNameState.exists) {
+      return 'Username is not available';
+    }
+    return null;
   }
 
   void fieldChanged(value) async {
@@ -54,23 +53,19 @@ class UserNameViewModel extends BaseViewModel{
     }
   }
 
-  void saveUserName(String text) async {
+  void saveUserName() async {
     if (_formKey.currentState!.validate()) {
-
-      bool status = await storeUserName(text);
+      bool status = await storeUserName(controller.text);
 
       if (status) {
-
         _navigatorService.navigateTo(Routes.avatarView);
-
       } else {
-
-        _snackBarService.showSnackbar(message: 'Something went wrong, please try again',);
+        _snackBarService.showSnackbar(
+          message: 'Something went wrong, please try again',
+        );
       }
     }
   }
-
-
 
   Future<bool> storeUserName(String userName) async {
     storingUserName = true;
@@ -84,30 +79,23 @@ class UserNameViewModel extends BaseViewModel{
     return status;
   }
 
-
   Future<void> userNameCheck(String userName) async {
     userNameProgress = UserNameState.loading;
     notifyListeners();
 
-    bool result =  await _userRepository.usernameCheck(userName);
+    bool result = await _userRepository.usernameCheck(userName);
 
-    if(result) {
-
+    if (result) {
       userNameProgress = UserNameState.notFound;
-
-    }else {
-
+    } else {
       userNameProgress = UserNameState.exists;
     }
 
     notifyListeners();
-
   }
 
   void resetUserNameState() {
     userNameProgress = UserNameState.idle;
     notifyListeners();
   }
-
-
 }

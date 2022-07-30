@@ -1,4 +1,6 @@
 import 'package:clash_flutter/gen/assets.gen.dart';
+import 'package:clash_flutter/src/features/features.dart';
+import 'package:clash_flutter/src/features/home/profile/views/profile_view.dart';
 import 'package:clash_flutter/src/features/home/views/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -52,16 +54,13 @@ class HomeView extends ViewModelBuilderWidget<HomeViewModel> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Center(
-            child: TextButton(
-          onPressed: viewModel.createRoom,
-          child: const Text(
-            'Play',
-          ),
-        )),
-      ),
+      body: IndexedStack(
+        index: 0,
+        children: [
+          ClashModeScreen(),
+          ProfileView()
+        ],
+      )
     );
   }
 
