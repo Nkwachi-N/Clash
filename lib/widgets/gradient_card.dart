@@ -16,6 +16,7 @@ class GradientCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4.0),
         gradient: LinearGradient(
@@ -52,7 +53,6 @@ class GradientCard extends StatelessWidget {
               text,
               style: Theme.of(context).textTheme.headline5?.copyWith(
                     color: Colors.white,
-                    fontWeight: FontWeight.w600,
                   ),
             ),
           ),

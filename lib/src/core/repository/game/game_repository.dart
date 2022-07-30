@@ -26,7 +26,6 @@ class GameRepository{
   final _spotifyRepository = locator<SpotifyRepository>();
 
   List<String> genreList = [];
-  bool gettingSubCategory = false;
   late Category category;
   List<Artist> artistList = [];
   late String genre;
@@ -62,29 +61,22 @@ class GameRepository{
   }
 
   Future<void> getSubCategory() async {
-    gettingSubCategory = true;
     switch (category) {
       case Category.genre:
-        _getGenre();
+       await _getGenre();
         break;
-
       case Category.artist:
-        _getArtist();
+        await _getArtist();
         break;
     }
   }
 
   Future<void> _getGenre() async {
     genreList = await _spotifyRepository.getGenre();
-
-    gettingSubCategory = false;
-
   }
 
   Future<void> _getArtist() async {
     artistList = await _spotifyRepository.getUserTopArtists();
-
-    gettingSubCategory = false;
 
   }
 

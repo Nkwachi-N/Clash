@@ -37,8 +37,8 @@ class ModeTile extends StatelessWidget {
             icon,
             Text(
               title,
-              style: textTheme.headline5?.copyWith(
-                color: ClashColors.green100,
+              style: textTheme.headline6?.copyWith(
+                color: ClashColors.green200,
               ),
             ),
             const SizedBox(
@@ -46,8 +46,8 @@ class ModeTile extends StatelessWidget {
             ),
             Text(
               subtitle,
-              style: textTheme.headline6?.copyWith(
-                  color: ClashColors.black200, fontWeight: FontWeight.w400, fontSize: 18.0),
+              style: textTheme.subtitle1?.copyWith(
+                  color: ClashColors.grey400, fontWeight: FontWeight.w400,),
             )
           ],
         ),

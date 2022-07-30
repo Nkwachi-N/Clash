@@ -1,13 +1,18 @@
 import 'dart:convert';
+import 'package:clash_flutter/src/core/app/app.locator.dart';
 import 'package:clash_flutter/src/core/constants/constants.dart';
+import 'package:clash_flutter/src/core/repository/repository.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/http_response.dart';
 
 class DioUtil {
   DioUtil._();
 
   static final _dioUtil = DioUtil._();
+  // final _spotifyRepository = locator<SpotifyRepository>();
   static String? token;
 
   factory DioUtil() {
@@ -57,17 +62,27 @@ class DioUtil {
       }
       header['Authorization'] = 'Bearer $token';
     }
+    late Uri uriString;
 
     try {
-      final uri = Uri.parse(url).replace(queryParameters: queryParameters);
+      uriString = Uri.parse(url).replace(queryParameters: queryParameters);
 
       final response = await http.get(
-        uri,
+        uriString,
         headers: header,
       );
 
+      print(response.body);
+
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
+      } else if (response.statusCode == 401) {
+        try {
+          return _retryGetResponse(uriString,requiresToken: requiresToken);
+
+        }catch (_) {
+          rethrow;
+        }
       } else if (response.statusCode == 403) {
         throw Exception('Rate exceeded');
       } else {
@@ -84,24 +99,30 @@ class DioUtil {
     token = prefs.getString(PrefConstants.kAccessToken) ?? '';
   }
 
-/*  Future<HttpResponse<Map<String, dynamic>>> _retryGetResponse(
-      String url, bool requiresToken) async {
-    final refreshResponse = await _refreshToken();
-    if (refreshResponse == Status.success) {
+  Future<Map<String, dynamic>> _retryGetResponse(Uri url,
+      {bool requiresToken = true,}) async {
+    final refreshStatus = Status.success;
+    if (refreshStatus == Status.success) {
       final Map<String, String> header = {};
       if (requiresToken) {
-        final prefs = await SharedPreferences.getInstance();
-        token = prefs.getString(Constants.kAccessToken);
+        if (token == null || (token?.isEmpty ?? true)) {
+          await _initToken();
+        }
         header['Authorization'] = 'Bearer $token';
       }
-      final response = await http.get(Uri.parse(url), headers: header);
-      if (response.statusCode == 200) {
-        return HttpResponse(
-            status: Status.success,
-            data: jsonDecode(response.body));
+
+      try {
+        final response = await http.get(
+          url,
+          headers: header,
+        );
+        return jsonDecode(response.body);
+      } catch (e) {
+        rethrow;
       }
-      return HttpResponse(status: Status.failed);
+    }else {
+      throw Exception('Ooops! something went wrong');
     }
-    return HttpResponse(status: Status.reAuthenticate);
-  }*/
+
+  }
 }

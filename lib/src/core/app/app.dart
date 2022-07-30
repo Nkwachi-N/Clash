@@ -1,3 +1,4 @@
+import 'package:clash_flutter/src/core/api/dio_util.dart';
 import 'package:clash_flutter/src/core/repository/invite/invite_service.dart';
 import 'package:clash_flutter/src/core/repository/repository.dart';
 import 'package:clash_flutter/src/features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
@@ -35,7 +36,9 @@ import 'package:stacked_services/stacked_services.dart';
   dependencies: [
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: GameRepository),
+    LazySingleton(classType: DioUtil),
     LazySingleton(classType: SpotifyRepository),
+
     LazySingleton(classType: UserRepository),
     LazySingleton(classType: SnackbarService),
     Singleton(classType: AudioService),

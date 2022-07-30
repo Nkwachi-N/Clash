@@ -17,9 +17,8 @@ import 'spotify_route.dart';
 
 class SpotifyRepository{
   static const state = 'HappyBaby257';
+  final _dioUtil = locator<DioUtil>();
   final _dio = Dio();
-
-  final _dioUtil = DioUtil();
   final _navigationService = locator<NavigationService>();
 
 
@@ -140,6 +139,7 @@ class SpotifyRepository{
 
       return list;
     } catch (e) {
+      print(e.toString());
       return <String>[];
     }
   }
@@ -199,6 +199,7 @@ class SpotifyRepository{
     try {
       final response = await _dio.post(SpotifyRoute.autGetTokenUrl,
           data: data, options: Options(headers: header),);
+      print(response.data);
       _saveToken(prefs, response.data);
       return Status.success;
     } on DioError  catch (e){

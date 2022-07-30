@@ -3,6 +3,8 @@ import 'package:stacked/stacked.dart';
 
 class JoinRoomViewModel extends BaseViewModel{
 
+  final controller = TextEditingController();
+
   int get otpLength => 6;
   final FocusNode _focusNode = FocusNode();
   FocusNode get focusNode => _focusNode;

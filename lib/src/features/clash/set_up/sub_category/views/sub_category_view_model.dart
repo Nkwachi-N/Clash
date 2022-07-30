@@ -30,5 +30,11 @@ class SubCategoryViewModel extends BaseViewModel {
     //TODO:navigate to rounds screen.
   }
 
-  void getSubCategory() => _gameRepository.getSubCategory();
+  Future<void> getSubCategory() async{
+    setBusy(true);
+    print('busy');
+    await _gameRepository.getSubCategory();
+    print('not busy');
+    setBusy(false);
+  }
 }
