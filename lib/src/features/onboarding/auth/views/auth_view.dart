@@ -33,7 +33,7 @@ class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
             Text(
               'CLASH',
               style: textTheme.headline2?.copyWith(
-                color: ClashColors.green200,
+                color: ClashColors.green100,
                 fontWeight: FontWeight.w700,
               ),
             ),

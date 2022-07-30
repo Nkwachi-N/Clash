@@ -38,7 +38,7 @@ class GradientCard extends StatelessWidget {
                       1.0,
                     ),
                     decoration: const BoxDecoration(
-                      color: ClashColors.green200,
+                      color: ClashColors.green100,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(

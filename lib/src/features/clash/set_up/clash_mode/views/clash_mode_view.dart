@@ -16,7 +16,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(
@@ -67,7 +67,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       Text(
                         'With a Computer',
                         style: textTheme.headline5?.copyWith(
-                          color: ClashColors.green200,
+                          color: ClashColors.green100,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -133,7 +133,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                         Text(
                           'With Friends',
                           style: textTheme.headline5?.copyWith(
-                            color: ClashColors.green200,
+                            color: ClashColors.green100,
                             fontWeight: FontWeight.w700,
                           ),
                         ),

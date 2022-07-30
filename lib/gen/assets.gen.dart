@@ -19,6 +19,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/X42.png
   AssetGenImage get x42 => const AssetGenImage('assets/images/X42.png');
 
+  /// File path: assets/images/about_clash.svg
+  String get aboutClash => 'assets/images/about_clash.svg';
+
   /// File path: assets/images/avatar_1.png
   AssetGenImage get avatar1 =>
       const AssetGenImage('assets/images/avatar_1.png');
@@ -62,15 +65,27 @@ class $AssetsImagesGen {
   /// File path: assets/images/home.svg
   String get home => 'assets/images/home.svg';
 
+  /// File path: assets/images/invite_friends.svg
+  String get inviteFriends => 'assets/images/invite_friends.svg';
+
   /// File path: assets/images/invite_sent.png
   AssetGenImage get inviteSent =>
       const AssetGenImage('assets/images/invite_sent.png');
 
+  /// File path: assets/images/profile-frame.svg
+  String get profileFrame => 'assets/images/profile-frame.svg';
+
   /// File path: assets/images/profile.svg
   String get profile => 'assets/images/profile.svg';
 
+  /// File path: assets/images/rate_us.svg
+  String get rateUs => 'assets/images/rate_us.svg';
+
   /// File path: assets/images/search.svg
   String get search => 'assets/images/search.svg';
+
+  /// File path: assets/images/share_socials.svg
+  String get shareSocials => 'assets/images/share_socials.svg';
 
   /// File path: assets/images/stat.svg
   String get stat => 'assets/images/stat.svg';
@@ -100,7 +115,7 @@ class AssetGenImage {
     ImageErrorWidgetBuilder? errorBuilder,
     String? semanticLabel,
     bool excludeFromSemantics = false,
-    double? scale = 1.0,
+    double? scale,
     double? width,
     double? height,
     Color? color,
@@ -147,4 +162,6 @@ class AssetGenImage {
   }
 
   String get path => _assetName;
+
+  String get keyName => _assetName;
 }

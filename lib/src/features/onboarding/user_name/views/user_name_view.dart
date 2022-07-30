@@ -22,7 +22,7 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const BackButton(
-          color: ClashColors.green200,
+          color: ClashColors.green100,
         ),
       ),
       body: SafeArea(
@@ -50,7 +50,7 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
                   validator: (value) => viewModel.validateField(value),
                   onChanged: viewModel.fieldChanged,
                   style: const TextStyle(
-                    color: ClashColors.green200,
+                    color: ClashColors.green100,
                     fontSize: 18.0,
                   ),
                   decoration: InputDecoration(
@@ -65,7 +65,7 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
                         child: const SizedBox(
                           width: 10.0,
                           child: SpinKitThreeBounce(
-                            color: ClashColors.green200,
+                            color: ClashColors.green100,
                             size: 10.0,
                           ),
                         ),
@@ -75,7 +75,7 @@ class UserNameView extends ViewModelBuilderWidget<UserNameViewModel> {
                           9.0,
                         ),
                         decoration: const BoxDecoration(
-                          color: ClashColors.green200,
+                          color: ClashColors.green100,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(

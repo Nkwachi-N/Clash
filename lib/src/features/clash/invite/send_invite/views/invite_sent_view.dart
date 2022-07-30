@@ -117,7 +117,7 @@ class _InviteSentViewState extends State<InviteSentView>
                           TextSpan(
                             text: '@${viewModel.userName}',
                             style: textTheme.subtitle1?.copyWith(
-                              color: ClashColors.green200,
+                              color: ClashColors.green100,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w700,
                             ),

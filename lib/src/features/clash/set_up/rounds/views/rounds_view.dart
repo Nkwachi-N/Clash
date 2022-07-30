@@ -20,7 +20,7 @@ class RoundsView extends ViewModelBuilderWidget<RoundsViewModel> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: ClashColors.green200,
+          color: ClashColors.green100,
         ),
       ),
       body: Padding(

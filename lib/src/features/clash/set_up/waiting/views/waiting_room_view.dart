@@ -23,7 +23,7 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
             const Align(
               alignment: Alignment.topLeft,
               child: BackButton(
-                color: ClashColors.green200,
+                color: ClashColors.green100,
               ),
             ),
             const Spacer(),
@@ -72,7 +72,7 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                       child: Text(
                         'VS',
                         style: textTheme.headline6?.copyWith(
-                          color: ClashColors.green200,
+                          color: ClashColors.green100,
                         ),
                       ),
                     ),

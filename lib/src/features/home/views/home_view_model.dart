@@ -18,6 +18,6 @@ class HomeViewModel extends BaseViewModel{
 
 
   void createRoom  () {
-    navigationService.navigateTo(Routes.declineInviteView);
+    navigationService.navigateTo(Routes.profileView);
   }
 }

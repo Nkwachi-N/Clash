@@ -91,14 +91,14 @@ class ReceivedInviteScreen
                     Text(
                       '${viewModel.inviteState.toMessage()} invite',
                       style: textTheme.subtitle1?.copyWith(
-                        color: ClashColors.green200,
+                        color: ClashColors.green100,
                       ),
                     ),
                     const SizedBox(
                       width: 4.0,
                     ),
                     const SpinKitThreeBounce(
-                      color: ClashColors.green200,
+                      color: ClashColors.green100,
                       size: kButtonLoaderSize,
                     )
                   ],

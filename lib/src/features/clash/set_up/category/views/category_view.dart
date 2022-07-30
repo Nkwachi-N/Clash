@@ -18,7 +18,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(

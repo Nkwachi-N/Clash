@@ -34,7 +34,7 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
         elevation: 0,
         badgeColor: Theme.of(context).scaffoldBackgroundColor,
         child: FloatingActionButton(
-          backgroundColor: ClashColors.green200,
+          backgroundColor: ClashColors.green100,
           onPressed: () {},
           child: const Icon(
             Icons.add,
@@ -51,7 +51,7 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
             ),
             TextField(
               style: textTheme.subtitle1?.copyWith(
-                color: ClashColors.green200,
+                color: ClashColors.green100,
               ),
               controller: viewModel.textEditingController,
               decoration: InputDecoration(
@@ -73,7 +73,7 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
                 visible: !viewModel.isBusy,
                 replacement: const Center(
                   child: SpinKitFadingFour(
-                    color: ClashColors.green200,
+                    color: ClashColors.green100,
                   ),
                 ),
                 child: ListView.builder(

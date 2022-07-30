@@ -27,7 +27,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(
@@ -71,7 +71,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
                   visible: !model.isBusy,
                   replacement: const Center(
                     child: SpinKitFadingFour(
-                      color: ClashColors.green200,
+                      color: ClashColors.green100,
                     ),
                   ),
                   child: GridView.builder(

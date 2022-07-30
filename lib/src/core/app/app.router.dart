@@ -12,6 +12,7 @@ import 'package:stacked/stacked_annotations.dart';
 
 import '../../features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
 import '../../features/features.dart';
+import '../../features/home/profile/views/profile_view.dart';
 
 class Routes {
   static const String startUpView = '/';
@@ -33,6 +34,7 @@ class Routes {
   static const String declineInviteView = '/decline-invite-view';
   static const String receivedInviteScreen = '/received-invite-screen';
   static const String inviteSentView = '/invite-sent-view';
+  static const String profileView = '/profile-view';
   static const all = <String>{
     startUpView,
     authView,
@@ -53,6 +55,7 @@ class Routes {
     declineInviteView,
     receivedInviteScreen,
     inviteSentView,
+    profileView,
   };
 }
 
@@ -79,6 +82,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.declineInviteView, page: DeclineInviteView),
     RouteDef(Routes.receivedInviteScreen, page: ReceivedInviteScreen),
     RouteDef(Routes.inviteSentView, page: InviteSentView),
+    RouteDef(Routes.profileView, page: ProfileView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -194,6 +198,12 @@ class StackedRouter extends RouterBase {
     InviteSentView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const InviteSentView(),
+        settings: data,
+      );
+    },
+    ProfileView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const ProfileView(),
         settings: data,
       );
     },

@@ -22,7 +22,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(
@@ -59,7 +59,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   validator: (value) => model.validateUserName(value),
                   onChanged: (value) => model.onChanged(value),
                   style: const TextStyle(
-                    color: ClashColors.green200,
+                    color: ClashColors.green100,
                     fontSize: 18.0,
                   ),
                   decoration: InputDecoration(
@@ -75,7 +75,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                           9.0,
                         ),
                         decoration: const BoxDecoration(
-                          color: ClashColors.green200,
+                          color: ClashColors.green100,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -126,7 +126,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   child: Text(
                     '513 809',
                     style: textTheme.headline3?.copyWith(
-                      color: ClashColors.green200,
+                      color: ClashColors.green100,
                       fontWeight: FontWeight.w400,
                       letterSpacing: 8.0,
                     ),

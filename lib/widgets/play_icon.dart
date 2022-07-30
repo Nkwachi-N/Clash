@@ -179,7 +179,7 @@ class _PlayIconState extends State<PlayIcon>
     if (playing) {
       return CircularProgressIndicator(
         value: _controller.value,
-        color: ClashColors.green200,
+        color: ClashColors.green100,
         strokeWidth: 2.0,
       );
     } else {

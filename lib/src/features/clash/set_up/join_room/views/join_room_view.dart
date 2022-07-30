@@ -21,7 +21,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: ClashColors.green200,
+          color: ClashColors.green100,
         ),
       ),
       body: Column(
@@ -88,7 +88,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
                               text,
                               style: textTheme.headline4?.copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: ClashColors.green200,
+                                color: ClashColors.green100,
                               ),
                             ),
                           ),

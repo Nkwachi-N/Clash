@@ -38,7 +38,7 @@ class ModeTile extends StatelessWidget {
             Text(
               title,
               style: textTheme.headline5?.copyWith(
-                color: ClashColors.green200,
+                color: ClashColors.green100,
               ),
             ),
             const SizedBox(

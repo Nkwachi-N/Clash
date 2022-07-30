@@ -18,7 +18,7 @@ class AvatarView extends ViewModelBuilderWidget<AvatarViewModel> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: ClashColors.green200,
+          color: ClashColors.green100,
         ),
       ),
       body: Padding(
@@ -152,13 +152,13 @@ class AvatarView extends ViewModelBuilderWidget<AvatarViewModel> {
 class AvatarWidget extends StatelessWidget {
   final bool selected;
   final String path;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const AvatarWidget({
     Key? key,
     this.selected = false,
     required this.path,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   @override
