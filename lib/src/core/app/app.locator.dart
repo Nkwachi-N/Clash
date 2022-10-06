@@ -10,9 +10,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../api/dio_util.dart';
-import '../repository/invite/invite_service.dart';
-import '../repository/repository.dart';
+import '../services/invite/invite_service.dart';
+import '../services/service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -23,11 +22,12 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
-  locator.registerLazySingleton(() => GameRepository());
-  locator.registerLazySingleton(() => DioUtil());
-  locator.registerLazySingleton(() => SpotifyRepository());
-  locator.registerLazySingleton(() => UserRepository());
+  locator.registerLazySingleton(() => GameService());
+  locator.registerLazySingleton(() => SpotifyService());
+  locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => SnackbarService());
   locator.registerSingleton(AudioService());
   locator.registerLazySingleton(() => InviteService());
+  locator.registerLazySingleton(() => FireBaseService());
+  locator.registerLazySingleton(() => UserDatabaseService());
 }

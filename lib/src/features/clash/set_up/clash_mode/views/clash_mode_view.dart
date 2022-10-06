@@ -118,26 +118,26 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                         Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            Image.asset(
-                              Assets.images.avatar1.path,
-                              height: 60.0,
-                              width: 60.0,
-                            ),
+                            /*Image.asset(
+                          Assets.images.avatar1.path,
+                          height: _kImageSize,
+                          width: _kImageSize,
+                        ),*/ SizedBox(),
                             Positioned(
                               left: 40.0,
-                              child: Image.asset(
-                                Assets.images.avatar3.path,
-                                height: 60.0,
-                                width: 60.0,
-                              ),
+                              child:  /*Image.asset(
+                          Assets.images.avatar1.path,
+                          height: _kImageSize,
+                          width: _kImageSize,
+                        ),*/ SizedBox(),
                             ),
                             Positioned(
                               left: 80.0,
-                              child: Image.asset(
-                                Assets.images.avatar5.path,
-                                height: 60.0,
-                                width: 60.0,
-                              ),
+                              child:  /*Image.asset(
+                          Assets.images.avatar1.path,
+                          height: _kImageSize,
+                          width: _kImageSize,
+                        ),*/ SizedBox(),
                             ),
                           ],
                         ),

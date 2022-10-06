@@ -4,7 +4,7 @@ import 'package:clash_flutter/src/core/app/app.router.dart';
 import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
 import 'package:clash_flutter/src/core/models/user.dart';
-import 'package:clash_flutter/src/core/repository/repository.dart';
+import 'package:clash_flutter/src/core/services/user/user_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,42 +24,31 @@ void main() async {
 
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox(PrefConstants.kHiveBox);
-  final prefs = await SharedPreferences.getInstance();
-  final accessToken = prefs.getString(PrefConstants.kAccessToken);
   OneSignal.shared.setAppId(Credentials.oneSignalAppId);
 
-  String initialRoute = Routes.authView;
-
-  locator<UserRepository>().initUser();
+  locator<UserService>().initUser();
 
   final snackBarService = locator<SnackbarService>();
 
   final snackBarConfig = SnackbarConfig(
-    // backgroundColor: Colors.red,
-    // messageColor: Colors.white,
     snackPosition: SnackPosition.TOP,
     snackStyle: SnackStyle.FLOATING,
-    borderRadius: 8.0,
+    borderRadius: 16.0,
     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+    backgroundColor: Colors.red,
+    messageColor: Colors.white,
+    messageTextStyle: TextStyle(
+      fontSize: 12.0,
+    )
+
   );
 
   snackBarService.registerCustomSnackbarConfig(
       variant: SnackBarType.error,
       config:snackBarConfig..backgroundColor = Colors.red..messageColor = Colors.white );
 
-  if (accessToken != null) {
-    final box = Hive.box(PrefConstants.kHiveBox);
-    final User? user = box.get('user');
-    if (user != null) {
-      initialRoute = Routes.homeView;
-    } else {
-      initialRoute = Routes.userNameView;
-    }
-  }
 
   runApp(
-    ClashApp(
-      initialRoute: initialRoute,
-    ),
+    ClashApp(),
   );
 }

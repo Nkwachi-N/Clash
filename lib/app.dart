@@ -7,9 +7,8 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ClashApp extends StatelessWidget {
-  final String initialRoute;
 
-  const ClashApp({Key? key, required this.initialRoute}) : super(key: key);
+  const ClashApp({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class ClashApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ClashTheme.darkTheme,
             navigatorKey: StackedService.navigatorKey,
-            initialRoute: initialRoute,
+            // initialRoute: initialRoute,
             onGenerateRoute: StackedRouter().onGenerateRoute,
           ),
         ),

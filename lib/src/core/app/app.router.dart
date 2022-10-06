@@ -13,13 +13,13 @@ import 'package:stacked/stacked_annotations.dart';
 import '../../features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
 import '../../features/features.dart';
 import '../../features/home/edit_profile/views/edit_profile_view.dart';
+import '../../features/home/profile/invite_friends/invite_friends_view.dart';
 import '../../features/home/profile/views/profile_view.dart';
+import '../../features/user_name/views/user_name_view.dart';
 
 class Routes {
   static const String startUpView = '/';
   static const String authView = '/auth-view';
-  static const String avatarView = '/avatar-view';
-  static const String userNameView = '/user-name-view';
   static const String homeView = '/home-view';
   static const String waitingRoomView = '/waiting-room-view';
   static const String subCategoryScreen = '/sub-category-screen';
@@ -37,11 +37,11 @@ class Routes {
   static const String inviteSentView = '/invite-sent-view';
   static const String profileView = '/profile-view';
   static const String editProfileView = '/edit-profile-view';
+  static const String inviteFriendsView = '/invite-friends-view';
+  static const String userNameView = '/user-name-view';
   static const all = <String>{
     startUpView,
     authView,
-    avatarView,
-    userNameView,
     homeView,
     waitingRoomView,
     subCategoryScreen,
@@ -59,6 +59,8 @@ class Routes {
     inviteSentView,
     profileView,
     editProfileView,
+    inviteFriendsView,
+    userNameView,
   };
 }
 
@@ -68,8 +70,6 @@ class StackedRouter extends RouterBase {
   final _routes = <RouteDef>[
     RouteDef(Routes.startUpView, page: StartUpView),
     RouteDef(Routes.authView, page: AuthView),
-    RouteDef(Routes.avatarView, page: AvatarView),
-    RouteDef(Routes.userNameView, page: UserNameView),
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.waitingRoomView, page: WaitingRoomView),
     RouteDef(Routes.subCategoryScreen, page: SubCategoryScreen),
@@ -87,6 +87,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.inviteSentView, page: InviteSentView),
     RouteDef(Routes.profileView, page: ProfileView),
     RouteDef(Routes.editProfileView, page: EditProfileView),
+    RouteDef(Routes.inviteFriendsView, page: InviteFriendsView),
+    RouteDef(Routes.userNameView, page: UserNameView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -100,18 +102,6 @@ class StackedRouter extends RouterBase {
     AuthView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const AuthView(),
-        settings: data,
-      );
-    },
-    AvatarView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const AvatarView(),
-        settings: data,
-      );
-    },
-    UserNameView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const UserNameView(),
         settings: data,
       );
     },
@@ -214,6 +204,18 @@ class StackedRouter extends RouterBase {
     EditProfileView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const EditProfileView(),
+        settings: data,
+      );
+    },
+    InviteFriendsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const InviteFriendsView(),
+        settings: data,
+      );
+    },
+    UserNameView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const UserNameView(),
         settings: data,
       );
     },

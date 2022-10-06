@@ -2,8 +2,7 @@ import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/gen/assets.gen.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../core/models/track.dart';
+import 'package:spotify_flutter/spotify_flutter.dart' as sp;
 
 
 const _kImageSize = 120.0;
@@ -87,7 +86,7 @@ class ClashRoomView extends StatelessWidget {
 }
 
 class GameCard extends StatelessWidget {
-  final Track? track;
+  final sp.Track? track;
 
   const GameCard({
     super.key,
@@ -137,11 +136,11 @@ class GameCard extends StatelessWidget {
                       ),
                       child: Hero(
                         tag: track?.name ?? '',
-                        child: Image.asset(
+                        child: /*Image.asset(
                           Assets.images.avatar1.path,
                           height: _kImageSize,
                           width: _kImageSize,
-                        ),
+                        ),*/ SizedBox(),
                       ),
                     ),
                   ),

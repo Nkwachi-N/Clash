@@ -1,12 +1,10 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/src/core/app/index.dart';
-import 'package:clash_flutter/src/core/repository/audio/audio_service.dart';
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:spotify_flutter/spotify_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-import '../src/core/models/track.dart';
+import '../src/core/services/audio/audio_service.dart';
 
 class PlayIcon extends StatefulWidget {
   final Track track;
@@ -48,7 +46,7 @@ class _PlayIconState extends State<PlayIcon>
     final player = audioProvider.player;
 
     player.playerStateStream.listen((state) {
-      if (state.playing && audioProvider.playing(widget.track.audioUrl) ) {
+      if (state.playing && audioProvider.playing(widget.track.previewUrl) ) {
         _controller.forward();
       }
     });
@@ -78,7 +76,7 @@ class _PlayIconState extends State<PlayIcon>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-      final playing = audioProvider.playing(widget.track.audioUrl);
+      final playing = audioProvider.playing(widget.track.previewUrl);
 
         return Stack(
           alignment: Alignment.center,
@@ -106,7 +104,7 @@ class _PlayIconState extends State<PlayIcon>
               ),
             ),
             Visibility(
-              visible: widget.track.audioUrl != null,
+              visible: widget.track.previewUrl != null,
               child: AnimatedCrossFade(
                 firstChild: IconButton(
                   key: const ValueKey('play'),
@@ -117,7 +115,7 @@ class _PlayIconState extends State<PlayIcon>
                   onPressed: () async {
                     final player = audioProvider.player;
 
-                    final audioUrl = widget.track.audioUrl;
+                    final audioUrl = widget.track.previewUrl;
                     if (audioUrl != null) {
                       if (player.playing) {
                         player.stop();
@@ -165,7 +163,7 @@ class _PlayIconState extends State<PlayIcon>
         child: Opacity(
           opacity: 0.5,
           child: FadeInImage.memoryNetwork(
-            image: widget.track.imageUrl,
+            image: _getImageUrl(),
             height: 60.0,
             width: 60.0,
             placeholder: kTransparentImage,
@@ -185,5 +183,9 @@ class _PlayIconState extends State<PlayIcon>
     } else {
       return const SizedBox();
     }
+  }
+
+  _getImageUrl() {
+    return widget.track.album != null && widget.track.album!.images.isNotEmpty ? widget.track.album?.images[0].url ?? '' : '';
   }
 }

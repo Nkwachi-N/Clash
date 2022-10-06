@@ -1,5 +1,6 @@
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
-import 'package:clash_flutter/src/core/repository/invite/invite_service.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
+import 'package:clash_flutter/src/core/services/user/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -7,23 +8,18 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../../../../core/app/app.locator.dart';
 import '../../../../../core/app/app.router.dart';
 import '../../../../../core/models/user.dart';
-import '../../../../../core/repository/repository.dart';
-
-enum UserNameState { valid, invalid, idle }
+import '../../../../../core/services/invite/invite_service.dart';
 
 class CreateRoomViewModel extends BaseViewModel {
   final _inviteService = locator<InviteService>();
   final _snackBarService = locator<SnackbarService>();
 
-  final _userRepository = locator<UserRepository>();
+  final _firebaseService = locator<FireBaseService>();
   final _navigationService = locator<NavigationService>();
   final controller = TextEditingController();
 
-  User get user => _userRepository.user;
-
-  UserNameState _userNameState = UserNameState.idle;
-
-  UserNameState get userNameState => _userNameState;
+  // User get user => _userRepository.user;
+  late User user;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -35,15 +31,18 @@ class CreateRoomViewModel extends BaseViewModel {
 
   inviteUser() async {
     setBusy(true);
-    final user = await _userRepository.getUserByUserName(controller.text);
+    final user = await _firebaseService.getUserByUserName(controller.text);
 
     if (user != null) {
       _inviteService.inviteUser(user).then((value) {
         if (value) {
+          _inviteService.userName = user.name;
           _navigationService.navigateTo(Routes.inviteSentView);
         } else {
-          _snackBarService.showSnackbar(
-              message: 'Invite sending failed, please try again');
+          _snackBarService.showCustomSnackBar(
+            message: 'Invite sending failed, please try again',
+            variant: SnackBarType.error,
+          );
         }
       });
     } else {

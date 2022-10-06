@@ -59,7 +59,7 @@ class HomeView extends ViewModelBuilderWidget<HomeViewModel> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
-                      Assets.images.stat,
+                      Assets.images.music,
                       color: viewModel.currentIndex != 1
                           ? IconTheme.of(context).color
                           : ClashColors.green200,

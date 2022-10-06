@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../../../colors.dart';
@@ -36,19 +35,16 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   height: 32.0,
                 ),
                 Text(
-                  'Invite a friend',
-                  style: textTheme.headline6?.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                  'Create a clash room',
+                  style: textTheme.headline6,
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
                 Text(
                   'Enter your friend’s username or share your clash room code for them to join',
-                  style: textTheme.headline6?.copyWith(
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
+                  style: textTheme.subtitle1?.copyWith(
+                    color: ClashColors.grey900,
                   ),
                 ),
                 const SizedBox(
@@ -111,52 +107,6 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   ),
                 ),
                 const Spacer(),
-                Center(
-                  child: Text(
-                    'Clash Room Code',
-                    style: textTheme.headline6?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                Center(
-                  child: Text(
-                    '513 809',
-                    style: textTheme.headline3?.copyWith(
-                      color: ClashColors.green100,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 8.0,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Copy or Share',
-                      style: textTheme.subtitle1?.copyWith(
-                        color: ClashColors.grey900,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.share,
-                        color: ClashColors.grey900,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(
-                  flex: 2,
-                ),
                 TextButton(
                   onPressed: model.userNameIsValid
                       ? () => model.inviteUser()

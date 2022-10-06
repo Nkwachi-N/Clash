@@ -1,14 +1,16 @@
 import 'package:clash_flutter/src/core/app/index.dart';
-import 'package:clash_flutter/src/core/repository/repository.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 import '../../../../../core/models/game.dart';
 
 
 class WaitingRoomViewModel extends BaseViewModel{
 
-  final _userRepository = locator<UserRepository>();
+  final _userRepository = locator<UserService>();
 
-  final _gameRepository = locator<GameRepository>();
+  final _gameRepository = locator<GameService>();
+  final _navigationService = locator<NavigationService>();
 
   String get name => _userRepository.user.name.toUpperCase();
 
@@ -25,4 +27,8 @@ class WaitingRoomViewModel extends BaseViewModel{
 
 
 
+
+  void navigateToCreateClashRoom() {
+    _navigationService.navigateTo(Routes.createRoomView);
+  }
 }

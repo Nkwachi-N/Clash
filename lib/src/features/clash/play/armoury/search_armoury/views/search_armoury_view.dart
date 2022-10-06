@@ -104,7 +104,7 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
                                       height: 4.0,
                                     ),
                                     Text(
-                                      track.artists.join(', '),
+                                      'track.artists.join()',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: textTheme.bodyText2?.copyWith(

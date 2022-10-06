@@ -6,7 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../../gen/assets.gen.dart';
+import '../../../../../widgets/avatar_widget.dart';
 import '../../../features.dart';
+import '../widgets/profile_tile.dart';
 
 class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
   const ProfileView({Key? key}) : super(key: key);
@@ -78,6 +80,7 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
                         ProfileTile(
                           title: 'Invite friends',
                           iconPath: Assets.images.inviteFriends,
+                          onTap: viewModel.toInviteFriendsView,
                         ),
                         SizedBox(
                           height: 12.h,
@@ -120,7 +123,7 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
             Positioned(
               top: 120.h,
               child: AvatarWidget(
-                path: Assets.images.avatar1.path,
+                path: '', onTap: () {  },
               ),
             ),
           ],
@@ -133,52 +136,3 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
   ProfileViewModel viewModelBuilder(BuildContext context) => ProfileViewModel();
 }
 
-class ProfileTile extends StatelessWidget {
-  final String title;
-  final String iconPath;
-  final GestureTapCallback? onTap;
-
-  const ProfileTile({
-    Key? key,
-    required this.title,
-    required this.iconPath,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
-        decoration: BoxDecoration(
-          color: ClashColors.black300,
-          borderRadius: BorderRadius.circular(4.r),
-          border: Border.all(
-            color: ClashColors.grey400,
-            width: 1.0,
-          ),
-        ),
-        child: Row(
-          children: [
-            SvgPicture.asset(iconPath),
-            SizedBox(
-              width: 16.w,
-            ),
-            Text(
-              title,
-              style: textTheme.subtitle1,
-            ),
-            const Spacer(),
-            const Icon(
-              Icons.keyboard_arrow_right_rounded,
-              color: ClashColors.green200,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

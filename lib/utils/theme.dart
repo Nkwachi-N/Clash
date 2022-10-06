@@ -6,7 +6,7 @@ class ClashTheme {
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: ClashColors.black200,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: ClashColors.green100,
       foregroundColor: Colors.white,
     ),

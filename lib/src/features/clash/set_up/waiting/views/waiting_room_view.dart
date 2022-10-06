@@ -46,9 +46,10 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                         ),
                       ),
                     ),
-                    const Expanded(
+                     Expanded(
                         child: AvatarImage(
                       avatar: '',
+                          onTap: viewModel.navigateToCreateClashRoom,
                     )),
                   ],
                 ),
@@ -118,8 +119,9 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
 
 class AvatarImage extends StatelessWidget {
   final String avatar;
+  final GestureTapCallback? onTap;
 
-  const AvatarImage({Key? key, required this.avatar}) : super(key: key);
+  const AvatarImage({Key? key, required this.avatar, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +129,7 @@ class AvatarImage extends StatelessWidget {
       visible: avatar.isNotEmpty,
       replacement: Center(
         child: InkResponse(
-          onTap: () {
-            // Navigator.of(context)
-            //     .pushNamed(RouteGenerator.createClashRoomScreen);
-          },
+          onTap: onTap,
           child: Container(
               height: 140.0,
               width: 140.0,

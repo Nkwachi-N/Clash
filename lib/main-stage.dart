@@ -23,11 +23,10 @@ void main() async {
 
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox(PrefConstants.kHiveBox);
-  final prefs = await SharedPreferences.getInstance();
-  final accessToken = prefs.getString(PrefConstants.kAccessToken);
+
   OneSignal.shared.setAppId(Credentials.oneSignalAppId);
 
-  String initialRoute = Routes.authView;
+
 
   final snackBarService = locator<SnackbarService>();
 
@@ -44,19 +43,9 @@ void main() async {
       variant: SnackBarType.error,
       config:snackBarConfig..backgroundColor = Colors.red..messageColor = Colors.white );
 
-  if (accessToken != null) {
-    final box = Hive.box(PrefConstants.kHiveBox);
-    final User? user = box.get('user');
-    if (user != null) {
-      initialRoute = Routes.homeView;
-    } else {
-      initialRoute = Routes.userNameView;
-    }
-  }
 
   runApp(
     ClashApp(
-      initialRoute: initialRoute,
     ),
   );
 }

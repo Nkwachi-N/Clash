@@ -17,7 +17,7 @@ class StartUpViewModel extends BaseViewModel{
     final prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString(PrefConstants.kAccessToken);
 
-    if (accessToken != null) {
+    /*if (accessToken != null) {
       final box = Hive.box(PrefConstants.kHiveBox);
       final User? user = box.get('user');
       if (user != null) {
@@ -25,7 +25,7 @@ class StartUpViewModel extends BaseViewModel{
       } else {
         initialRoute = Routes.userNameView;
       }
-    }
+    }*/
 
     _navigationService.navigateTo(initialRoute);
 

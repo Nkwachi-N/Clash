@@ -1,12 +1,10 @@
 import 'package:clash_flutter/app.dart';
-import 'package:clash_flutter/src/core/app/app.router.dart';
 import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -24,7 +22,6 @@ void main() async {
 
   runApp(
     ClashApp(
-      initialRoute: '',
     ),
   );
 }

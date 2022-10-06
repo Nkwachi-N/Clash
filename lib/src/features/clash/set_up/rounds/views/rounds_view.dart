@@ -1,5 +1,6 @@
 import 'package:clash_flutter/src/features/clash/set_up/rounds/views/rounds_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../../../colors.dart';
@@ -42,17 +43,17 @@ class RoundsView extends ViewModelBuilderWidget<RoundsViewModel> {
             ),
             Text(
               'Choose how you’ll be playing with your friends',
-              style: textTheme.headline6?.copyWith(
-                fontWeight: FontWeight.w200,
-                color: Colors.white,
+              style: textTheme.subtitle1?.copyWith(
+                color: ClashColors.grey900,
               ),
             ),
             const Spacer(),
             Text(
               'Choose number of rounds',
-              style: textTheme.headline5?.copyWith(
-                fontWeight: FontWeight.normal,
-              ),
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 18.sp,
+              )
             ),
             const SizedBox(
               height: 16.0,
@@ -91,11 +92,8 @@ class RoundsView extends ViewModelBuilderWidget<RoundsViewModel> {
                   ],
                 )),
             const Spacer(
-              flex: 3,
+              flex: 4,
             ),
-            const SizedBox(
-              height: 16.0,
-            )
           ],
         ),
       ),

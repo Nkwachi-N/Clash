@@ -72,6 +72,8 @@ class NotificationUtil {
           });
 
       final Map<String, dynamic> responseMap = jsonDecode(response.body);
+      print('response is ');
+      print(responseMap);
 
       //TODO: handle cancel.
       if (responseMap.containsKey('recipients')) {
@@ -79,6 +81,7 @@ class NotificationUtil {
       }
       return false;
     } catch (e) {
+      print(e.toString());
       return false;
     }
   }

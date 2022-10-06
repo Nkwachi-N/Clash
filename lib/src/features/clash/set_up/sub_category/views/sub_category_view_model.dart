@@ -1,12 +1,14 @@
 import 'package:clash_flutter/src/core/app/index.dart';
-import 'package:clash_flutter/src/core/repository/repository.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
+import 'package:clash_flutter/src/core/services/game/game.dart';
+import 'package:spotify_flutter/spotify_flutter.dart';
 import 'package:stacked/stacked.dart';
-
-import '../../../../../core/models/artists.dart';
+import 'package:stacked_services/stacked_services.dart';
 import '../../../../../core/models/game.dart';
 
 class SubCategoryViewModel extends BaseViewModel {
-  final _gameRepository = locator<GameRepository>();
+  final _gameRepository = locator<GameService>();
+  final _navigationService = locator<NavigationService>();
 
   String get title =>
       _gameRepository.category == Category.artist ? 'an artist' : 'a genre';
@@ -23,18 +25,17 @@ class SubCategoryViewModel extends BaseViewModel {
 
   void selectArtist(Artist artist) {
     _gameRepository.selectArtist(artist);
+    _navigationService.navigateTo(Routes.roundsView);
   }
 
   void selectGenre(String genre) {
     _gameRepository.selectGenre(genre);
-    //TODO:navigate to rounds screen.
+    _navigationService.navigateTo(Routes.roundsView);
   }
 
   Future<void> getSubCategory() async{
     setBusy(true);
-    print('busy');
     await _gameRepository.getSubCategory();
-    print('not busy');
     setBusy(false);
   }
 }

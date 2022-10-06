@@ -26,45 +26,18 @@ class $AssetsImagesGen {
   /// File path: assets/images/about_clash.svg
   String get aboutClash => 'assets/images/about_clash.svg';
 
-  /// File path: assets/images/avatar_1.png
-  AssetGenImage get avatar1 =>
-      const AssetGenImage('assets/images/avatar_1.png');
+  /// File path: assets/images/category.svg
+  String get category => 'assets/images/category.svg';
 
-  /// File path: assets/images/avatar_2.png
-  AssetGenImage get avatar2 =>
-      const AssetGenImage('assets/images/avatar_2.png');
-
-  /// File path: assets/images/avatar_3.png
-  AssetGenImage get avatar3 =>
-      const AssetGenImage('assets/images/avatar_3.png');
-
-  /// File path: assets/images/avatar_4.png
-  AssetGenImage get avatar4 =>
-      const AssetGenImage('assets/images/avatar_4.png');
-
-  /// File path: assets/images/avatar_5.png
-  AssetGenImage get avatar5 =>
-      const AssetGenImage('assets/images/avatar_5.png');
-
-  /// File path: assets/images/avatar_6.png
-  AssetGenImage get avatar6 =>
-      const AssetGenImage('assets/images/avatar_6.png');
-
-  /// File path: assets/images/avatar_7.png
-  AssetGenImage get avatar7 =>
-      const AssetGenImage('assets/images/avatar_7.png');
-
-  /// File path: assets/images/avatar_8.png
-  AssetGenImage get avatar8 =>
-      const AssetGenImage('assets/images/avatar_8.png');
-
-  /// File path: assets/images/avatar_9.png
-  AssetGenImage get avatar9 =>
-      const AssetGenImage('assets/images/avatar_9.png');
+  /// File path: assets/images/crown.svg
+  String get crown => 'assets/images/crown.svg';
 
   /// File path: assets/images/exclamation.png
   AssetGenImage get exclamation =>
       const AssetGenImage('assets/images/exclamation.png');
+
+  /// File path: assets/images/fighting-game.svg
+  String get fightingGame => 'assets/images/fighting-game.svg';
 
   /// File path: assets/images/flame.svg
   String get flame => 'assets/images/flame.svg';
@@ -78,6 +51,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/invite_sent.png
   AssetGenImage get inviteSent =>
       const AssetGenImage('assets/images/invite_sent.png');
+
+  /// File path: assets/images/music.svg
+  String get music => 'assets/images/music.svg';
 
   /// File path: assets/images/my_avatar.svg
   String get myAvatar => 'assets/images/my_avatar.svg';
@@ -97,14 +73,36 @@ class $AssetsImagesGen {
   /// File path: assets/images/share_socials.svg
   String get shareSocials => 'assets/images/share_socials.svg';
 
-  /// File path: assets/images/stat.svg
-  String get stat => 'assets/images/stat.svg';
-
   /// File path: assets/images/success.png
   AssetGenImage get success => const AssetGenImage('assets/images/success.png');
 
   /// File path: assets/images/warning.png
   AssetGenImage get warning => const AssetGenImage('assets/images/warning.png');
+
+  /// List of all assets
+  List<dynamic> get values => [
+        miroodlesColorComp,
+        spotifyIconWhite,
+        x42,
+        aboutClash,
+        category,
+        crown,
+        exclamation,
+        fightingGame,
+        flame,
+        home,
+        inviteFriends,
+        inviteSent,
+        music,
+        myAvatar,
+        profileFrame,
+        profile,
+        rateUs,
+        search,
+        shareSocials,
+        success,
+        warning
+      ];
 }
 
 class Assets {
@@ -170,6 +168,8 @@ class AssetGenImage {
       cacheHeight: cacheHeight,
     );
   }
+
+  ImageProvider provider() => AssetImage(_assetName);
 
   String get path => _assetName;
 

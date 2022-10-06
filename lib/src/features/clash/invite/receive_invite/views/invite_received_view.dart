@@ -3,7 +3,7 @@ import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
-import '../../../../../core/repository/game/game.dart';
+import '../../../../../core/services/game/game.dart';
 import 'invite_received_view_model.dart';
 
 class ReceivedInviteScreen
