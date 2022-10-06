@@ -1,16 +1,17 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/src/features/clash/invite/decline_invite/views/decline_invite_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 
-class DeclineInviteView extends StatelessWidget {
-  final String username;
+class DeclineInviteView extends ViewModelBuilderWidget<DeclineInviteViewModel> {
 
   const DeclineInviteView({
     Key? key,
-    required this.username,
   }) : super(key: key);
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, DeclineInviteViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
@@ -24,7 +25,7 @@ class DeclineInviteView extends StatelessWidget {
               height: 80.0,
             ),
             Text(
-              '$username declined your invite',
+              '${viewModel.userName} declined your invite',
               textAlign: TextAlign.center,
               style: textTheme.headline5?.copyWith(
                 fontWeight: FontWeight.w500,
@@ -69,4 +70,7 @@ class DeclineInviteView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  DeclineInviteViewModel viewModelBuilder(BuildContext context) => DeclineInviteViewModel();
 }

@@ -3,6 +3,7 @@ import 'package:clash_flutter/src/features/clash/set_up/sub_category/views/sub_c
 import 'package:clash_flutter/widgets/artist_card.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
 
@@ -27,7 +28,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(
@@ -40,27 +41,25 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
               ),
               Text(
                 'How do you want to Clash?',
-                style: textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.normal,
-                ),
+                style: textTheme.headline6,
               ),
-              const SizedBox(
-                height: 16.0,
+              SizedBox(
+                height: 8.h,
               ),
               Text(
                 'Choose how you’ll be playing with your friends',
-                style: textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.w200,
-                  color: Colors.white,
+                style: textTheme.subtitle1?.copyWith(
+                  color: ClashColors.grey900,
                 ),
               ),
-              const SizedBox(
-                height: 32.0,
+               SizedBox(
+                height: 65.h,
               ),
               Text(
                 'Choose ${model.title}',
-                style: textTheme.headline5?.copyWith(
-                  fontWeight: FontWeight.normal,
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(
@@ -71,7 +70,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
                   visible: !model.isBusy,
                   replacement: const Center(
                     child: SpinKitFadingFour(
-                      color: ClashColors.green200,
+                      color: ClashColors.green100,
                     ),
                   ),
                   child: GridView.builder(

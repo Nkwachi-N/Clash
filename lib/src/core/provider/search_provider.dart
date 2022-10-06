@@ -1,13 +1,13 @@
 import 'package:clash_flutter/src/core/app/index.dart';
-import 'package:clash_flutter/src/core/repository/repository.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:flutter/cupertino.dart';
-import '../models/http_response.dart';
-import '../models/track.dart';
+import 'package:spotify_flutter/spotify_flutter.dart';
 
 class SearchProvider extends ChangeNotifier{
 
   List<Track> tracks = [];
-  final  _spotifyRepository = locator<SpotifyRepository>();
+  List<Artist> artists = [];
+  final  _spotifyRepository = locator<SpotifyService>();
 
   bool _searching = false;
 
@@ -15,13 +15,20 @@ class SearchProvider extends ChangeNotifier{
 
 
 
-  Future<void> searchTracks(String query,String genre) async {
+  Future<void> searchTracksByGenre(String genre) async {
     _searching = true;
-    final response = await _spotifyRepository.searchByGenre(query, genre);
+    final response = await _spotifyRepository.searchTracksByGenre(genre);
     tracks = response;
     _searching = false;
     notifyListeners();
+  }
 
+  Future<void> searchTracksByArtist(String artist) async {
+    _searching = true;
+    final response = await _spotifyRepository.searchTracksByArtist(artist);
+    artists = response;
+    _searching = false;
+    notifyListeners();
   }
 
 

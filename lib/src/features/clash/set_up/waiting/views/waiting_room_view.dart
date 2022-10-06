@@ -23,7 +23,7 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
             const Align(
               alignment: Alignment.topLeft,
               child: BackButton(
-                color: ClashColors.green200,
+                color: ClashColors.green100,
               ),
             ),
             const Spacer(),
@@ -35,7 +35,7 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                   children: [
                     Expanded(
                         child: AvatarImage(
-                      avatar: 'assets/images/avatar_${viewModel.avatar}.png',
+                      avatar: viewModel.avatar,
                     )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -46,9 +46,10 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                         ),
                       ),
                     ),
-                    const Expanded(
+                     Expanded(
                         child: AvatarImage(
                       avatar: '',
+                          onTap: viewModel.navigateToCreateClashRoom,
                     )),
                   ],
                 ),
@@ -72,7 +73,7 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                       child: Text(
                         'VS',
                         style: textTheme.headline6?.copyWith(
-                          color: ClashColors.green200,
+                          color: ClashColors.green100,
                         ),
                       ),
                     ),
@@ -118,8 +119,9 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
 
 class AvatarImage extends StatelessWidget {
   final String avatar;
+  final GestureTapCallback? onTap;
 
-  const AvatarImage({Key? key, required this.avatar}) : super(key: key);
+  const AvatarImage({Key? key, required this.avatar, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +129,7 @@ class AvatarImage extends StatelessWidget {
       visible: avatar.isNotEmpty,
       replacement: Center(
         child: InkResponse(
-          onTap: () {
-            // Navigator.of(context)
-            //     .pushNamed(RouteGenerator.createClashRoomScreen);
-          },
+          onTap: onTap,
           child: Container(
               height: 140.0,
               width: 140.0,
@@ -170,7 +169,7 @@ class AvatarImage extends StatelessWidget {
               shape: BoxShape.circle,
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
-                image: AssetImage(
+                image: NetworkImage(
                   avatar,
                 ),
               ),

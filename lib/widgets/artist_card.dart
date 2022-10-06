@@ -1,5 +1,5 @@
-import 'package:clash_flutter/src/core/models/artists.dart';
 import 'package:flutter/material.dart';
+import 'package:spotify_flutter/spotify_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 
@@ -23,7 +23,7 @@ class ArtistCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
-                image: artist.image,
+                image: artist.images != null && artist.images!.isNotEmpty ? artist.images![0].url ?? '' : '',
                 fit: BoxFit.fitWidth,
 
               ),

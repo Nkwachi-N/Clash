@@ -1,17 +1,19 @@
 import 'package:clash_flutter/src/core/app/index.dart';
-import 'package:clash_flutter/src/core/repository/repository.dart';
+import 'package:clash_flutter/src/core/services/game/game.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class InviteReceivedViewModel extends BaseViewModel{
 
-  final _gameRepository = locator<GameRepository>();
+  final _gameRepository = locator<GameService>();
   final _navigationService = locator<NavigationService>();
   InviteState get inviteState => _gameRepository.inviteState;
 
+  String userName = '';
 
 
-  void declineInvite(String userName) {
+
+  void declineInvite() {
     setBusy(true);
     _gameRepository.decide(userName,InviteState.declined).then((value) {
       if (value) {
@@ -30,7 +32,7 @@ class InviteReceivedViewModel extends BaseViewModel{
   }
 
 
-  void acceptInvite(String userName) {
+  void acceptInvite() {
     setBusy(true);
     _gameRepository.decide(userName,InviteState.accepted).then((value) {
     /*  if (value) {

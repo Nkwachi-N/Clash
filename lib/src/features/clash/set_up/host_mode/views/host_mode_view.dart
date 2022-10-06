@@ -16,7 +16,7 @@ class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: ClashColors.green200,
+          color: ClashColors.green100,
         ),
       ),
       body: Padding(
@@ -37,7 +37,7 @@ class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
               height: 40.0,
             ),
             ModeTile(
-              // onTap: () => Navigator.of(context).pushNamed(RouteGenerator.categoryScreen),
+              onTap: viewModel.navigateToCategoryView,
               title: 'Host',
               subtitle:
               'Invite friends by their username or share your battle room code',
@@ -46,6 +46,7 @@ class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
               height: 20.0,
             ),
             ModeTile(
+              onTap: viewModel.navigateToJoinClashRoomView,
               title: 'Join',
               // onTap: () => Navigator.of(context).pushNamed(RouteGenerator.joinClashRoomScreen),
               subtitle:

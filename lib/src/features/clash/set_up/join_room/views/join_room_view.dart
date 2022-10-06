@@ -1,7 +1,6 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:stacked/stacked.dart';
 import 'join_room_view_model.dart';
 
@@ -14,14 +13,13 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
   @override
   Widget builder(BuildContext context, JoinRoomViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
-    final controller = useTextEditingController();
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: const BackButton(
-          color: ClashColors.green200,
+          color: ClashColors.green100,
         ),
       ),
       body: Column(
@@ -34,18 +32,15 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
             padding: const EdgeInsets.symmetric(horizontal: 16.0,),
             child: Text(
               'Join a clash room',
-              style: textTheme.headline6?.copyWith(
-                fontWeight: FontWeight.normal,
-              ),
+              style: textTheme.headline6,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Enter your friend’s clash room code to be able to join',
-              style: textTheme.headline6?.copyWith(
-                fontWeight: FontWeight.w200,
-                color: Colors.white,
+              style: textTheme.subtitle1?.copyWith(
+                color: ClashColors.grey900,
               ),
             ),
           ),
@@ -62,7 +57,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
                     viewModel.otpLength,
                         (index) {
                       String text = '';
-                      String controllerText = controller.text;
+                      String controllerText = viewModel.controller.text;
                       if (controllerText.length > index) {
                         text = controllerText[index];
                       }
@@ -105,7 +100,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
                 maintainSize: true,
                 maintainInteractivity: true,
                 child: TextField(
-                  controller: controller,
+                  controller: viewModel.controller,
                   focusNode: viewModel.focusNode,
                   maxLength: viewModel.otpLength,
                   decoration: const InputDecoration(
@@ -128,7 +123,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextButton(
-              onPressed: controller.text.length > 5 ? () {} : null,
+              onPressed: viewModel.controller.text.length > 5 ? () {} : null,
               child: Text(
                 'Join room',
                 style: textTheme.button,

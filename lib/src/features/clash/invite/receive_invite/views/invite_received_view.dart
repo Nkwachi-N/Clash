@@ -3,16 +3,14 @@ import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
-import '../../../../../core/repository/game/game.dart';
+import '../../../../../core/services/game/game.dart';
 import 'invite_received_view_model.dart';
 
 class ReceivedInviteScreen
     extends ViewModelBuilderWidget<InviteReceivedViewModel> {
-  final String userName;
 
   const ReceivedInviteScreen({
     Key? key,
-    required this.userName,
   }) : super(key: key);
 
   @override
@@ -31,7 +29,7 @@ class ReceivedInviteScreen
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  '$userName is inviting you to join their clash room',
+                  '${viewModel.userName} is inviting you to join their clash room',
                   textAlign: TextAlign.center,
                   style: textTheme.headline6?.copyWith(
                     fontWeight: FontWeight.w500,
@@ -55,7 +53,7 @@ class ReceivedInviteScreen
                       child: TextButton(
                     onPressed: viewModel.isBusy
                         ? null
-                        : () => viewModel.declineInvite(userName),
+                        : () => viewModel.declineInvite(),
                     style: ButtonStyle(backgroundColor:
                         MaterialStateProperty.resolveWith((states) {
                       if (states.contains(MaterialState.disabled)) {
@@ -72,7 +70,7 @@ class ReceivedInviteScreen
                     child: TextButton(
                       onPressed: viewModel.isBusy
                           ? null
-                          : () => viewModel.acceptInvite(userName),
+                          : () => viewModel.acceptInvite(),
                       child: const Text('Accept'),
                     ),
                   ),
@@ -93,14 +91,14 @@ class ReceivedInviteScreen
                     Text(
                       '${viewModel.inviteState.toMessage()} invite',
                       style: textTheme.subtitle1?.copyWith(
-                        color: ClashColors.green200,
+                        color: ClashColors.green100,
                       ),
                     ),
                     const SizedBox(
                       width: 4.0,
                     ),
                     const SpinKitThreeBounce(
-                      color: ClashColors.green200,
+                      color: ClashColors.green100,
                       size: kButtonLoaderSize,
                     )
                   ],

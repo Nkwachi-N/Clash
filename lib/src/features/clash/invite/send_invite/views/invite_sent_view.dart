@@ -1,12 +1,13 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/src/features/clash/invite/send_invite/views/invite_sent_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 
 class InviteSentView extends StatefulWidget {
-  final String username;
 
-  const InviteSentView({Key? key, required this.username}) : super(key: key);
+  const InviteSentView({Key? key,}) : super(key: key);
 
   @override
   _InviteSentViewState createState() => _InviteSentViewState();
@@ -43,9 +44,7 @@ class _InviteSentViewState extends State<InviteSentView>
         controller.forward();
       }
     });
-
   }
-
 
   @override
   void dispose() {
@@ -56,16 +55,19 @@ class _InviteSentViewState extends State<InviteSentView>
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            size: const Size(double.infinity, double.infinity),
-            painter: CircleWavePainter(waveRadius),
-          ),
-          //TODO: Implement cancel functionality.
-          /* Align(
+    return ViewModelBuilder<InviteSentViewModel>.reactive(
+        viewModelBuilder: () => InviteSentViewModel(),
+        builder: (__, viewModel, _) {
+          return Scaffold(
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  size: const Size(double.infinity, double.infinity),
+                  painter: CircleWavePainter(waveRadius),
+                ),
+                //TODO: Implement cancel functionality.
+                /* Align(
             alignment: const Alignment(0.9, -0.85),
             child: InkWell(
               onTap: (){
@@ -100,58 +102,56 @@ class _InviteSentViewState extends State<InviteSentView>
               ),
             ),
           ),*/
-          Image.asset('assets/images/invite_sent.png'),
-          Align(
-            alignment: const Alignment(0.0, 0.75),
-            child: RichText(
-              text: TextSpan(
-                  text: 'Inviting ',
-                  style: textTheme.subtitle1?.copyWith(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
+                Image.asset('assets/images/invite_sent.png'),
+                Align(
+                  alignment: const Alignment(0.0, 0.75),
+                  child: RichText(
+                    text: TextSpan(
+                        text: 'Inviting ',
+                        style: textTheme.subtitle1?.copyWith(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '@${viewModel.userName}',
+                            style: textTheme.subtitle1?.copyWith(
+                              color: ClashColors.green100,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' to your room',
+                            style: textTheme.subtitle1?.copyWith(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ]),
                   ),
-                  children: [
-                    TextSpan(
-                      text: '@${widget.username}',
+                ),
+                Align(
+                  alignment: const Alignment(0.0, 0.82),
+                  child: Text('Hang tight',
                       style: textTheme.subtitle1?.copyWith(
-                        color: ClashColors.green200,
+                        fontWeight: FontWeight.w400,
                         fontSize: 18.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' to your room',
-                      style: textTheme.subtitle1?.copyWith(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ]),
+                        color: ClashColors.grey900,
+                      )),
+                ),
+              ],
             ),
-          ),
-          Align(
-            alignment: const Alignment(0.0, 0.82),
-            child: Text('Hang tight',
-
-                style: textTheme.subtitle1?.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18.0,
-                  color: ClashColors.grey900,
-
-                )),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
 
-
 class CircleWavePainter extends CustomPainter {
   final double waveRadius;
-  var wavePaint;
+  late Paint wavePaint;
 
   CircleWavePainter(this.waveRadius) {
     wavePaint = Paint()

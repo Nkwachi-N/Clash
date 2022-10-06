@@ -1,17 +1,28 @@
 import 'package:clash_flutter/src/core/app/index.dart';
-import 'package:clash_flutter/src/core/repository/repository.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:stacked/stacked.dart';
-import '../../../core/util/notification_util.dart';
+import 'package:stacked_services/stacked_services.dart';
+import '../../../core/models/user.dart';
 
-class HomeViewModel extends BaseViewModel{
+class HomeViewModel extends IndexTrackingViewModel{
 
-  final _spotifyRepository = locator<SpotifyRepository>();
+  final navigationService = locator<NavigationService>();
+  final _notificationService = locator<NotificationService>();
+  final _userRepo = locator<UserDatabaseService>();
+
+  User? get user => _userRepo.getCurrentUser();
+
+  String get name => user?.name ?? '';
 
   void init() {
-    NotificationUtil.setupInteractedMessage();
-
+    _notificationService.setupInteractedMessage();
+    OneSignal.shared.setExternalUserId(user!.id);
   }
 
 
+  void createRoom  () {
+    navigationService.navigateTo(Routes.profileView);
+  }
 
 }

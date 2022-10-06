@@ -1,6 +1,7 @@
 import 'package:clash_flutter/src/core/models/game.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../../../colors.dart';
 import 'category_view_model.dart';
@@ -18,7 +19,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(
@@ -32,24 +33,24 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
               Text(
                 'How do you want to Clash?',
                 style: textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.normal,
+                  color: ClashColors.grey500,
                 ),
               ),
               const SizedBox(
-                height: 16.0,
+                height: 8.0,
               ),
               Text(
                 'Choose how you’ll be playing with your friends',
-                style: textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.w200,
-                  color: Colors.white,
+                style: textTheme.subtitle1?.copyWith(
+                  color: ClashColors.grey900,
                 ),
               ),
               const Spacer(),
               Text(
                 'Choose a category',
-                style: textTheme.headline5?.copyWith(
-                  fontWeight: FontWeight.normal,
+                style:TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18.sp,
                 ),
               ),
               const SizedBox(
@@ -92,7 +93,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
                 ),
               ),
               const Spacer(
-                flex: 3,
+                flex: 4,
               ),
               /*TextButton(
               onPressed: null,
@@ -101,9 +102,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
                 style: textTheme.button,
               ),
             ),*/
-              const SizedBox(
-                height: 16.0,
-              )
+
             ],
           ),
         ),

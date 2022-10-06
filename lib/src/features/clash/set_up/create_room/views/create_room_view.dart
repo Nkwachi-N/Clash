@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../../../colors.dart';
@@ -14,7 +13,6 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
       BuildContext context, CreateRoomViewModel model, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
 
-    final controller = useTextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -23,7 +21,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: const BackButton(
-            color: ClashColors.green200,
+            color: ClashColors.green100,
           ),
         ),
         body: Padding(
@@ -37,30 +35,27 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   height: 32.0,
                 ),
                 Text(
-                  'Invite a friend',
-                  style: textTheme.headline6?.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                  'Create a clash room',
+                  style: textTheme.headline6,
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
                 Text(
                   'Enter your friend’s username or share your clash room code for them to join',
-                  style: textTheme.headline6?.copyWith(
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
+                  style: textTheme.subtitle1?.copyWith(
+                    color: ClashColors.grey900,
                   ),
                 ),
                 const SizedBox(
                   height: 32.0,
                 ),
                 TextFormField(
-                  controller: controller,
+                  controller: model.controller,
                   validator: (value) => model.validateUserName(value),
                   onChanged: (value) => model.onChanged(value),
                   style: const TextStyle(
-                    color: ClashColors.green200,
+                    color: ClashColors.green100,
                     fontSize: 18.0,
                   ),
                   decoration: InputDecoration(
@@ -71,23 +66,12 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                     hintText: 'username (at least 3 characters)',
                     suffixIcon: Visibility(
                       visible: model.userNameIsValid,
-                      replacement: Visibility(
-                        // visible:
-                        // model.userNameProgress == UserNameState.loading,
-                        child: const SizedBox(
-                          width: 10.0,
-                          child: SpinKitThreeBounce(
-                            color: ClashColors.green200,
-                            size: 10.0,
-                          ),
-                        ),
-                      ),
                       child: Container(
                         margin: const EdgeInsets.all(
                           9.0,
                         ),
                         decoration: const BoxDecoration(
-                          color: ClashColors.green200,
+                          color: ClashColors.green100,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -123,55 +107,9 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   ),
                 ),
                 const Spacer(),
-                Center(
-                  child: Text(
-                    'Clash Room Code',
-                    style: textTheme.headline6?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                Center(
-                  child: Text(
-                    '513 809',
-                    style: textTheme.headline3?.copyWith(
-                      color: ClashColors.green200,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 8.0,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Copy or Share',
-                      style: textTheme.subtitle1?.copyWith(
-                        color: ClashColors.grey900,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.share,
-                        color: ClashColors.grey900,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(
-                  flex: 2,
-                ),
                 TextButton(
                   onPressed: model.userNameIsValid
-                      ? () => model.inviteUser(controller.text)
+                      ? () => model.inviteUser()
                       : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -37,6 +37,10 @@ dependencies:
   flutter_spinkit: ^5.1.0
   shared_preferences: ^2.0.11
   flutter_web_auth: ^0.4.0
+  spotify_flutter:
+    git:
+      url: git@github.com:Nkwachi-N/spotify_flutter.git
+      ref: stage
   cloud_firestore: ^3.1.8
   firebase_messaging: ^11.2.6
   hive: ^2.0.5
@@ -68,6 +72,7 @@ dev_dependencies:
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
   stacked_generator: 0.6.1
+  flutter_gen_runner:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -13,8 +13,6 @@ class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
   Widget builder(BuildContext context, AuthViewModel viewModel,_) {
     final textTheme = Theme.of(context).textTheme;
 
-    final model = AuthViewModel();
-
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(
@@ -33,13 +31,13 @@ class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
             Text(
               'CLASH',
               style: textTheme.headline2?.copyWith(
-                color: ClashColors.green200,
+                color: ClashColors.green100,
                 fontWeight: FontWeight.w700,
               ),
             ),
             const Spacer(),
             TextButton(
-              onPressed: model.authorize,
+              onPressed: viewModel.authorize,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -60,7 +58,7 @@ class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
                     width: 8.0,
                   ),
                   Visibility(
-                    visible: model.isBusy,
+                    visible: viewModel.isBusy,
                     child: const SpinKitThreeBounce(
                       color: Colors.white,
                       size: kButtonLoaderSize,
