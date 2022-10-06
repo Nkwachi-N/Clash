@@ -1,10 +1,8 @@
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
-import 'package:clash_flutter/src/core/services/user/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-
 import '../../../../../core/app/app.locator.dart';
 import '../../../../../core/app/app.router.dart';
 import '../../../../../core/models/user.dart';
@@ -15,11 +13,12 @@ class CreateRoomViewModel extends BaseViewModel {
   final _snackBarService = locator<SnackbarService>();
 
   final _firebaseService = locator<FireBaseService>();
+  final _userDatabaseService = locator<UserDatabaseService>();
   final _navigationService = locator<NavigationService>();
   final controller = TextEditingController();
 
   // User get user => _userRepository.user;
-  late User user;
+   User? get user => _userDatabaseService.getCurrentUser();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -46,7 +45,6 @@ class CreateRoomViewModel extends BaseViewModel {
         }
       });
     } else {
-      _userNameIsValid = false;
       _snackBarService.showCustomSnackBar(
         message: 'User does not exist',
         variant: SnackBarType.error,
@@ -63,7 +61,7 @@ class CreateRoomViewModel extends BaseViewModel {
     } else if (value != null && value.length < 3) {
       return 'username must be at least 3 characters';
     }
-    if (value == user.name) {
+    if (value == user?.name) {
       return 'You can\'t play a game with yourself.';
     }
     return null;
@@ -71,7 +69,6 @@ class CreateRoomViewModel extends BaseViewModel {
 
   void onChanged(String? value) {
     if (value != null && value.length >= 3) {
-      print('validate');
       _userNameIsValid = _formKey.currentState?.validate() ?? false;
       notifyListeners();
     }

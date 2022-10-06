@@ -1,20 +1,44 @@
-import 'package:hive/hive.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../constants/constants.dart';
 import '../../../models/user.dart';
 
 class UserDatabaseService {
 
-  Future<bool> saveUser(User user) async {
-    bool status = false;
+  final _userKey = 'user';
+
+  Future saveCurrentUser(User user) async {
     try {
-      final box = Hive.box(PrefConstants.kHiveBox);
-      box.put('user', user);
-      status = true;
-    } catch (e) {
-      status = false;
-    }
-    return status;
+      Box<User> currentUserBox = Hive.box(PrefConstants.kHiveBox);
+
+      /// This box should only contain one user
+      await currentUserBox.clear();
+      currentUserBox.add(user);
+    } catch (_) {}
+  }
+
+
+  User? getCurrentUser() {
+    Box<User> currentUserBox = Hive.box(PrefConstants.kHiveBox);
+    return currentUserBox.values.isNotEmpty
+        ? currentUserBox.values.first
+        : null;
+  }
+
+  Future initializeDb() async {
+    await Hive.initFlutter();
+    Hive.registerAdapter<User>(UserAdapter());
+    await Hive.openBox<User>(PrefConstants.kHiveBox);
+
+  }
+
+  // To be used when a different user tries to login on a new device
+  Future nukeDb() async {
+   /* Box<NubianUser> currentUserBox = Hive.box(HiveBoxName.currentUserBoxName);
+    Box<EncryptedPassword> encryptedPasswordBox = Hive.box(HiveBoxName.encryptedPasswordBoxName);
+    Box<LocalAccount> accountBox = Hive.box(HiveBoxName.accountsBoxName);
+    await encryptedPasswordBox.clear();
+    await currentUserBox.clear();
+    await accountBox.clear();*/
   }
 
 

@@ -1,12 +1,9 @@
-import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-
 import '../../../../core/app/app.locator.dart';
 import '../../../../core/app/app.router.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/models/user.dart';
 
 class StartUpViewModel extends BaseViewModel{
   final _navigationService = locator<NavigationService>();

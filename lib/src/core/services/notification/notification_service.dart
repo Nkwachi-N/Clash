@@ -3,7 +3,7 @@ import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import '../api/api_route.dart';
+import '../../api/api_route.dart';
 
 enum NotificationType {
   gameInvite,
@@ -14,8 +14,11 @@ enum NotificationType {
 const kUserNameKey = 'user_name';
 const kTypeKey = 'type';
 
-class NotificationUtil {
-  static Future<bool> inviteUser(String userId, String userName) async {
+
+class NotificationService {
+
+
+   Future<bool> inviteUser(String userId, String userName) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
@@ -29,7 +32,7 @@ class NotificationUtil {
     return await _sendNotification(body);
   }
 
-  static Future<bool> acceptInvite(String userId, String userName) async {
+   Future<bool> acceptInvite(String userId, String userName) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
@@ -43,7 +46,7 @@ class NotificationUtil {
     return await _sendNotification(body);
   }
 
-  static Future<bool> rejectInvite(String userId, String userName) async {
+   Future<bool> rejectInvite(String userId, String userName) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
@@ -57,7 +60,7 @@ class NotificationUtil {
     return await _sendNotification(body);
   }
 
-  static Future<bool> _sendNotification(Map<String, dynamic> body) async {
+   Future<bool> _sendNotification(Map<String, dynamic> body) async {
     final postBody = {
       "app_id": Credentials.oneSignalAppId,
       "channel_for_external_user_ids": "push",
@@ -86,7 +89,7 @@ class NotificationUtil {
     }
   }
 
-  static Future<bool> cancelNotification(String notificationId) async {
+   Future<bool> cancelNotification(String notificationId) async {
     final url =
         'https://onesignal.com/api/v1/notifications/$notificationId?app_id=${Credentials.oneSignalRestApiKey}';
     try {
@@ -104,21 +107,21 @@ class NotificationUtil {
     }
   }
 
-  static void setUserId(String userId) {
+   void setUserId(String userId) {
     OneSignal.shared.setExternalUserId(userId);
   }
 
-  static void setupInteractedMessage() {
+   void setupInteractedMessage() {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
-        (OSNotificationReceivedEvent event) {
-      event.complete(null);
+            (OSNotificationReceivedEvent event) {
+          event.complete(null);
 
-      final rawPayload = event.notification.additionalData;
+          final rawPayload = event.notification.additionalData;
 
-      if (rawPayload != null) {
-        _handleNotification(rawPayload);
-      }
-    });
+          if (rawPayload != null) {
+            _handleNotification(rawPayload);
+          }
+        });
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
@@ -129,7 +132,7 @@ class NotificationUtil {
     });
   }
 
-  static void _handleNotification(
+   void _handleNotification(
       Map<String, dynamic> rawPayload) {
     final String notificationType = rawPayload[kTypeKey];
     if (notificationType == NotificationType.gameInvite.name) {

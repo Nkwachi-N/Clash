@@ -2,10 +2,8 @@ import 'package:clash_flutter/src/core/services/invite/invite_service.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:clash_flutter/src/features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
 import 'package:clash_flutter/src/features/features.dart';
-import 'package:clash_flutter/src/features/home/edit_profile/views/edit_profile_view.dart';
 import 'package:clash_flutter/src/features/home/profile/invite_friends/invite_friends_view.dart';
 import 'package:clash_flutter/src/features/home/profile/views/profile_view.dart';
-import 'package:clash_flutter/src/features/user_name/views/user_name_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -30,20 +28,18 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: ReceivedInviteScreen),
     MaterialRoute(page: InviteSentView),
     MaterialRoute(page: ProfileView),
-    MaterialRoute(page: EditProfileView),
     MaterialRoute(page: InviteFriendsView),
-    MaterialRoute(page: UserNameView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: GameService),
     LazySingleton(classType: SpotifyService),
-    LazySingleton(classType: UserService),
     LazySingleton(classType: SnackbarService),
     Singleton(classType: AudioService),
     LazySingleton(classType: InviteService),
     LazySingleton(classType: FireBaseService),
     LazySingleton(classType: UserDatabaseService),
+    LazySingleton(classType: NotificationService),
 
   ],
   logger: StackedLogger(),

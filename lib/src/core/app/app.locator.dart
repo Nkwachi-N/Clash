@@ -24,7 +24,6 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => GameService());
   locator.registerLazySingleton(() => SpotifyService());
-  locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => SnackbarService());
   locator.registerSingleton(AudioService());
   locator.registerLazySingleton(() => InviteService());

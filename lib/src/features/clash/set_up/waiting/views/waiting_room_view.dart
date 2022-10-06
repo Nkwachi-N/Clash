@@ -35,7 +35,7 @@ class WaitingRoomView extends ViewModelBuilderWidget<WaitingRoomViewModel> {
                   children: [
                     Expanded(
                         child: AvatarImage(
-                      avatar: 'assets/images/avatar_${viewModel.avatar}.png',
+                      avatar: viewModel.avatar,
                     )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -169,7 +169,7 @@ class AvatarImage extends StatelessWidget {
               shape: BoxShape.circle,
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
-                image: AssetImage(
+                image: NetworkImage(
                   avatar,
                 ),
               ),

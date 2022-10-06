@@ -9,7 +9,7 @@ class FireBaseService{
 
   void saveUser(User user) {
     try{
-      users.doc(user.id).set(user.toMap());
+      users.doc(user.id).set(user.toFirebaseMap());
     }catch(e) {
       //TODO: Handle exception.
     }
@@ -22,7 +22,7 @@ class FireBaseService{
     if (result.docs.isNotEmpty) {
       final userSnapShot = result.docs[0];
       if (userSnapShot.exists) {
-        final user = User.fromJson(userSnapShot.data() as Map<String, dynamic>);
+        final user = User.fromFirebaseData(userSnapShot.data() as Map<String, dynamic>);
         return user;
       }
     }

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../widgets/avatar_widget.dart';
-import '../../../features.dart';
 import '../widgets/profile_tile.dart';
 
 class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
@@ -31,7 +29,7 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
                   height: 175.h,
                 ),
                 SizedBox(
-                  height: 66.h,
+                  height: 56.h,
                 ),
                 Expanded(
                   child: Padding(
@@ -39,39 +37,20 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'ImanuelJnr',
-                                  style: textTheme.headline6,
-                                ),
-                                SizedBox(
-                                  height: 8.h,
-                                ),
-                                Text(
-                                  'Joined December 2021',
-                                  style: textTheme.caption,
-                                ),
-                              ],
+                            Text(
+                              'ImanuelJnr',
+                              style: textTheme.headline6,
                             ),
-                            TextButton(
-                              onPressed: viewModel.navigateToEditProfileView,
-                              child: Text(
-                                'Edit Profile',
-                                style: textTheme.caption,
-                              ),
-                              style: TextButton.styleFrom(
-                                  backgroundColor: ClashColors.green200,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20.w,
-                                    vertical: 7.5.h,
-                                  )),
-                            )
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              'Joined December 2021',
+                              style: textTheme.caption,
+                            ),
                           ],
                         ),
                         SizedBox(

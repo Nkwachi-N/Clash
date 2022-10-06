@@ -29,13 +29,21 @@ class User {
     );
   }
 
+  factory User.fromFirebaseData(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      avatar: json['avatar']
+    );
+  }
+
  static String _getImages(Map<String,dynamic> json) {
     List<Image>? images = json['images'];
     return images != null && images.isNotEmpty ? images[0].url ?? '' : '';
 }
 
 
-  Map<String,dynamic> toMap(){
+  Map<String,dynamic> toFirebaseMap(){
     return {
       'id' : id,
       'name': name,

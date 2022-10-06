@@ -35,7 +35,7 @@ class AuthViewModel extends BaseViewModel {
   void _saveUser(GetCurrentUserProfileResponse getCurrentUserResponse) {
     final user = User.fromJson(getCurrentUserResponse.toJson());
     _firebaseService.saveUser(user);
-    _userDatabaseService.saveUser(user);
+    _userDatabaseService.saveCurrentUser(user);
 
   }
 }

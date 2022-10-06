@@ -3,18 +3,21 @@ import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../../../core/models/game.dart';
+import '../../../../../core/models/user.dart';
 
 
 class WaitingRoomViewModel extends BaseViewModel{
 
-  final _userRepository = locator<UserService>();
+  final _userDatabaseService = locator<UserDatabaseService>();
 
   final _gameRepository = locator<GameService>();
   final _navigationService = locator<NavigationService>();
 
-  String get name => _userRepository.user.name.toUpperCase();
+  User? get user => _userDatabaseService.getCurrentUser();
 
-  String get avatar => _userRepository.user.avatar ?? '';
+  String get name => user?.name.toUpperCase() ?? '';
+
+  String get avatar => user?.avatar ?? '';
 
   String get categoryName => _gameRepository.category.name;
 
@@ -23,9 +26,6 @@ class WaitingRoomViewModel extends BaseViewModel{
  String get genre => _gameRepository.genre;
 
  int get rounds => _gameRepository.rounds ?? 0;
-
-
-
 
 
   void navigateToCreateClashRoom() {

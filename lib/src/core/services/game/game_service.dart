@@ -1,10 +1,7 @@
 import 'package:clash_flutter/src/core/app/index.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
-import 'package:clash_flutter/src/core/services/spotify/spotify_service.dart';
-import 'package:clash_flutter/src/core/services/user/user_service.dart';
 import 'package:spotify_flutter/spotify_flutter.dart';
 import '../../models/game.dart';
-import '../../util/notification_util.dart';
 
 
 enum InviteState { accepted, declined, unDecided }
@@ -25,6 +22,7 @@ extension ParseToString on InviteState {
 class GameService{
   final _fireBaseService = locator<FireBaseService>();
   final _spotifyRepository = locator<SpotifyService>();
+  final _notificationService = locator<NotificationService>();
 
   List<String> genreList = [];
   late Category category;
@@ -97,9 +95,9 @@ class GameService{
 
     if (user != null) {
       if (inviteState == InviteState.accepted) {
-        status = await NotificationUtil.acceptInvite(user.id, userName);
+        status = await _notificationService.acceptInvite(user.id, userName);
       } else {
-        status = await NotificationUtil.rejectInvite(user.id, userName);
+        status = await _notificationService.rejectInvite(user.id, userName);
       }
     }
     _decidingInvite = false;

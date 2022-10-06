@@ -26,7 +26,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
               Row(
                 children: [
                   Text(
-                    'Welcome back, Emmanuel 👋 ',
+                    'Welcome back, ${viewModel.name} 👋 ',
                     style: textTheme.subtitle1,
                   ),
                   const Spacer(),
@@ -117,7 +117,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       children: [
                         Stack(
                           clipBehavior: Clip.none,
-                          children: [
+                          children: const [
                             /*Image.asset(
                           Assets.images.avatar1.path,
                           height: _kImageSize,

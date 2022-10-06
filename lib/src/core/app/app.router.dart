@@ -12,7 +12,6 @@ import 'package:stacked/stacked_annotations.dart';
 
 import '../../features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
 import '../../features/features.dart';
-import '../../features/home/edit_profile/views/edit_profile_view.dart';
 import '../../features/home/profile/invite_friends/invite_friends_view.dart';
 import '../../features/home/profile/views/profile_view.dart';
 import '../../features/user_name/views/user_name_view.dart';
@@ -36,7 +35,6 @@ class Routes {
   static const String receivedInviteScreen = '/received-invite-screen';
   static const String inviteSentView = '/invite-sent-view';
   static const String profileView = '/profile-view';
-  static const String editProfileView = '/edit-profile-view';
   static const String inviteFriendsView = '/invite-friends-view';
   static const String userNameView = '/user-name-view';
   static const all = <String>{
@@ -58,7 +56,6 @@ class Routes {
     receivedInviteScreen,
     inviteSentView,
     profileView,
-    editProfileView,
     inviteFriendsView,
     userNameView,
   };
@@ -86,7 +83,6 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.receivedInviteScreen, page: ReceivedInviteScreen),
     RouteDef(Routes.inviteSentView, page: InviteSentView),
     RouteDef(Routes.profileView, page: ProfileView),
-    RouteDef(Routes.editProfileView, page: EditProfileView),
     RouteDef(Routes.inviteFriendsView, page: InviteFriendsView),
     RouteDef(Routes.userNameView, page: UserNameView),
   ];
@@ -198,12 +194,6 @@ class StackedRouter extends RouterBase {
     ProfileView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const ProfileView(),
-        settings: data,
-      );
-    },
-    EditProfileView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const EditProfileView(),
         settings: data,
       );
     },
