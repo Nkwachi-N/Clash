@@ -1,6 +1,5 @@
 import 'package:clash_flutter/src/core/app/index.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../core/models/user.dart';
@@ -17,7 +16,7 @@ class HomeViewModel extends IndexTrackingViewModel{
 
   void init() {
     _notificationService.setupInteractedMessage();
-    OneSignal.shared.setExternalUserId(user!.id);
+    _notificationService.setUserId(user?.id);
   }
 
 

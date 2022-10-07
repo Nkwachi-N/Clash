@@ -8,7 +8,6 @@ class InviteFriendsViewModel extends BaseViewModel{
 
 
   void toUserNameView() {
-    _navigationService.navigateTo(Routes.userNameView);
   }
 
 

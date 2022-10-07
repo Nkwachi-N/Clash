@@ -14,7 +14,6 @@ import '../../features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
 import '../../features/features.dart';
 import '../../features/home/profile/invite_friends/invite_friends_view.dart';
 import '../../features/home/profile/views/profile_view.dart';
-import '../../features/user_name/views/user_name_view.dart';
 
 class Routes {
   static const String startUpView = '/';
@@ -36,7 +35,6 @@ class Routes {
   static const String inviteSentView = '/invite-sent-view';
   static const String profileView = '/profile-view';
   static const String inviteFriendsView = '/invite-friends-view';
-  static const String userNameView = '/user-name-view';
   static const all = <String>{
     startUpView,
     authView,
@@ -57,7 +55,6 @@ class Routes {
     inviteSentView,
     profileView,
     inviteFriendsView,
-    userNameView,
   };
 }
 
@@ -84,7 +81,6 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.inviteSentView, page: InviteSentView),
     RouteDef(Routes.profileView, page: ProfileView),
     RouteDef(Routes.inviteFriendsView, page: InviteFriendsView),
-    RouteDef(Routes.userNameView, page: UserNameView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -200,12 +196,6 @@ class StackedRouter extends RouterBase {
     InviteFriendsView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const InviteFriendsView(),
-        settings: data,
-      );
-    },
-    UserNameView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const UserNameView(),
         settings: data,
       );
     },

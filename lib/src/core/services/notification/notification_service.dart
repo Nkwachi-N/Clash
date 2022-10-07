@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../../api/api_route.dart';
+import '../../secret_keys.dart';
 
 enum NotificationType {
   gameInvite,
@@ -107,8 +108,19 @@ class NotificationService {
     }
   }
 
-   void setUserId(String userId) {
-    OneSignal.shared.setExternalUserId(userId);
+   void setUserId(String? userId) {
+     //Remove this method to stop OneSignal Debugging
+     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+     OneSignal.shared.setAppId(oneSignalAppId);
+
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+       print("Accepted permission: $accepted");
+     });
+     if(userId != null) {
+       OneSignal.shared.setExternalUserId(userId);
+     }
   }
 
    void setupInteractedMessage() {

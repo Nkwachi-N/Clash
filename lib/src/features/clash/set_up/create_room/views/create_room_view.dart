@@ -10,7 +10,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
 
   @override
   Widget builder(
-      BuildContext context, CreateRoomViewModel model, Widget? child) {
+      BuildContext context, CreateRoomViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
 
 
@@ -27,7 +27,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
-            key: model.formKey,
+            key: viewModel.formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -51,9 +51,9 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                   height: 32.0,
                 ),
                 TextFormField(
-                  controller: model.controller,
-                  validator: (value) => model.validateUserName(value),
-                  onChanged: (value) => model.onChanged(value),
+                  controller: viewModel.controller,
+                  validator: (value) => viewModel.validateUserName(value),
+                  onChanged: (value) => viewModel.onChanged(value),
                   style: const TextStyle(
                     color: ClashColors.green100,
                     fontSize: 18.0,
@@ -65,7 +65,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                     fillColor: ClashColors.grey500,
                     hintText: 'username (at least 3 characters)',
                     suffixIcon: Visibility(
-                      visible: model.userNameIsValid,
+                      visible: viewModel.userNameIsValid,
                       child: Container(
                         margin: const EdgeInsets.all(
                           9.0,
@@ -108,8 +108,8 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: model.userNameIsValid
-                      ? () => model.inviteUser()
+                  onPressed: viewModel.userNameIsValid
+                      ? () => viewModel.inviteUser()
                       : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -122,7 +122,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                         width: 8.0,
                       ),
                       Visibility(
-                        visible: model.isBusy,
+                        visible: viewModel.isBusy,
                         child: const SpinKitThreeBounce(
                           size: kButtonLoaderSize,
                           color: Colors.white,

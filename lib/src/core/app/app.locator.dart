@@ -29,4 +29,5 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => InviteService());
   locator.registerLazySingleton(() => FireBaseService());
   locator.registerLazySingleton(() => UserDatabaseService());
+  locator.registerLazySingleton(() => NotificationService());
 }
