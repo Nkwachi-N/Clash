@@ -1,15 +1,24 @@
+import 'package:clash_flutter/src/core/models/game.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../models/user.dart';
 
 class FireBaseService{
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference games = FirebaseFirestore.instance.collection('games');
 
 
   void saveUser(User user) {
     try{
       users.doc(user.id).set(user.toFirebaseMap());
+    }catch(e) {
+      //TODO: Handle exception.
+    }
+  }
+
+  void saveGame(Game game) {
+    try{
+      users.doc(game.host?.id).set(game.toFirestore());
     }catch(e) {
       //TODO: Handle exception.
     }
@@ -30,6 +39,23 @@ class FireBaseService{
     return null;
   }
 
+  Future<Game?> getGameById(String gameId) async {
+    final result = await FirebaseFirestore.instance
+        .collection('games')
+        .where('id', isEqualTo: gameId)
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      final gameSnapShot = result.docs[0];
+      if (gameSnapShot.exists) {
+        final game = Game.fromFirestore(gameSnapShot.data() as Map<String, dynamic>);
+        return game;
+      }
+    }
+
+    return null;
+  }
+
   Future<QuerySnapshot> _searchByUserName(String username) async {
     final result = await FirebaseFirestore.instance
         .collection('users')
@@ -38,6 +64,8 @@ class FireBaseService{
 
     return result;
   }
+
+
 
 
 }

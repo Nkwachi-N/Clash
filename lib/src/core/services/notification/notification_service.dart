@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../api/api_route.dart';
+import '../../app/app.router.dart';
 import '../../models/user.dart';
 import '../../secret_keys.dart';
 
@@ -22,10 +23,16 @@ enum NotificationType {
 const kUserNameKey = 'user_name';
 const kUserIdKey = 'user_id';
 const kTypeKey = 'type';
+const gameIdKey = 'game_id';
 
 class NotificationService {
   final _navigationService = locator<NavigationService>();
-  String get username => locator<UserDatabaseService>().getCurrentUser()?.name ?? '';
+  // final _gameService = locator<GameService>();
+
+  final _userId = locator<UserDatabaseService>().getCurrentUser()?.id ?? '';
+
+  String get username =>
+      locator<UserDatabaseService>().getCurrentUser()?.name ?? '';
 
   Future<bool> inviteUser(String userId) async {
     final body = {
@@ -47,7 +54,8 @@ class NotificationService {
       "include_external_user_ids": [userId],
       "data": {
         kTypeKey: NotificationType.inviteAccepted.name,
-        kUserNameKey: username
+        kUserNameKey: username,
+        kUserIdKey: userId,
       },
       "headings": {"en": "Accepted Invite."},
       "contents": {"en": "$username accepted your invite. Let's go!!!"}
@@ -56,7 +64,9 @@ class NotificationService {
     return await _sendNotification(body);
   }
 
-  Future<bool> rejectInvite(String userId,) async {
+  Future<bool> rejectInvite(
+    String userId,
+  ) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
@@ -118,14 +128,15 @@ class NotificationService {
   }
 
   void setUserId(String? userId) {
-    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) async {
+    OneSignal.shared
+        .promptUserForPushNotificationPermission()
+        .then((accepted) async {
       PermissionStatus statuses = await Permission.notification.request();
-      if(statuses.isDenied) {
+      if (statuses.isDenied) {
         openAppSettings();
       }
     });
     if (userId != null) {
-      print('setting user id');
       OneSignal.shared.setExternalUserId(userId);
     }
   }
@@ -136,7 +147,6 @@ class NotificationService {
       event.complete(null);
 
       final rawPayload = event.notification.additionalData;
-
 
       if (rawPayload != null) {
         _handleNotification(rawPayload);
@@ -156,9 +166,15 @@ class NotificationService {
     final String notificationType = rawPayload[kTypeKey];
     if (notificationType == NotificationType.gameInvite.name) {
       final userName = rawPayload[kUserNameKey];
+      final userId = rawPayload[kUserIdKey];
 
-      _navigationService
-          .navigateToView(ReceivedInviteScreen(userName: userName));
+      _navigationService.navigateToView(
+        ReceivedInviteScreen(
+          userName: userName,
+          userId: userId,
+        ),
+      );
+
     } else if (notificationType == NotificationType.inviteAccepted.name) {
       final userName = rawPayload[kUserNameKey];
 
@@ -166,16 +182,19 @@ class NotificationService {
         SuccessScreen(
           args: SuccessScreenArgs(
             title: '$userName accepted your invite',
-            onTap: () {},
+            onTap: () {
+              // _gameService.gameId = _userId;
+              //TODO:
+              // _navigationService.navigateTo(Routes.waitingRoomView);
+            },
             subtitle: 'The stage is set.',
           ),
         ),
       );
     } else if (notificationType == NotificationType.inviteDeclined.name) {
       final userName = rawPayload[kUserNameKey];
-      _navigationService.navigateToView(
-        DeclineInviteView(username: userName)
-      );
+      //TODO: Remove game.
+      _navigationService.navigateToView(DeclineInviteView(username: userName));
     }
   }
 }

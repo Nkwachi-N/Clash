@@ -1,25 +1,17 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/src/features/clash/set_up/sub_category/views/sub_category_view_model.dart';
+import 'package:clash_flutter/src/features/clash/set_up/sub_category/artist/views/artist_category_view_model.dart';
 import 'package:clash_flutter/widgets/artist_card.dart';
-import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
 
 
-const _greenYellow = [Color(0xFFF1EF47), Color(0xFF14D850)];
-const _redOrange = [Color(0xFFFF5857), Color(0xFFF0961B)];
-const _blue = [Color(0xFF6D88D7), Color(0xFF49C4EE)];
-const _purple = [Color(0xFFBF67D2), Color(0xFFEE609C)];
-
-const _colors = [_greenYellow, _redOrange, _blue, _purple];
-
-class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
-  const SubCategoryScreen({Key? key}) : super(key: key);
+class ArtistCategoryView extends ViewModelBuilderWidget<ArtistCategoryViewModel> {
+  const ArtistCategoryView({Key? key}) : super(key: key);
 
   @override
-  Widget builder(BuildContext context, SubCategoryViewModel model, _) {
+  Widget builder(BuildContext context, ArtistCategoryViewModel viewModel, _) {
     final textTheme = Theme.of(context).textTheme;
 
     return SafeArea(
@@ -56,7 +48,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
                 height: 65.h,
               ),
               Text(
-                'Choose ${model.title}',
+                'Choose an artist',
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
@@ -67,7 +59,7 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
               ),
               Expanded(
                 child: Visibility(
-                  visible: !model.isBusy,
+                  visible: !viewModel.isBusy,
                   replacement: const Center(
                     child: SpinKitFadingFour(
                       color: ClashColors.green100,
@@ -78,32 +70,18 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                     ),
-                    itemCount: model.itemsCount,
+                    itemCount: viewModel.artistList.length,
                     itemBuilder: (_, index) {
-                      if (model.isGenre) {
-                        final genre = model.genreList[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () => model.selectGenre(genre),
-                            child: GradientCard(
-                              colors: _colors[index % 4],
-                              text: genre,
-                            ),
+                      final artist = viewModel.artistList[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () => viewModel.selectArtist(artist),
+                          child: ArtistCard(
+                            artist: artist,
                           ),
-                        );
-                      } else {
-                        final artist = model.artistList[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () => model.selectArtist(artist),
-                            child: ArtistCard(
-                              artist: artist,
-                            ),
-                          ),
-                        );
-                      }
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -116,9 +94,9 @@ class SubCategoryScreen extends ViewModelBuilderWidget<SubCategoryViewModel> {
   }
 
   @override
-  SubCategoryViewModel viewModelBuilder(BuildContext context) =>
-      SubCategoryViewModel();
+  ArtistCategoryViewModel viewModelBuilder(BuildContext context) =>
+      ArtistCategoryViewModel();
 
   @override
-  void onViewModelReady(SubCategoryViewModel viewModel) => viewModel.getSubCategory();
+  void onViewModelReady(ArtistCategoryViewModel viewModel) => viewModel.onReady();
 }

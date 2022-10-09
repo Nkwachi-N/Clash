@@ -4,24 +4,30 @@
 // StackedLocatorGenerator
 // **************************************************************************
 
-// ignore_for_file: public_member_api_docs
+// ignore_for_file: public_member_api_docs, implementation_imports, depend_on_referenced_packages
 
-import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_core/stacked_core.dart';
+import 'package:stacked_services/src/navigation/navigation_service.dart';
+import 'package:stacked_services/src/snackbar/snackbar_service.dart';
 
-import '../services/service.dart';
+import '../services/audio/audio_service.dart';
+import '../services/database/user_database/user_database_service.dart';
+import '../services/firebase/firebase_service.dart';
+import '../services/game/game_service.dart';
+import '../services/notification/notification_service.dart';
+import '../services/spotify/spotify_service.dart';
 
 final locator = StackedLocator.instance;
 
-void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
+Future<void> setupLocator(
+    {String? environment, EnvironmentFilter? environmentFilter}) async {
 // Register environments
   locator.registerEnvironment(
       environment: environment, environmentFilter: environmentFilter);
 
 // Register dependencies
-  locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => GameService());
+  locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => SpotifyService());
   locator.registerLazySingleton(() => SnackbarService());
   locator.registerSingleton(AudioService());

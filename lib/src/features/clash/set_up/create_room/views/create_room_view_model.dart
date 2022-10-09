@@ -46,7 +46,6 @@ class CreateRoomViewModel extends BaseViewModel {
       _snackBarService.showCustomSnackBar(
         message: 'User does not exist',
         variant: SnackBarType.error,
-        duration: const Duration(seconds: 3),
       );
     }
 

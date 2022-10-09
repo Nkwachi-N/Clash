@@ -5,12 +5,10 @@ import 'package:clash_flutter/src/features/clash/invite/send_invite/views/invite
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../../../core/models/user.dart';
-
 class InviteSentView extends StatefulWidget {
-  final User user;
+  final String username;
 
-  const InviteSentView({Key? key,required this.user}) : super(key: key);
+  const InviteSentView({Key? key,required this.username}) : super(key: key);
 
   @override
   _InviteSentViewState createState() => _InviteSentViewState();
@@ -118,7 +116,7 @@ class _InviteSentViewState extends State<InviteSentView>
                         ),
                         children: [
                           TextSpan(
-                            text: '@${widget.user.name}',
+                            text: '@${widget.username}',
                             style: textTheme.subtitle1?.copyWith(
                               color: ClashColors.green100,
                               fontSize: 18.0,

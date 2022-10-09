@@ -3,7 +3,6 @@ import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
-import '../../../../../core/services/game/game.dart';
 import 'invite_received_view_model.dart';
 
 class ReceivedInviteScreen
@@ -75,7 +74,7 @@ class ReceivedInviteScreen
                     child: TextButton(
                       onPressed: viewModel.isBusy
                           ? null
-                          : () => viewModel.acceptInvite(),
+                          : () => viewModel.acceptInvite(userId: userId,username: userName),
                       child: const Text('Accept'),
                     ),
                   ),
@@ -85,16 +84,13 @@ class ReceivedInviteScreen
                 height: 16.0,
               ),
               Visibility(
-                visible: viewModel.inviteState != InviteState.unDecided,
-                replacement: const SizedBox(
-                  height: 16.0,
-                ),
+                visible: viewModel.isBusy,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${viewModel.inviteState.toMessage()} invite',
+                      viewModel.loaderMessage,
                       style: textTheme.subtitle1?.copyWith(
                         color: ClashColors.green100,
                       ),

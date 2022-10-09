@@ -63,7 +63,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
                     Expanded(
                       child: InkWell(
                         onTap: () => viewModel
-                            .navigateToSubCategoryScreen(Category.artist),
+                            .toArtistCategoryView(),
                         child: const GradientCard(
                           colors: [
                             Color(0xFFADE5D2),
@@ -79,7 +79,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
                     Expanded(
                       child: InkWell(
                         onTap: () => viewModel
-                            .navigateToSubCategoryScreen(Category.genre),
+                            .toGenreCategory(),
                         child: const GradientCard(
                           colors: [
                             Color(0xFFF7CB6A),

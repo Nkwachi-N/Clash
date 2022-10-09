@@ -12,7 +12,7 @@ class RoundsViewModel extends BaseViewModel{
 
   selectRounds(int rounds) {
     _gameRepository.selectRounds(rounds);
-    _navigationService.navigateTo(Routes.waitingRoomView);
+    _navigationService.navigateTo(Routes.createRoomView);
 
   }
 

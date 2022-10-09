@@ -102,7 +102,7 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
             Positioned(
               top: 120.h,
               child: AvatarWidget(
-                path: '', onTap: () {  },
+                avatar: '',
               ),
             ),
           ],
