@@ -11,7 +11,6 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../api/api_route.dart';
 import '../../app/app.router.dart';
-import '../../models/user.dart';
 import '../../secret_keys.dart';
 
 enum NotificationType {
@@ -27,14 +26,14 @@ const gameIdKey = 'game_id';
 
 class NotificationService {
   final _navigationService = locator<NavigationService>();
-  // final _gameService = locator<GameService>();
+  final _gameService = locator<GameService>();
 
   final _userId = locator<UserDatabaseService>().getCurrentUser()?.id ?? '';
 
   String get username =>
       locator<UserDatabaseService>().getCurrentUser()?.name ?? '';
 
-  Future<bool> inviteUser(String userId) async {
+  Future<bool> inviteUser({required String userId,required String category}) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
@@ -54,8 +53,7 @@ class NotificationService {
       "include_external_user_ids": [userId],
       "data": {
         kTypeKey: NotificationType.inviteAccepted.name,
-        kUserNameKey: username,
-        kUserIdKey: userId,
+        kUserNameKey: username
       },
       "headings": {"en": "Accepted Invite."},
       "contents": {"en": "$username accepted your invite. Let's go!!!"}
@@ -177,15 +175,18 @@ class NotificationService {
 
     } else if (notificationType == NotificationType.inviteAccepted.name) {
       final userName = rawPayload[kUserNameKey];
+      final category = _gameService.category.runtimeType.toString();
 
       _navigationService.navigateToView(
         SuccessScreen(
           args: SuccessScreenArgs(
             title: '$userName accepted your invite',
             onTap: () {
-              // _gameService.gameId = _userId;
-              //TODO:
-              // _navigationService.navigateTo(Routes.waitingRoomView);
+              switch(category) {
+                case 'genre' :
+                _navigationService.navigateTo(Routes.genreWaitingRoomView);
+                break;
+              }
             },
             subtitle: 'The stage is set.',
           ),
@@ -193,7 +194,7 @@ class NotificationService {
       );
     } else if (notificationType == NotificationType.inviteDeclined.name) {
       final userName = rawPayload[kUserNameKey];
-      //TODO: Remove game.
+      //TODO: Remove gamee
       _navigationService.navigateToView(DeclineInviteView(username: userName));
     }
   }

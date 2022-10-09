@@ -26,7 +26,7 @@ class GenreWaitingRoomViewModel extends BaseViewModel{
 
  int get rounds => _gameRepository.rounds ?? 0;
 
- Game? game;
+ Game?  get game => _gameRepository.game;
 
 
   void navigateToCreateClashRoom() {
@@ -34,9 +34,4 @@ class GenreWaitingRoomViewModel extends BaseViewModel{
   }
 
 
-  Future<void> onReady() async {
-    setBusy(true);
-    game = await _fireBaseService.getGameById(_gameRepository.gameId);
-    setBusy(false);
-  }
 }

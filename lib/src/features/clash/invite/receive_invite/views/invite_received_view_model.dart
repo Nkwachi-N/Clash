@@ -32,6 +32,7 @@ class InviteReceivedViewModel extends BaseViewModel {
 
   Future<void> acceptInvite({required String userId,required String username}) async {
     loaderMessage = 'accepting invite';
+    //check for game
     setBusy(true);
     bool status = await _notificationService.acceptInvite(userId);
     setBusy(false);
@@ -42,7 +43,7 @@ class InviteReceivedViewModel extends BaseViewModel {
           args: SuccessScreenArgs(
               title: 'You’ve joined $username’s clash room',
               onTap: () {
-                _gameService.gameId = userId;
+                // _gameService.game = game;
                 //TODo:
                 // _navigationService.navigateTo(Routes.waitingRoomView);
               },

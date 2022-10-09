@@ -18,7 +18,7 @@ class FireBaseService{
 
   void saveGame(Game game) {
     try{
-      users.doc(game.host?.id).set(game.toFirestore());
+      users.doc(game.id).set(game.toFirestore());
     }catch(e) {
       //TODO: Handle exception.
     }

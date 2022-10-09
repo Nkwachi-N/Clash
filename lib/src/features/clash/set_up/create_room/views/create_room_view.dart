@@ -109,7 +109,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                 const Spacer(),
                 TextButton(
                   onPressed: viewModel.userNameIsValid
-                      ? () => viewModel.inviteUser()
+                      ? () => viewModel.createRoom()
                       : null,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

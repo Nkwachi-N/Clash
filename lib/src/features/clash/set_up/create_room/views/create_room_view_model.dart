@@ -12,11 +12,12 @@ class CreateRoomViewModel extends BaseViewModel {
   final _notificationService = locator<NotificationService>();
 
   final _firebaseService = locator<FireBaseService>();
+  final _gameService = locator<GameService>();
   final _userDatabaseService = locator<UserDatabaseService>();
   final _navigationService = locator<NavigationService>();
+
   final controller = TextEditingController();
 
-  // User get user => _userRepository.user;
    User? get user => _userDatabaseService.getCurrentUser();
 
   final _formKey = GlobalKey<FormState>();
@@ -27,12 +28,18 @@ class CreateRoomViewModel extends BaseViewModel {
 
   bool get userNameIsValid => _userNameIsValid;
 
-  inviteUser() async {
+  void createRoom() {
+    _inviteUser();
+
+  }
+
+  _inviteUser() async {
     setBusy(true);
     final user = await _firebaseService.getUserByUserName(controller.text);
-
+    setBusy(false);
     if (user != null) {
-      _notificationService.inviteUser(user.id).then((value) {
+      _gameService.createGame(user);
+      _notificationService.inviteUser(userId: user.id,category: _gameService.category.runtimeType.toString()).then((value) {
         if (value) {
           _navigationService.navigateToView(InviteSentView(username: user.name));
         } else {
@@ -49,7 +56,7 @@ class CreateRoomViewModel extends BaseViewModel {
       );
     }
 
-    setBusy(false);
+
   }
 
   String? validateUserName(String? value) {
