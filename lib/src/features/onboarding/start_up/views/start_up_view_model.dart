@@ -1,32 +1,22 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 import '../../../../core/app/app.locator.dart';
-import '../../../../core/app/app.router.dart';
-import '../../../../core/constants/constants.dart';
+import '../../../../core/models/user.dart';
 
-class StartUpViewModel extends BaseViewModel{
-  final _navigationService = locator<NavigationService>();
+class StartUpViewModel extends BaseViewModel {
+  final UserDatabaseService _dbService = locator<UserDatabaseService>();
+  bool _showLogin = false;
 
-  void init() async{
-    String initialRoute = Routes.authView;
+  bool get showLogin => _showLogin;
 
-    final prefs = await SharedPreferences.getInstance();
-    final accessToken = prefs.getString(PrefConstants.kAccessToken);
-
-    /*if (accessToken != null) {
-      final box = Hive.box(PrefConstants.kHiveBox);
-      final User? user = box.get('user');
-      if (user != null) {
-        initialRoute = Routes.homeView;
-      } else {
-        initialRoute = Routes.userNameView;
-      }
-    }*/
-
-    _navigationService.navigateTo(initialRoute);
+  set showLogin(bool showLogin) {
+    _showLogin = showLogin;
+    notifyListeners();
+  }
 
 
-
+  init() {
+    User? user = _dbService.getCurrentUser();
+    showLogin = user == null;
   }
 }

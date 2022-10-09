@@ -1,16 +1,15 @@
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
+import 'package:clash_flutter/src/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../../../core/app/app.locator.dart';
-import '../../../../../core/app/app.router.dart';
 import '../../../../../core/models/user.dart';
-import '../../../../../core/services/invite/invite_service.dart';
 
 class CreateRoomViewModel extends BaseViewModel {
-  final _inviteService = locator<InviteService>();
   final _snackBarService = locator<SnackbarService>();
+  final _notificationService = locator<NotificationService>();
 
   final _firebaseService = locator<FireBaseService>();
   final _userDatabaseService = locator<UserDatabaseService>();
@@ -33,10 +32,9 @@ class CreateRoomViewModel extends BaseViewModel {
     final user = await _firebaseService.getUserByUserName(controller.text);
 
     if (user != null) {
-      _inviteService.inviteUser(user).then((value) {
+      _notificationService.inviteUser(user.id).then((value) {
         if (value) {
-          _inviteService.userName = user.name;
-          _navigationService.navigateTo(Routes.inviteSentView);
+          _navigationService.navigateToView(InviteSentView(username: user.name));
         } else {
           _snackBarService.showCustomSnackBar(
             message: 'Invite sending failed, please try again',

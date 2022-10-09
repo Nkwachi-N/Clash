@@ -33,7 +33,7 @@ class FireBaseService{
   Future<QuerySnapshot> _searchByUserName(String username) async {
     final result = await FirebaseFirestore.instance
         .collection('users')
-        .where('name', isEqualTo: username)
+        .where('name', isEqualTo: username.toLowerCase())
         .get();
 
     return result;

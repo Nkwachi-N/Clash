@@ -1,4 +1,3 @@
-import 'package:clash_flutter/src/core/services/invite/invite_service.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:clash_flutter/src/features/clash/play/armoury/set_up_armoury/set_up_armoury.dart';
 import 'package:clash_flutter/src/features/features.dart';
@@ -24,9 +23,6 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: ClashRoomView),
     MaterialRoute(page: SearchArmouryView),
     MaterialRoute(page: SetUpArmouryScreen),
-    MaterialRoute(page: DeclineInviteView),
-    MaterialRoute(page: ReceivedInviteScreen),
-    MaterialRoute(page: InviteSentView),
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: InviteFriendsView),
   ],
@@ -36,7 +32,6 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: SpotifyService),
     LazySingleton(classType: SnackbarService),
     Singleton(classType: AudioService),
-    LazySingleton(classType: InviteService),
     LazySingleton(classType: FireBaseService),
     LazySingleton(classType: UserDatabaseService),
     LazySingleton(classType: NotificationService),

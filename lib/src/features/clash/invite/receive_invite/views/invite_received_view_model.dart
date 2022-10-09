@@ -1,20 +1,25 @@
 import 'package:clash_flutter/src/core/app/index.dart';
 import 'package:clash_flutter/src/core/services/game/game.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class InviteReceivedViewModel extends BaseViewModel{
 
   final _gameRepository = locator<GameService>();
+  final _notificationService = locator<NotificationService>();
   final _navigationService = locator<NavigationService>();
+
   InviteState get inviteState => _gameRepository.inviteState;
 
   String userName = '';
 
 
 
-  void declineInvite() {
+  Future<void> declineInvite(String userId) async {
     setBusy(true);
+
+    status = await _notificationService.acceptInvite(user.id,);
     _gameRepository.decide(userName,InviteState.declined).then((value) {
       if (value) {
         /*  if (Navigator.canPop(context)) {

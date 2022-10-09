@@ -4,6 +4,7 @@ import 'package:clash_flutter/src/core/app/app.router.dart';
 import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
 import 'package:clash_flutter/src/core/models/user.dart';
+import 'package:clash_flutter/src/core/secret_keys.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,7 +25,7 @@ void main() async {
   Hive.registerAdapter(UserAdapter());
   await Hive.openBox(PrefConstants.kHiveBox);
 
-  OneSignal.shared.setAppId(Credentials.oneSignalAppId);
+  OneSignal.shared.setAppId(oneSignalAppId);
 
 
 

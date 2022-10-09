@@ -5,8 +5,11 @@ import 'package:stacked/stacked.dart';
 
 class DeclineInviteView extends ViewModelBuilderWidget<DeclineInviteViewModel> {
 
-  const DeclineInviteView({
+  final String username;
+
+  const DeclineInviteView( {
     Key? key,
+    required this.username,
   }) : super(key: key);
 
 
@@ -25,7 +28,7 @@ class DeclineInviteView extends ViewModelBuilderWidget<DeclineInviteViewModel> {
               height: 80.0,
             ),
             Text(
-              '${viewModel.userName} declined your invite',
+              '$username declined your invite',
               textAlign: TextAlign.center,
               style: textTheme.headline5?.copyWith(
                 fontWeight: FontWeight.w500,

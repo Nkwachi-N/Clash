@@ -95,9 +95,9 @@ class GameService{
 
     if (user != null) {
       if (inviteState == InviteState.accepted) {
-        status = await _notificationService.acceptInvite(user.id, userName);
+        status = await _notificationService.acceptInvite(user.id,);
       } else {
-        status = await _notificationService.rejectInvite(user.id, userName);
+        status = await _notificationService.rejectInvite(user.id,);
       }
     }
     _decidingInvite = false;

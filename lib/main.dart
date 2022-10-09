@@ -1,7 +1,7 @@
 import 'package:clash_flutter/app.dart';
 import 'package:clash_flutter/src/core/app/app.locator.dart';
-import 'package:clash_flutter/src/core/constants/constants.dart';
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
+import 'package:clash_flutter/src/core/secret_keys.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ void main() async {
 
   setupLocator();
 
-  OneSignal.shared.setAppId(Credentials.oneSignalAppId);
+  OneSignal.shared.setAppId(oneSignalAppId);
 
   await locator<UserDatabaseService>().initializeDb();
 

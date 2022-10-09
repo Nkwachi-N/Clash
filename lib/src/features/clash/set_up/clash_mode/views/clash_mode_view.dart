@@ -50,7 +50,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
               ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
                     color: ClashColors.grey500,
                     borderRadius: BorderRadius.circular(8.0),
@@ -76,9 +76,12 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                           ),
                         ),
                       ),
-                      Assets.images.miroodlesColorComp.image(),
-                      const SizedBox(
-                        height: 16.0,
+                      Assets.images.miroodlesColorComp.image(
+                        width: 50.w,
+                        height: 50.w,
+                      ),
+                      SizedBox(
+                        height: 16.h,
                       ),
                       Text(
                         'With a Computer',
@@ -86,8 +89,8 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                           color: ClashColors.green200,
                         ),
                       ),
-                      const SizedBox(
-                        height: 8.0,
+                      SizedBox(
+                        height: 8.h,
                       ),
                       Text(
                         'Play against an automated system.',

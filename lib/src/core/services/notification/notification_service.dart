@@ -1,9 +1,16 @@
 import 'dart:convert';
-import 'package:clash_flutter/src/core/constants/constants.dart';
+import 'dart:developer';
+import 'package:clash_flutter/src/core/app/app.locator.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
+import 'package:clash_flutter/src/features/features.dart';
+import 'package:clash_flutter/widgets/success_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 import '../../api/api_route.dart';
+import '../../models/user.dart';
 import '../../secret_keys.dart';
 
 enum NotificationType {
@@ -13,57 +20,59 @@ enum NotificationType {
 }
 
 const kUserNameKey = 'user_name';
+const kUserIdKey = 'user_id';
 const kTypeKey = 'type';
 
-
 class NotificationService {
+  final _navigationService = locator<NavigationService>();
+  String get username => locator<UserDatabaseService>().getCurrentUser()?.name ?? '';
 
-
-   Future<bool> inviteUser(String userId, String userName) async {
+  Future<bool> inviteUser(String userId) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
-        kUserNameKey: userName,
-        kTypeKey: NotificationType.gameInvite.name
+        kUserNameKey: username,
+        kTypeKey: NotificationType.gameInvite.name,
+        kUserIdKey: userId,
       },
       "headings": {"en": "New Clash invite"},
-      "contents": {"en": "$userName is inviting you to clash."}
+      "contents": {"en": "$username is inviting you to clash."}
     };
 
     return await _sendNotification(body);
   }
 
-   Future<bool> acceptInvite(String userId, String userName) async {
+  Future<bool> acceptInvite(String userId) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
         kTypeKey: NotificationType.inviteAccepted.name,
-        kUserNameKey: userName
+        kUserNameKey: username
       },
       "headings": {"en": "Accepted Invite."},
-      "contents": {"en": "$userName accepted your invite. Let's go!!!"}
+      "contents": {"en": "$username accepted your invite. Let's go!!!"}
     };
 
     return await _sendNotification(body);
   }
 
-   Future<bool> rejectInvite(String userId, String userName) async {
+  Future<bool> rejectInvite(String userId,) async {
     final body = {
       "include_external_user_ids": [userId],
       "data": {
         kTypeKey: NotificationType.inviteDeclined.name,
-        kUserNameKey: userName
+        kUserNameKey: username
       },
       "headings": {"en": "Declined Invite."},
-      "contents": {"en": "$userName declined. E dey fear na why."}
+      "contents": {"en": "$username declined. E dey fear na why."}
     };
 
     return await _sendNotification(body);
   }
 
-   Future<bool> _sendNotification(Map<String, dynamic> body) async {
+  Future<bool> _sendNotification(Map<String, dynamic> body) async {
     final postBody = {
-      "app_id": Credentials.oneSignalAppId,
+      "app_id": oneSignalAppId,
       "channel_for_external_user_ids": "push",
       ...body
     };
@@ -71,7 +80,7 @@ class NotificationService {
       final response = await http.post(Uri.parse(ApiRoute.createNotification),
           body: jsonEncode(postBody),
           headers: {
-            'Authorization': 'Bearer ${Credentials.oneSignalRestApiKey}',
+            'Authorization': 'Bearer $oneSignalRestApiKey',
             'Content-Type': 'application/json'
           });
 
@@ -90,12 +99,12 @@ class NotificationService {
     }
   }
 
-   Future<bool> cancelNotification(String notificationId) async {
+  Future<bool> cancelNotification(String notificationId) async {
     final url =
-        'https://onesignal.com/api/v1/notifications/$notificationId?app_id=${Credentials.oneSignalRestApiKey}';
+        'https://onesignal.com/api/v1/notifications/$notificationId?app_id=$oneSignalRestApiKey';
     try {
       final response = await http.delete(Uri.parse(url), headers: {
-        'Authorization': 'Bearer ${Credentials.oneSignalRestApiKey}',
+        'Authorization': 'Bearer $oneSignalRestApiKey',
       });
       final Map<String, dynamic> responseMap = jsonDecode(response.body);
 
@@ -108,32 +117,31 @@ class NotificationService {
     }
   }
 
-   void setUserId(String? userId) {
-     //Remove this method to stop OneSignal Debugging
-     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-     OneSignal.shared.setAppId(oneSignalAppId);
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-       print("Accepted permission: $accepted");
-     });
-     if(userId != null) {
-       OneSignal.shared.setExternalUserId(userId);
-     }
+  void setUserId(String? userId) {
+    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) async {
+      PermissionStatus statuses = await Permission.notification.request();
+      if(statuses.isDenied) {
+        openAppSettings();
+      }
+    });
+    if (userId != null) {
+      print('setting user id');
+      OneSignal.shared.setExternalUserId(userId);
+    }
   }
 
-   void setupInteractedMessage() {
+  void setupInteractedMessage() {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
-            (OSNotificationReceivedEvent event) {
-          event.complete(null);
+        (OSNotificationReceivedEvent event) {
+      event.complete(null);
 
-          final rawPayload = event.notification.additionalData;
+      final rawPayload = event.notification.additionalData;
 
-          if (rawPayload != null) {
-            _handleNotification(rawPayload);
-          }
-        });
+
+      if (rawPayload != null) {
+        _handleNotification(rawPayload);
+      }
+    });
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
@@ -144,32 +152,30 @@ class NotificationService {
     });
   }
 
-   void _handleNotification(
-      Map<String, dynamic> rawPayload) {
+  void _handleNotification(Map<String, dynamic> rawPayload) {
     final String notificationType = rawPayload[kTypeKey];
     if (notificationType == NotificationType.gameInvite.name) {
       final userName = rawPayload[kUserNameKey];
-      //TODO:
-      // Navigator.of(context).pushNamed(
-      //   RouteGenerator.receivedInviteScreen,
-      //   arguments: userName,
-      // );
+
+      _navigationService
+          .navigateToView(ReceivedInviteScreen(userName: userName));
     } else if (notificationType == NotificationType.inviteAccepted.name) {
       final userName = rawPayload[kUserNameKey];
-      // Navigator.of(context).pushNamed(
-      //   RouteGenerator.successScreen,
-      //   arguments: SuccessScreenArgs(
-      //     title: '$userName accepted your invite',
-      //     onTap: () {},
-      //     subtitle: 'The stage is set.',
-      //   ),
-      // );
+
+      _navigationService.navigateToView(
+        SuccessScreen(
+          args: SuccessScreenArgs(
+            title: '$userName accepted your invite',
+            onTap: () {},
+            subtitle: 'The stage is set.',
+          ),
+        ),
+      );
     } else if (notificationType == NotificationType.inviteDeclined.name) {
       final userName = rawPayload[kUserNameKey];
-      // Navigator.of(context).pushNamed(
-      //   RouteGenerator.inviteDeclinedScreen,
-      //   arguments: userName,
-      // );
+      _navigationService.navigateToView(
+        DeclineInviteView(username: userName)
+      );
     }
   }
 }

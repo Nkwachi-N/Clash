@@ -30,9 +30,6 @@ class Routes {
   static const String clashRoomView = '/clash-room-view';
   static const String searchArmouryView = '/search-armoury-view';
   static const String setUpArmouryScreen = '/set-up-armoury-screen';
-  static const String declineInviteView = '/decline-invite-view';
-  static const String receivedInviteScreen = '/received-invite-screen';
-  static const String inviteSentView = '/invite-sent-view';
   static const String profileView = '/profile-view';
   static const String inviteFriendsView = '/invite-friends-view';
   static const all = <String>{
@@ -50,9 +47,6 @@ class Routes {
     clashRoomView,
     searchArmouryView,
     setUpArmouryScreen,
-    declineInviteView,
-    receivedInviteScreen,
-    inviteSentView,
     profileView,
     inviteFriendsView,
   };
@@ -76,9 +70,6 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.clashRoomView, page: ClashRoomView),
     RouteDef(Routes.searchArmouryView, page: SearchArmouryView),
     RouteDef(Routes.setUpArmouryScreen, page: SetUpArmouryScreen),
-    RouteDef(Routes.declineInviteView, page: DeclineInviteView),
-    RouteDef(Routes.receivedInviteScreen, page: ReceivedInviteScreen),
-    RouteDef(Routes.inviteSentView, page: InviteSentView),
     RouteDef(Routes.profileView, page: ProfileView),
     RouteDef(Routes.inviteFriendsView, page: InviteFriendsView),
   ];
@@ -166,24 +157,6 @@ class StackedRouter extends RouterBase {
     SetUpArmouryScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const SetUpArmouryScreen(),
-        settings: data,
-      );
-    },
-    DeclineInviteView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const DeclineInviteView(),
-        settings: data,
-      );
-    },
-    ReceivedInviteScreen: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const ReceivedInviteScreen(),
-        settings: data,
-      );
-    },
-    InviteSentView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const InviteSentView(),
         settings: data,
       );
     },

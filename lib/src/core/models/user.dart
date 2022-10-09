@@ -46,7 +46,7 @@ class User {
   Map<String,dynamic> toFirebaseMap(){
     return {
       'id' : id,
-      'name': name,
+      'name': name.toLowerCase(),
       'avatar':avatar,
     };
   }

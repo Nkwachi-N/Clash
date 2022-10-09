@@ -8,8 +8,13 @@ import 'invite_received_view_model.dart';
 
 class ReceivedInviteScreen
     extends ViewModelBuilderWidget<InviteReceivedViewModel> {
+  final String userName;
+  final String userId;
 
-  const ReceivedInviteScreen({
+  const ReceivedInviteScreen( {
+    required this.userName,
+    required this.userId,
+
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +34,7 @@ class ReceivedInviteScreen
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  '${viewModel.userName} is inviting you to join their clash room',
+                  '$userName is inviting you to join their clash room',
                   textAlign: TextAlign.center,
                   style: textTheme.headline6?.copyWith(
                     fontWeight: FontWeight.w500,
@@ -53,7 +58,7 @@ class ReceivedInviteScreen
                       child: TextButton(
                     onPressed: viewModel.isBusy
                         ? null
-                        : () => viewModel.declineInvite(),
+                        : () => viewModel.declineInvite(userId),
                     style: ButtonStyle(backgroundColor:
                         MaterialStateProperty.resolveWith((states) {
                       if (states.contains(MaterialState.disabled)) {
