@@ -1,5 +1,8 @@
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../gen/assets.gen.dart';
 
 class AvatarWidget extends StatelessWidget {
   final String avatar;
@@ -14,17 +17,12 @@ class AvatarWidget extends StatelessWidget {
     return Visibility(
       visible: avatar.isNotEmpty,
       replacement: Center(
-        child: Container(
-            height: 140.0,
-            width: 140.0,
-            decoration: DottedDecoration(
-              shape: Shape.circle,
-              color: const Color(0xFF686868).withOpacity(0.8),
-            ),
-            child: const Icon(
-              Icons.add,
-              color: Color(0xFF686868),
-            )),
+        child: Image.asset(
+          Assets.images.avatar1.path,
+          height: 105.w,
+          width: 105.w,
+          fit: BoxFit.fitWidth,
+        ),
       ),
       child: Stack(
         alignment: Alignment.center,

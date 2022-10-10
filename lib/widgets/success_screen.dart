@@ -1,4 +1,6 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/src/core/app/app.locator.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:flutter/material.dart';
 
 class SuccessScreenArgs {
@@ -21,6 +23,7 @@ class SuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    print(locator<GameService>().category.runtimeType.toString());
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),

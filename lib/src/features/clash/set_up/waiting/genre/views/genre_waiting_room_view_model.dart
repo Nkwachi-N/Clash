@@ -1,4 +1,5 @@
 import 'package:clash_flutter/src/core/app/index.dart';
+import 'package:clash_flutter/src/core/models/category/category.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -22,7 +23,7 @@ class GenreWaitingRoomViewModel extends BaseViewModel{
   String get guestName => game?.guest?.name.toUpperCase() ?? '';
   String get guestAvatar => game?.guest?.avatar ?? '';
 
- String get genre => '';
+ String get genre => (game?.category as GenreCategory).name ?? '';
 
  int get rounds => _gameRepository.rounds ?? 0;
 

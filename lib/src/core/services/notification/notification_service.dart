@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:clash_flutter/src/core/app/app.locator.dart';
+import 'package:clash_flutter/src/core/models/category/category.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:clash_flutter/src/features/features.dart';
 import 'package:clash_flutter/widgets/success_screen.dart';
@@ -39,11 +40,13 @@ class NotificationService {
       "data": {
         kUserNameKey: username,
         kTypeKey: NotificationType.gameInvite.name,
-        kUserIdKey: userId,
+        kUserIdKey: _userId,
       },
       "headings": {"en": "New Clash invite"},
       "contents": {"en": "$username is inviting you to clash."}
     };
+
+    print(body);
 
     return await _sendNotification(body);
   }
@@ -98,7 +101,7 @@ class NotificationService {
 
       //TODO: handle cancel.
       if (responseMap.containsKey('recipients')) {
-        return responseMap['recipients'] == 1;
+        return responseMap['recipients'] != null;
       }
       return false;
     } catch (e) {
@@ -143,6 +146,7 @@ class NotificationService {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
       event.complete(null);
+      print('RECEIVED NOTIFICATION');
 
       final rawPayload = event.notification.additionalData;
 
@@ -175,18 +179,17 @@ class NotificationService {
 
     } else if (notificationType == NotificationType.inviteAccepted.name) {
       final userName = rawPayload[kUserNameKey];
-      final category = _gameService.category.runtimeType.toString();
+      final category = _gameService.category;
 
       _navigationService.navigateToView(
         SuccessScreen(
           args: SuccessScreenArgs(
             title: '$userName accepted your invite',
             onTap: () {
-              switch(category) {
-                case 'genre' :
+              if(category is GenreCategory) {
                 _navigationService.navigateTo(Routes.genreWaitingRoomView);
-                break;
               }
+
             },
             subtitle: 'The stage is set.',
           ),
@@ -194,7 +197,8 @@ class NotificationService {
       );
     } else if (notificationType == NotificationType.inviteDeclined.name) {
       final userName = rawPayload[kUserNameKey];
-      //TODO: Remove gamee
+      //TODO: Remove game
+
       _navigationService.navigateToView(DeclineInviteView(username: userName));
     }
   }

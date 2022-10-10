@@ -9,7 +9,6 @@ import '../../models/user.dart';
 class GameService {
   final _fireBaseService = locator<FireBaseService>();
   final _spotifyRepository = locator<SpotifyService>();
-  final _notificationService = locator<NotificationService>();
   final _userDatabaseService = locator<UserDatabaseService>();
 
   User? get user => _userDatabaseService.getCurrentUser();

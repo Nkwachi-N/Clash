@@ -34,8 +34,10 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                   SizedBox(
                     width: 8.w,
                   ),
-                  Text('0',style: textTheme.headline5,)
-
+                  Text(
+                    '0',
+                    style: textTheme.headline5,
+                  )
                 ],
               ),
               SizedBox(
@@ -120,28 +122,25 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       children: [
                         Stack(
                           clipBehavior: Clip.none,
-                          children: const [
-                            /*Image.asset(
-                          Assets.images.avatar1.path,
-                          height: _kImageSize,
-                          width: _kImageSize,
-                        ),*/ SizedBox(),
+                          children: [
+                            Image.asset(
+                              Assets.images.avatar1.path,
+                            ),
+                            const SizedBox(),
                             Positioned(
                               left: 40.0,
-                              child:  /*Image.asset(
-                          Assets.images.avatar1.path,
-                          height: _kImageSize,
-                          width: _kImageSize,
-                        ),*/ SizedBox(),
+                              child: Image.asset(
+                                Assets.images.avatar2.path,
+                              ),
                             ),
+                            const SizedBox(),
                             Positioned(
                               left: 80.0,
-                              child:  /*Image.asset(
-                          Assets.images.avatar1.path,
-                          height: _kImageSize,
-                          width: _kImageSize,
-                        ),*/ SizedBox(),
+                              child: Image.asset(
+                                Assets.images.avatar3.path,
+                              ),
                             ),
+                            const SizedBox(),
                           ],
                         ),
                         const SizedBox(

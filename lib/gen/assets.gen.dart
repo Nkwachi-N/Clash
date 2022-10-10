@@ -26,6 +26,18 @@ class $AssetsImagesGen {
   /// File path: assets/images/about_clash.svg
   String get aboutClash => 'assets/images/about_clash.svg';
 
+  /// File path: assets/images/avatar_1.png
+  AssetGenImage get avatar1 =>
+      const AssetGenImage('assets/images/avatar_1.png');
+
+  /// File path: assets/images/avatar_2.png
+  AssetGenImage get avatar2 =>
+      const AssetGenImage('assets/images/avatar_2.png');
+
+  /// File path: assets/images/avatar_3.png
+  AssetGenImage get avatar3 =>
+      const AssetGenImage('assets/images/avatar_3.png');
+
   /// File path: assets/images/category.svg
   String get category => 'assets/images/category.svg';
 
@@ -44,6 +56,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/home.svg
   String get home => 'assets/images/home.svg';
+
+  /// File path: assets/images/icon_back_arrow.svg
+  String get iconBackArrow => 'assets/images/icon_back_arrow.svg';
 
   /// File path: assets/images/invite_friends.svg
   String get inviteFriends => 'assets/images/invite_friends.svg';
@@ -85,12 +100,16 @@ class $AssetsImagesGen {
         spotifyIconWhite,
         x42,
         aboutClash,
+        avatar1,
+        avatar2,
+        avatar3,
         category,
         crown,
         exclamation,
         fightingGame,
         flame,
         home,
+        iconBackArrow,
         inviteFriends,
         inviteSent,
         music,

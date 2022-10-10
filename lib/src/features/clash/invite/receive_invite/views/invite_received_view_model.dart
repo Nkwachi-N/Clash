@@ -33,6 +33,7 @@ class InviteReceivedViewModel extends BaseViewModel {
   Future<void> acceptInvite({required String userId,required String username}) async {
     loaderMessage = 'accepting invite';
     //check for game
+
     setBusy(true);
     bool status = await _notificationService.acceptInvite(userId);
     setBusy(false);
