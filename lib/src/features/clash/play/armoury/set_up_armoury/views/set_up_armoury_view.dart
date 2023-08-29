@@ -1,5 +1,8 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../../../../../core/app/index.dart';
 
 class SetUpArmouryScreen extends StatelessWidget {
   const SetUpArmouryScreen({Key? key}) : super(key: key);
@@ -23,9 +26,9 @@ class SetUpArmouryScreen extends StatelessWidget {
                 height: 32.0,
               ),
               Text(
-                'Set up your search_armoury',
+                'Set up your armoury',
                 textAlign: TextAlign.center,
-                style: textTheme.headline5?.copyWith(
+                style: textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -47,10 +50,10 @@ class SetUpArmouryScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4.0),
                   color: ClashColors.orangeIsh,
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Row(
-                      children: const [
+                      children: [
                         Icon(Icons.info, color: ClashColors.brown),
                         SizedBox(
                           width: 9.0,
@@ -65,10 +68,10 @@ class SetUpArmouryScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 16.0,
                     ),
-                    const Text(
+                    Text(
                       'The popularity of a track is a value between 0 and 100, '
                           'with 100 being the most popular. The popularity is calculated by algorithm '
                           'and is based, in the most part, on the total number of plays the track has had and'
@@ -85,7 +88,9 @@ class SetUpArmouryScreen extends StatelessWidget {
               ),
               const Spacer(),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  locator<NavigationService>().navigateTo(Routes.searchArmouryView);
+                },
                 child: const Text('Okay, got it'),
               ),
               const SizedBox(

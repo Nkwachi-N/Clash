@@ -30,7 +30,7 @@ class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
             const Spacer(),
             Text(
               'CLASH',
-              style: textTheme.headline2?.copyWith(
+              style: textTheme.displayMedium?.copyWith(
                 color: ClashColors.green100,
                 fontWeight: FontWeight.w700,
               ),
@@ -52,7 +52,7 @@ class AuthView extends ViewModelBuilderWidget<AuthViewModel> {
                   ),
                   Text(
                     'Continue with Spotify',
-                    style: textTheme.button,
+                    style: textTheme.labelLarge,
                   ),
                   const SizedBox(
                     width: 8.0,

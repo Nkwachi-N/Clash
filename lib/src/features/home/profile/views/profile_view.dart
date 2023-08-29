@@ -42,14 +42,14 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
                           children: [
                             Text(
                               'ImanuelJnr',
-                              style: textTheme.headline6,
+                              style: textTheme.titleLarge,
                             ),
                             SizedBox(
                               height: 8.h,
                             ),
                             Text(
                               'Joined December 2021',
-                              style: textTheme.caption,
+                              style: textTheme.bodySmall,
                             ),
                           ],
                         ),
@@ -85,10 +85,15 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
                         SizedBox(
                           height: 24.h,
                         ),
+                        ProfileTile(
+                          title: 'Log out',
+                          onTap: viewModel.logOut,
+                          iconPath: Assets.images.rateUs,
+                        ),
                         Center(
                           child: Text(
                             'V 1.0.1',
-                            style: textTheme.caption?.copyWith(
+                            style: textTheme.bodySmall?.copyWith(
                               color: ClashColors.green200,
                             ),
                           ),
@@ -101,7 +106,7 @@ class ProfileView extends ViewModelBuilderWidget<ProfileViewModel> {
             ),
             Positioned(
               top: 120.h,
-              child: AvatarWidget(
+              child: const AvatarWidget(
                 avatar: '',
               ),
             ),

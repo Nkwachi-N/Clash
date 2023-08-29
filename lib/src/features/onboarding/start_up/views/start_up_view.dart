@@ -12,7 +12,7 @@ class StartUpView extends ViewModelBuilderWidget<StartUpViewModel> {
 
   @override
   Widget builder(BuildContext context, StartUpViewModel viewModel, Widget? child) {
-    return !viewModel.showLogin ? const AuthView() : const HomeView();
+    return viewModel.showLogin ? const AuthView() : const HomeView();
   }
 
   @override

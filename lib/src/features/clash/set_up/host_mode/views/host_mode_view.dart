@@ -31,7 +31,7 @@ class HostModeView extends ViewModelBuilderWidget<HostModeViewModel> {
             ),
             Text(
               'How do you want to Clash?',
-              style: textTheme.headline6,
+              style: textTheme.titleLarge,
             ),
             const SizedBox(
               height: 40.0,

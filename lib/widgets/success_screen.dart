@@ -38,7 +38,7 @@ class SuccessScreen extends StatelessWidget {
               child: Text(
                 args.title,
                 textAlign: TextAlign.center,
-                style: textTheme.headline5?.copyWith(
+                style: textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -49,7 +49,7 @@ class SuccessScreen extends StatelessWidget {
             Text(
               args.subtitle,
               textAlign: TextAlign.center,
-              style: textTheme.headline6?.copyWith(
+              style: textTheme.titleLarge?.copyWith(
                 color: ClashColors.grey900,
               ),
             ),
@@ -59,7 +59,7 @@ class SuccessScreen extends StatelessWidget {
             TextButton(
               onPressed:args.onTap,
               child: Text('Let\'s go',
-                  style: textTheme.button?.copyWith(
+                  style: textTheme.labelLarge?.copyWith(
                     color: Colors.white,
                   )),
             ),

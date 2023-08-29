@@ -36,6 +36,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: FireBaseService),
     LazySingleton(classType: UserDatabaseService),
     LazySingleton(classType: NotificationService),
+    LazySingleton(classType: StorageService)
 
   ],
   logger: StackedLogger(),

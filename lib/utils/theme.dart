@@ -1,4 +1,5 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,32 +11,36 @@ class ClashTheme {
       backgroundColor: ClashColors.green100,
       foregroundColor: Colors.white,
     ),
-    textTheme: Typography.material2018().white.copyWith(
-          button: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 18.sp,
-          ),
-          headline6: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.normal,
-          ),
-          headline5: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          subtitle2:  TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          caption: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 12.sp,
-            color: Colors.white,
-          ),
-          subtitle1: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-          )
+    textTheme: Typography.material2018()
+        .white
+        .copyWith(
+            labelLarge: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18.sp,
+            ),
+            titleLarge: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.normal,
+            ),
+            headlineSmall: TextStyle(
+              fontSize: 24.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            titleSmall: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            bodySmall: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12.sp,
+              color: Colors.white,
+            ),
+            titleMedium: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+            ))
+        .apply(
+          fontFamily: FontFamily.clashDisplay,
         ),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: ClashColors.green100,

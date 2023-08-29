@@ -51,7 +51,7 @@ class GradientCard extends StatelessWidget {
           Center(
             child: Text(
               text,
-              style: Theme.of(context).textTheme.headline5?.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: Colors.white,
                   ),
             ),

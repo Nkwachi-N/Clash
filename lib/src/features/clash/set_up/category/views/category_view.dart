@@ -1,4 +1,3 @@
-import 'package:clash_flutter/src/core/models/game.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +31,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
               ),
               Text(
                 'How do you want to Clash?',
-                style: textTheme.headline6?.copyWith(
+                style: textTheme.titleLarge?.copyWith(
                   color: ClashColors.grey500,
                 ),
               ),
@@ -41,7 +40,7 @@ class CategoryView extends ViewModelBuilderWidget<CategoryViewModel> {
               ),
               Text(
                 'Choose how you’ll be playing with your friends',
-                style: textTheme.subtitle1?.copyWith(
+                style: textTheme.titleMedium?.copyWith(
                   color: ClashColors.grey900,
                 ),
               ),

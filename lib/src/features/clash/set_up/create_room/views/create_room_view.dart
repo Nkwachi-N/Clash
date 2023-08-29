@@ -36,14 +36,14 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                 ),
                 Text(
                   'Create a clash room',
-                  style: textTheme.headline6,
+                  style: textTheme.titleLarge,
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
                 Text(
                   'Enter your friend’s username or share your clash room code for them to join',
-                  style: textTheme.subtitle1?.copyWith(
+                  style: textTheme.titleMedium?.copyWith(
                     color: ClashColors.grey900,
                   ),
                 ),
@@ -85,7 +85,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                       child: Center(
                         child: Text(
                           '@',
-                          style: textTheme.headline5?.copyWith(
+                          style: textTheme.headlineSmall?.copyWith(
                             color: ClashColors.grey900,
                           ),
                         ),
@@ -116,7 +116,7 @@ class CreateRoomView extends ViewModelBuilderWidget<CreateRoomViewModel> {
                     children: [
                       Text(
                         'Continue',
-                        style: textTheme.button,
+                        style: textTheme.labelLarge,
                       ),
                       const SizedBox(
                         width: 8.0,

@@ -1,20 +1,18 @@
 import 'package:clash_flutter/colors.dart';
 import 'package:clash_flutter/widgets/play_icon.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:badges/badges.dart';
 import 'package:stacked/stacked.dart';
-
 import 'search_armoury_view_model.dart';
-
 
 class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
   const SearchArmouryView({Key? key}) : super(key: key);
 
-
   @override
-  Widget builder(BuildContext context, SearchArmouryViewModel viewModel, Widget? child) {
+  Widget builder(
+      BuildContext context, SearchArmouryViewModel viewModel, Widget? child) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +25,7 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
             shape: BoxShape.circle,
             color: Colors.red,
           ),
-          child: const Text('6'),
+          child: Text(viewModel.addedTracks.length.toString()),
         ),
         animationType: BadgeAnimationType.fade,
         padding: const EdgeInsets.all(2.0),
@@ -35,7 +33,7 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
         badgeColor: Theme.of(context).scaffoldBackgroundColor,
         child: FloatingActionButton(
           backgroundColor: ClashColors.green100,
-          onPressed: () {},
+          onPressed: () => viewModel.openArmourySheet(),
           child: const Icon(
             Icons.add,
             color: Colors.white,
@@ -50,10 +48,11 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
               height: 8.0,
             ),
             TextField(
-              style: textTheme.subtitle1?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                 color: ClashColors.green100,
               ),
               controller: viewModel.textEditingController,
+              onChanged: (val) => viewModel.search(val),
               decoration: InputDecoration(
                 hintText: 'Search for a song',
                 prefixIcon: UnconstrainedBox(
@@ -90,13 +89,13 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
                             Expanded(
                               child: Padding(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       track.name,
-                                      style: textTheme.subtitle2,
+                                      style: textTheme.titleSmall,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -104,10 +103,14 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
                                       height: 4.0,
                                     ),
                                     Text(
-                                      'track.artists.join()',
+                                      track.artists
+                                              ?.map((e) => e.name)
+                                              .toList()
+                                              .join(',') ??
+                                          '',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: textTheme.bodyText2?.copyWith(
+                                      style: textTheme.bodyMedium?.copyWith(
                                         color: ClashColors.grey900,
                                       ),
                                     ),
@@ -118,15 +121,21 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
                             TextButton.icon(
                               style: TextButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 22.0,
-                                    vertical: 10.0,
-                                  )),
+                                horizontal: 22.0,
+                                vertical: 10.0,
+                              )),
                               label: const Text(
                                 'Add',
-                                style: TextStyle(fontSize: 14.0),
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                              icon: const Icon(Icons.add, size: 20),
-                              onPressed: () async {},
+                              icon: const Icon(
+                                Icons.add,
+                                size: 16,
+                              ),
+                              onPressed: () => viewModel.addTracks(track),
                             ),
                           ],
                         ),
@@ -141,7 +150,6 @@ class SearchArmouryView extends ViewModelBuilderWidget<SearchArmouryViewModel> {
   }
 
   @override
-  SearchArmouryViewModel viewModelBuilder(BuildContext context) => SearchArmouryViewModel();
-
+  SearchArmouryViewModel viewModelBuilder(BuildContext context) =>
+      SearchArmouryViewModel();
 }
-

@@ -35,14 +35,15 @@ class GenreWaitingRoomView
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
-                        child: AvatarWidget(
-                      avatar: viewModel.hostAvatar,
-                    )),
+                      child: AvatarWidget(
+                        avatar: viewModel.hostAvatar,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'VS',
-                        style: textTheme.headline6?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           color: Colors.transparent,
                         ),
                       ),
@@ -64,7 +65,7 @@ class GenreWaitingRoomView
                       child: Text(
                         viewModel.hostName,
                         textAlign: TextAlign.center,
-                        style: textTheme.headline6?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -73,7 +74,7 @@ class GenreWaitingRoomView
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'VS',
-                        style: textTheme.headline6?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           color: ClashColors.green100,
                         ),
                       ),
@@ -82,7 +83,7 @@ class GenreWaitingRoomView
                       child: Text(
                         viewModel.guestName,
                         textAlign: TextAlign.center,
-                        style: textTheme.headline6?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -102,6 +103,21 @@ class GenreWaitingRoomView
             const Spacer(
               flex: 2,
             ),
+            TextButton(
+              onPressed: viewModel.setUpArmoury,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Set up Armoury',
+                    style: textTheme.labelLarge,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            )
           ],
         ),
       ),

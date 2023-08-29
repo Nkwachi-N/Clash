@@ -35,4 +35,13 @@ class GenreWaitingRoomViewModel extends BaseViewModel{
   }
 
 
+  onReady() {
+    Future.delayed(const Duration(seconds: 2)).then((value) => _navigationService.navigateTo(Routes.setUpArmouryScreen));
+  }
+
+
+
+  void setUpArmoury() {
+    _navigationService.navigateTo(Routes.setUpArmouryScreen);
+  }
 }

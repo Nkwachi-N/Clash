@@ -3,7 +3,6 @@ import 'package:clash_flutter/src/core/models/category/category.dart';
 import 'package:clash_flutter/src/core/models/game.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:spotify_flutter/spotify_flutter.dart';
-
 import '../../models/user.dart';
 
 class GameService {
@@ -11,15 +10,18 @@ class GameService {
   final _spotifyRepository = locator<SpotifyService>();
   final _userDatabaseService = locator<UserDatabaseService>();
 
+  Set<Track> addedTracks = {};
+
+  int get trackCount => addedTracks.length;
+
   User? get user => _userDatabaseService.getCurrentUser();
 
   List<String> genreList = [];
-  late Category category;
-  late Artist artist;
+  Category? category;
+  Artist? artist;
   int? rounds;
 
-  Game? get game => _game;
-  Game? _game;
+  Game? game;
 
   void selectCategory(Category category) {
     this.category = category;
@@ -35,19 +37,27 @@ class GameService {
 
   void createGame(User guest) {
     if (user?.id != null) {
-      _game = Game(
+      game = Game(
         id: user!.id,
         host: user,
         category: category,
         rounds: rounds,
         guest: guest,
       );
-      _fireBaseService.saveGame(_game!);
+      _fireBaseService.saveGame(game!);
     }
   }
 
   void cancelNotifcation() {
     //call cancel notifcation in case user hasn't received it.
     //
+  }
+
+  Future<bool> addTracksToArmoury(Track track) async {
+    bool success = false;
+    game!.category!.when(artist: (_, __, ___) {}, genre: (genre) {
+      // if(track.album?.)
+    });
+    return success;
   }
 }

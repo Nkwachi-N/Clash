@@ -33,7 +33,7 @@ class RoomCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: textTheme.subtitle2?.copyWith(
+                  style: textTheme.titleSmall?.copyWith(
                     color: ClashColors.grey900,
                     fontWeight: FontWeight.w400,
                   ),
@@ -43,7 +43,7 @@ class RoomCard extends StatelessWidget {
                 ),
                 Text(
                   subtitle,
-                  style: textTheme.subtitle1?.copyWith(
+                  style: textTheme.titleMedium?.copyWith(
                     color: ClashColors.grey400,
                     fontWeight: FontWeight.w500,
                   ),

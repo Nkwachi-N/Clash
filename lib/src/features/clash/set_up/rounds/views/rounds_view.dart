@@ -34,7 +34,7 @@ class RoundsView extends ViewModelBuilderWidget<RoundsViewModel> {
             ),
             Text(
               'How do you want to Clash?',
-              style: textTheme.headline6?.copyWith(
+              style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -43,7 +43,7 @@ class RoundsView extends ViewModelBuilderWidget<RoundsViewModel> {
             ),
             Text(
               'Choose how you’ll be playing with your friends',
-              style: textTheme.subtitle1?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                 color: ClashColors.grey900,
               ),
             ),

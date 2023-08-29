@@ -56,14 +56,14 @@ class ActivityTile extends StatelessWidget {
           ),
           Text(
             title,
-            style: textTheme.subtitle2,
+            style: textTheme.titleSmall,
           ),
           SizedBox(
             height: 8.h,
           ),
           Text(
             subtitle,
-            style: subtitleTextStyle ?? textTheme.headline5,
+            style: subtitleTextStyle ?? textTheme.headlineSmall,
           ),
         ],
       ),

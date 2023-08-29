@@ -33,14 +33,14 @@ class ArtistCategoryView extends ViewModelBuilderWidget<ArtistCategoryViewModel>
               ),
               Text(
                 'How do you want to Clash?',
-                style: textTheme.headline6,
+                style: textTheme.titleLarge,
               ),
               SizedBox(
                 height: 8.h,
               ),
               Text(
                 'Choose how you’ll be playing with your friends',
-                style: textTheme.subtitle1?.copyWith(
+                style: textTheme.titleMedium?.copyWith(
                   color: ClashColors.grey900,
                 ),
               ),

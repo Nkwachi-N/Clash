@@ -1,11 +1,9 @@
 import 'package:clash_flutter/app.dart';
 import 'package:clash_flutter/src/core/app/app.locator.dart';
 import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
-import 'package:clash_flutter/src/core/secret_keys.dart';
 import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'firebase_options.dart';
 
@@ -17,7 +15,6 @@ void main() async {
 
   setupLocator();
 
-  OneSignal.shared.setAppId(oneSignalAppId);
 
   await locator<UserDatabaseService>().initializeDb();
 
@@ -30,7 +27,7 @@ void main() async {
     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
     backgroundColor: Colors.red,
     messageColor: Colors.white,
-    messageTextStyle: TextStyle(
+    messageTextStyle: const TextStyle(
       fontSize: 12.0,
     )
 
@@ -40,8 +37,12 @@ void main() async {
       variant: SnackBarType.error,
       config:snackBarConfig..backgroundColor = Colors.red..messageColor = Colors.white );
 
+  snackBarService.registerCustomSnackbarConfig(
+      variant: SnackBarType.message,
+      config:snackBarConfig..backgroundColor = Colors.green..messageColor = Colors.white );
+
 
   runApp(
-    ClashApp(),
+    const ClashApp(),
   );
 }

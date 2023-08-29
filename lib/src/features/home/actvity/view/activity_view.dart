@@ -23,7 +23,7 @@ class ActivityView extends StatelessWidget {
             Center(
               child: Text(
                 'Activity',
-                style: textTheme.headline6,
+                style: textTheme.titleLarge,
               ),
             ),
             SizedBox(
@@ -60,7 +60,7 @@ class ActivityView extends StatelessWidget {
                     title: 'Most won category',
                     imagePath: Assets.images.crown,
                     subtitle: 'Afrobeats',
-                    subtitleTextStyle: textTheme.subtitle1?.copyWith(
+                    subtitleTextStyle: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),

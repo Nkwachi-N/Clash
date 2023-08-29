@@ -23,7 +23,7 @@ class InviteFriendsView extends ViewModelBuilderWidget<InviteFriendsViewModel> {
             SizedBox(
               height: 46.h,
             ),
-            Text('What would you like to edit?',style: textTheme.headline6,),
+            Text('What would you like to edit?',style: textTheme.titleLarge,),
             SizedBox(
               height: 48.h,
             ),

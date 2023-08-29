@@ -37,7 +37,7 @@ class ModeTile extends StatelessWidget {
             icon,
             Text(
               title,
-              style: textTheme.headline6?.copyWith(
+              style: textTheme.titleLarge?.copyWith(
                 color: ClashColors.green200,
               ),
             ),
@@ -46,7 +46,7 @@ class ModeTile extends StatelessWidget {
             ),
             Text(
               subtitle,
-              style: textTheme.subtitle1?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                   color: ClashColors.grey400, fontWeight: FontWeight.w400,),
             )
           ],

@@ -40,7 +40,7 @@ class ProfileTile extends StatelessWidget {
             ),
             Text(
               title,
-              style: textTheme.subtitle1,
+              style: textTheme.titleMedium,
             ),
             const Spacer(),
             const Icon(

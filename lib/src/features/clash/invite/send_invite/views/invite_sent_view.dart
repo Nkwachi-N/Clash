@@ -109,7 +109,7 @@ class _InviteSentViewState extends State<InviteSentView>
                   child: RichText(
                     text: TextSpan(
                         text: 'Inviting ',
-                        style: textTheme.subtitle1?.copyWith(
+                        style: textTheme.titleMedium?.copyWith(
                           color: Colors.white,
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _InviteSentViewState extends State<InviteSentView>
                         children: [
                           TextSpan(
                             text: '@${widget.username}',
-                            style: textTheme.subtitle1?.copyWith(
+                            style: textTheme.titleMedium?.copyWith(
                               color: ClashColors.green100,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w700,
@@ -125,7 +125,7 @@ class _InviteSentViewState extends State<InviteSentView>
                           ),
                           TextSpan(
                             text: ' to your room',
-                            style: textTheme.subtitle1?.copyWith(
+                            style: textTheme.titleMedium?.copyWith(
                               color: Colors.white,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w500,
@@ -137,7 +137,7 @@ class _InviteSentViewState extends State<InviteSentView>
                 Align(
                   alignment: const Alignment(0.0, 0.82),
                   child: Text('Hang tight',
-                      style: textTheme.subtitle1?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w400,
                         fontSize: 18.0,
                         color: ClashColors.grey900,

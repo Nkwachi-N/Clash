@@ -1,5 +1,4 @@
 import 'package:clash_flutter/colors.dart';
-import 'package:clash_flutter/widgets/artist_card.dart';
 import 'package:clash_flutter/widgets/gradient_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,14 +41,14 @@ class GenreCategoryView extends ViewModelBuilderWidget<GenreCategoryViewModel> {
               ),
               Text(
                 'How do you want to Clash?',
-                style: textTheme.headline6,
+                style: textTheme.titleLarge,
               ),
               SizedBox(
                 height: 8.h,
               ),
               Text(
                 'Choose how you’ll be playing with your friends',
-                style: textTheme.subtitle1?.copyWith(
+                style: textTheme.titleMedium?.copyWith(
                   color: ClashColors.grey900,
                 ),
               ),

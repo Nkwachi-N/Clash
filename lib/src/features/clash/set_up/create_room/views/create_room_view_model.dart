@@ -36,10 +36,11 @@ class CreateRoomViewModel extends BaseViewModel {
   _inviteUser() async {
     setBusy(true);
     final user = await _firebaseService.getUserByUserName(controller.text);
+    if(user?.deviceToken == null) return;
     setBusy(false);
     if (user != null) {
       _gameService.createGame(user);
-      _notificationService.inviteUser(userId: user.id,category: _gameService.category.runtimeType.toString()).then((value) {
+      _notificationService.inviteUser(deviceToken: user.deviceToken!,category: _gameService.category.runtimeType.toString()).then((value) {
         if (value) {
           _navigationService.navigateToView(InviteSentView(username: user.name));
         } else {

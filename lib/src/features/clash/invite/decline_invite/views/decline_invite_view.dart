@@ -30,7 +30,7 @@ class DeclineInviteView extends ViewModelBuilderWidget<DeclineInviteViewModel> {
             Text(
               '$username declined your invite',
               textAlign: TextAlign.center,
-              style: textTheme.headline5?.copyWith(
+              style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -40,7 +40,7 @@ class DeclineInviteView extends ViewModelBuilderWidget<DeclineInviteViewModel> {
             Text(
               'Ouch',
               textAlign: TextAlign.center,
-              style: textTheme.headline6?.copyWith(
+              style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w400,
                 color: ClashColors.grey900,
                 fontSize: 18.0,

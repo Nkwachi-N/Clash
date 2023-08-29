@@ -35,7 +35,7 @@ class ReceivedInviteScreen
                 child: Text(
                   '$userName is inviting you to join their clash room',
                   textAlign: TextAlign.center,
-                  style: textTheme.headline6?.copyWith(
+                  style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -91,7 +91,7 @@ class ReceivedInviteScreen
                   children: [
                     Text(
                       viewModel.loaderMessage,
-                      style: textTheme.subtitle1?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         color: ClashColors.green100,
                       ),
                     ),

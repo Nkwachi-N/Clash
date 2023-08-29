@@ -32,14 +32,14 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
             padding: const EdgeInsets.symmetric(horizontal: 16.0,),
             child: Text(
               'Join a clash room',
-              style: textTheme.headline6,
+              style: textTheme.titleLarge,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Enter your friend’s clash room code to be able to join',
-              style: textTheme.subtitle1?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                 color: ClashColors.grey900,
               ),
             ),
@@ -81,7 +81,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
                           child: Center(
                             child: Text(
                               text,
-                              style: textTheme.headline4?.copyWith(
+                              style: textTheme.headlineMedium?.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: ClashColors.green200,
                               ),
@@ -126,7 +126,7 @@ class JoinRoomView extends ViewModelBuilderWidget<JoinRoomViewModel>{
               onPressed: viewModel.controller.text.length > 5 ? () {} : null,
               child: Text(
                 'Join room',
-                style: textTheme.button,
+                style: textTheme.labelLarge,
               ),
             ),
           ),

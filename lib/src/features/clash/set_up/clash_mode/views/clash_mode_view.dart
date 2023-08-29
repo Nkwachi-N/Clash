@@ -27,7 +27,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                 children: [
                   Text(
                     'Welcome back, ${viewModel.name} 👋 ',
-                    style: textTheme.subtitle1,
+                    style: textTheme.titleMedium,
                   ),
                   const Spacer(),
                   SvgPicture.asset(Assets.images.flame),
@@ -36,7 +36,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                   ),
                   Text(
                     '0',
-                    style: textTheme.headline5,
+                    style: textTheme.headlineSmall,
                   )
                 ],
               ),
@@ -45,7 +45,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
               ),
               Text(
                 'How do you want to Clash?',
-                style: textTheme.subtitle2,
+                style: textTheme.titleSmall,
               ),
               SizedBox(
                 height: 16.h,
@@ -87,7 +87,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       ),
                       Text(
                         'With a Computer',
-                        style: textTheme.headline6?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           color: ClashColors.green200,
                         ),
                       ),
@@ -96,7 +96,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                       ),
                       Text(
                         'Play against an automated system.',
-                        style: textTheme.subtitle1?.copyWith(
+                        style: textTheme.titleMedium?.copyWith(
                           color: ClashColors.grey400,
                         ),
                       ),
@@ -148,7 +148,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                         ),
                         Text(
                           'With Friends',
-                          style: textTheme.headline6?.copyWith(
+                          style: textTheme.titleLarge?.copyWith(
                             color: ClashColors.green200,
                           ),
                         ),
@@ -157,7 +157,7 @@ class ClashModeScreen extends ViewModelBuilderWidget<ClashModeViewModel> {
                         ),
                         Text(
                           'Mash heads with your gees and pals by inviting them to your clash room.',
-                          style: textTheme.subtitle1?.copyWith(
+                          style: textTheme.titleMedium?.copyWith(
                             color: ClashColors.grey400,
                           ),
                         ),
