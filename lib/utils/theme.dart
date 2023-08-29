@@ -1,32 +1,55 @@
 import 'package:clash_flutter/colors.dart';
+import 'package:clash_flutter/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ClashTheme {
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: ClashColors.black200,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: ClashColors.green200,
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: ClashColors.green100,
       foregroundColor: Colors.white,
     ),
-    textTheme: Typography.material2018().white.copyWith(
-          button: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 18.0,
-          ),
-          headline6: const TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.normal,
-          ),
+    textTheme: Typography.material2018()
+        .white
+        .copyWith(
+            labelLarge: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18.sp,
+            ),
+            titleLarge: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.normal,
+            ),
+            headlineSmall: TextStyle(
+              fontSize: 24.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            titleSmall: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            bodySmall: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12.sp,
+              color: Colors.white,
+            ),
+            titleMedium: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+            ))
+        .apply(
+          fontFamily: FontFamily.clashDisplay,
         ),
     textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: ClashColors.green200,
-      selectionColor: ClashColors.green200,
+      cursorColor: ClashColors.green100,
+      selectionColor: ClashColors.green100,
     ),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        iconTheme: IconThemeData(color: ClashColors.green200)),
+        iconTheme: IconThemeData(color: ClashColors.green100)),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: ClashColors.grey500,
@@ -60,7 +83,7 @@ class ClashTheme {
             if (states.contains(MaterialState.disabled)) {
               return ClashColors.grey700;
             }
-            return ClashColors.green200; // Use the component's default.
+            return ClashColors.green100; // Use the component's default.
           },
         ),
       ),

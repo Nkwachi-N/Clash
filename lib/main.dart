@@ -1,21 +1,10 @@
-import 'package:clash_flutter/core/provider/audio_provider.dart';
-import 'package:clash_flutter/core/provider/search_provider.dart';
-import 'package:clash_flutter/core/provider/user_provider.dart';
-import 'package:clash_flutter/core/provider/game_provider.dart';
-import 'package:clash_flutter/core/repository/game_repository.dart';
-import 'package:clash_flutter/core/repository/user_repository.dart';
-import 'package:clash_flutter/routes/route_generator.dart';
-import 'package:clash_flutter/spotify/spotify_repository.dart';
-import 'package:clash_flutter/utils/theme.dart';
+import 'package:clash_flutter/app.dart';
+import 'package:clash_flutter/src/core/app/app.locator.dart';
+import 'package:clash_flutter/src/core/constants/snack_bar_type.dart';
+import 'package:clash_flutter/src/core/services/service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'core/constants.dart';
-import 'core/di/set_up.dart';
-import 'core/models/user.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -23,82 +12,37 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Hive.initFlutter();
 
-  Hive.registerAdapter(UserAdapter());
-  await Hive.openBox(Constants.kHiveBox);
-  final prefs = await SharedPreferences.getInstance();
-  final accessToken = prefs.getString(Constants.kAccessToken);
+  setupLocator();
 
-  String initialRoute = RouteGenerator.authScreen;
 
-  OneSignal.shared.setAppId(Constants.oneSignalAppId);
+  await locator<UserDatabaseService>().initializeDb();
 
-  if (accessToken != null) {
-    final box = Hive.box(Constants.kHiveBox);
-    final User? user = box.get('user');
-    if (user != null) {
-      initialRoute = RouteGenerator.homeScreen;
-    } else {
-      initialRoute = RouteGenerator.userNameScreen;
-    }
-  }
+  final snackBarService = locator<SnackbarService>();
 
-  configureDependencies();
-  runApp(
-    MyApp(
-      initialRoute: initialRoute,
-    ),
+  final snackBarConfig = SnackbarConfig(
+    snackPosition: SnackPosition.TOP,
+    snackStyle: SnackStyle.FLOATING,
+    borderRadius: 16.0,
+    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+    backgroundColor: Colors.red,
+    messageColor: Colors.white,
+    messageTextStyle: const TextStyle(
+      fontSize: 12.0,
+    )
+
   );
-}
 
-class MyApp extends StatefulWidget {
-  final String initialRoute;
+  snackBarService.registerCustomSnackbarConfig(
+      variant: SnackBarType.error,
+      config:snackBarConfig..backgroundColor = Colors.red..messageColor = Colors.white );
 
-  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
+  snackBarService.registerCustomSnackbarConfig(
+      variant: SnackBarType.message,
+      config:snackBarConfig..backgroundColor = Colors.green..messageColor = Colors.white );
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
 
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(
-          lazy: false,
-          create: (context) => SpotifyRepository(),
-        ),
-        Provider(
-          create: (context) => UserRepository(),
-        ),
-        Provider(
-          create: (context) => GameRepository(),
-        ),
-        ChangeNotifierProvider(create: (context) => UserProvider()..initUser()),
-        ChangeNotifierProvider<GameProvider>(
-          create: (context) => GameProvider(),
-        ),
-        ChangeNotifierProvider<UserProvider>(
-          create: (context) => UserProvider()..initUser(),
-          lazy: false,
-        ),
-        ChangeNotifierProvider<SearchProvider>(
-          create: (context) => SearchProvider(),
-        ),
-        Provider(
-          create: (context) => AudioProvider(),
-          lazy: false,
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Clash',
-        debugShowCheckedModeBanner: false,
-        theme: ClashTheme.darkTheme,
-        initialRoute: widget.initialRoute,
-        onGenerateRoute: RouteGenerator.generateRoute,
-      ),
-    );
-  }
+  runApp(
+    const ClashApp(),
+  );
 }

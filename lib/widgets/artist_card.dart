@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:spotify_flutter/spotify_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../core/models/artists.dart';
 
 class ArtistCard extends StatelessWidget {
   final Artist artist;
@@ -23,7 +23,7 @@ class ArtistCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
-                image: artist.image,
+                image: artist.images != null && artist.images!.isNotEmpty ? artist.images![0].url ?? '' : '',
                 fit: BoxFit.fitWidth,
 
               ),
@@ -34,7 +34,7 @@ class ArtistCard extends StatelessWidget {
           artist.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.headline6?.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
               ),

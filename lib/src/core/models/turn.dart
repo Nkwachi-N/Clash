@@ -1,0 +1,5 @@
+enum Turn {
+  host,guest
+
+}
+
